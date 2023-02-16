@@ -9,11 +9,18 @@ namespace Trinkit
         /// </summary>
         public string Name = "";
 
+        private Image _icon;
+
         public TrinkitApp(string title, int width, int height)
         {
             Name = title;
 
+            Raylib.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT | ConfigFlags.FLAG_WINDOW_ALWAYS_RUN);
             Raylib.InitWindow(width, height, Name);
+
+            _icon = Raylib.LoadImage("Resources/icon.png");
+            Raylib.SetWindowIcon(_icon);
+
 
             OnLoad();
         }
@@ -37,6 +44,8 @@ namespace Trinkit
         public void Dispose()
         {
             OnQuit();
+
+            Raylib.UnloadImage(_icon);
             Raylib.CloseWindow();
         }
     }

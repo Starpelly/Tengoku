@@ -11,53 +11,65 @@ namespace Tengoku.Games
         private Texture refTex;
 
         private AudioSource music;
+        private Sound _hitSound;
 
-        Camera3D cam;
+        Camera3D _cam;
 
-        private Texture spaceballPlayerSheet0;
-        private Texture spaceballPlayerSheet1;
-        private Texture spaceballPlayerSheet2;
-        private Texture spaceballPlayerSheet3;
+        private Texture _spaceballPlayerSheet0;
+        private Texture _spaceballPlayerSheet1;
+        private Texture _spaceballPlayerSheet2;
+        private Texture _spaceballPlayerSheet3;
 
-        private Texture spaceballProps;
-        private Texture spaceballRoom;
+        private Texture _spaceballProps;
+        private Texture _spaceballRoom;
+
+        private Animation _playerAnim;
 
         public Spaceball()
         {
             refTex = Raylib.LoadTexture("resources/sprites/games/spaceball/refff.png");
 
-            spaceballPlayerSheet0 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_0.png");
-            spaceballPlayerSheet1 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_1.png");
-            spaceballPlayerSheet2 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_2.png");
-            spaceballPlayerSheet3 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_3.png");
+            _spaceballPlayerSheet0 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_0.png");
+            _spaceballPlayerSheet1 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_1.png");
+            _spaceballPlayerSheet2 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_2.png");
+            _spaceballPlayerSheet3 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_3.png");
 
-            spaceballProps = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_props.png");
-            spaceballRoom = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_room.png");
+            _spaceballProps = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_props.png");
+            _spaceballRoom = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_room.png");
 
             music = new AudioSource();
             music.Clip = Resources.Load<AudioClip>("audio/music/remix1.ogg");
-            // music.Play();
+            music.Play();
 
-            cam = new Camera3D();
-            cam.projection_ = CameraProjection.CAMERA_PERSPECTIVE;
+            _hitSound = Raylib.LoadSound("Resources/audio/sfx/games/spaceball/hit.ogg");
+
+            _cam = new Camera3D();
+            _cam.projection_ = CameraProjection.CAMERA_PERSPECTIVE;
+
+            _playerAnim = new Animation(5, 20);
         }
 
         public void Update()
         {
-            cam.fovy = 10.125f;
-            cam.position = new System.Numerics.Vector3(0.0f, 0.0f, -10.0f);
-            cam.target = new System.Numerics.Vector3(cam.position.X, cam.position.Y, 0.0f);
-            cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
+            _cam.fovy = 10.125f;
+            _cam.position = new System.Numerics.Vector3(0.0f, 0.0f, -10.0f);
+            _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
+            _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
             
             if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
-                cam.position += new System.Numerics.Vector3(5, 0, 0) * Raylib.GetFrameTime();
+                _cam.position += new System.Numerics.Vector3(5, 0, 0) * Raylib.GetFrameTime();
             if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
-                cam.position += new System.Numerics.Vector3(-5, 0, 0) * Raylib.GetFrameTime();
+                _cam.position += new System.Numerics.Vector3(-5, 0, 0) * Raylib.GetFrameTime();
             if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
-                cam.position += new System.Numerics.Vector3(0, 5, 0) * Raylib.GetFrameTime();
+                _cam.position += new System.Numerics.Vector3(0, 5, 0) * Raylib.GetFrameTime();
             if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
-                cam.position += new System.Numerics.Vector3(0, -5, 0) * Raylib.GetFrameTime();
+                _cam.position += new System.Numerics.Vector3(0, -5, 0) * Raylib.GetFrameTime();
 
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _playerAnim.Play();
+                Raylib.PlaySound(_hitSound);
+            }
 
             music.Update();
         }
@@ -65,35 +77,38 @@ namespace Tengoku.Games
         public void Draw()
         {
             Raylib.ClearBackground(new Trinkit.Color("000073"));
-            Raylib.BeginMode3D(cam);
+            Raylib.BeginMode3D(_cam);
 
             // Room
-            Sprite.DrawSprite(spaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Trinkit.Color.white, new Rectangle(), 90f);
+            Sprite.DrawSprite(_spaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Trinkit.Color.white, new Rectangle(), 90f);
 
             // Dispenser
-            Sprite.DrawSprite(spaceballProps, new Vector3(-0.55f, -0.53f), 0.0f, Trinkit.Color.white,
+            Sprite.DrawSprite(_spaceballProps, new Vector3(-0.55f, -0.53f), 0.0f, Trinkit.Color.white,
                 new Rectangle(0, 32, 32, 32), 90f);
 
             // Umpire
-            Sprite.DrawSprite(spaceballProps, new Vector3(0.0f, -0.11f), 0.0f, Trinkit.Color.white,
+            Sprite.DrawSprite(_spaceballProps, new Vector3(0.0f, -0.11f), 0.0f, Trinkit.Color.white,
                 new Rectangle(32, 0, 32, 32), 90f);
 
             // Player Shadow
-            Sprite.DrawSprite(spaceballProps, new Vector3(0.64f, -0.61f), 0.0f, Trinkit.Color.white,
+            Sprite.DrawSprite(_spaceballProps, new Vector3(0.64f, -0.61f), 0.0f, Trinkit.Color.white,
                 new Rectangle(0, 128, 32, 32), 90f);
 
             // Player
-            var playerFrame = 0;
             var playerYPos = -0.045f;
 
-            Sprite.DrawSprite(spaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white, 
-                new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(spaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, new Trinkit.Color("63e600"),
-                new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(spaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.black,
-                new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(spaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white,
-                new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+            _playerAnim.Update();
+
+            var _playerFrame = _playerAnim.Frame;
+
+            Sprite.DrawSprite(_spaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white, 
+                new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+            Sprite.DrawSprite(_spaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, new Trinkit.Color("63e600"),
+                new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+            Sprite.DrawSprite(_spaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.black,
+                new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+            Sprite.DrawSprite(_spaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white,
+                new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
 
             Raylib.EndMode3D();
         }
@@ -109,29 +124,27 @@ namespace Tengoku.Games
                     new Trinkit.Color(1, 1, 1, 0.5f)
                 );*/
             Raylib.DrawFPS(10, 29);
-            Raylib.DrawCircle((int)Raylib.GetMousePosition().X, (int)Raylib.GetMousePosition().Y, 10, Trinkit.Color.red);
+            Raylib.DrawCircle((int)Raylib.GetMousePosition().X, (int)Raylib.GetMousePosition().Y, 30, Trinkit.Color.black.ChangeAlpha(0.25f));
         }
 
         public void ImGui()
         {
-            if (ImGuiNET.ImGui.Begin("Spaceball Debug"))
-            {
-                ImGuiNET.ImGui.End();
-            }
         }
 
         public void Dispose()
         {
             music.OnDestroy();
 
+            Raylib.UnloadSound(_hitSound);
+
             Raylib.UnloadTexture(refTex);
 
-            Raylib.UnloadTexture(spaceballPlayerSheet0);
-            Raylib.UnloadTexture(spaceballPlayerSheet1);
-            Raylib.UnloadTexture(spaceballPlayerSheet2);
-            Raylib.UnloadTexture(spaceballPlayerSheet3);
-            Raylib.UnloadTexture(spaceballProps);
-            Raylib.UnloadTexture(spaceballRoom);
+            Raylib.UnloadTexture(_spaceballPlayerSheet0);
+            Raylib.UnloadTexture(_spaceballPlayerSheet1);
+            Raylib.UnloadTexture(_spaceballPlayerSheet2);
+            Raylib.UnloadTexture(_spaceballPlayerSheet3);
+            Raylib.UnloadTexture(_spaceballProps);
+            Raylib.UnloadTexture(_spaceballRoom);
         }
     }
 }
