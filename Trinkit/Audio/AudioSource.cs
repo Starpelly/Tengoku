@@ -6,8 +6,8 @@ namespace Trinkit.Audio
     {
         public AudioClip Clip;
 
-        public double Time => Clip.GetTime();
-        public float Volume;
+        public float Time => (float)Clip.GetTime();
+        public float Volume = 1.0f;
 
         public void Play()
         {

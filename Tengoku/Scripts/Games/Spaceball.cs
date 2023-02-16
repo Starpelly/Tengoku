@@ -132,10 +132,11 @@ namespace Tengoku.Games
             Sprite.DrawSprite(_spaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white,
                 new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
 
+            float beat = music.Time / ((60.0f / 119.0f) * 2f);
             var addPos = 0.77f;
             var addPosY = 1.25f;
-            var normalizedBallTime = Mathf.Repeat((float)music.Time, 1f);
-            var ballRot = normalizedBallTime * 240f;
+            var normalizedBallTime = Mathf.Repeat(beat, 1f);
+            var ballRot = normalizedBallTime * 440f;
 
             // Ball
             Sprite.DrawSprite(_spaceballProps,
@@ -162,8 +163,33 @@ namespace Tengoku.Games
                     0.0f,
                     new Trinkit.Color(1, 1, 1, 0.5f)
                 );*/
-            Raylib.DrawFPS(10, 29);
+
+            _textAdd = 0;
+
+            DebugText($"Rhythm Tengoku '{Environment.UserName}' Debug");
+            DebugSeparator();
+            DebugText($"FPS: {Raylib.GetFPS()}");
+            DebugText($"Time: {Raylib.GetTime()}");
+            DebugText($"Mouse: {Raylib.GetMousePosition()}");
+            DebugText($"Sprites: {Trinkit.Debug.Counters.SpritesRendered}");
+            DebugSeparator();
+            DebugText("Game: Spaceball");
+            DebugSeparator();
+
             Raylib.DrawCircle((int)Raylib.GetMousePosition().X, (int)Raylib.GetMousePosition().Y, 30, Trinkit.Color.black.ChangeAlpha(0.25f));
+        }
+
+        private int _textAdd;
+
+        private void DebugText(string text)
+        {
+            Raylib.DrawText(text, 10, 29 + (20 * _textAdd), 20, Trinkit.Color.black);
+            _textAdd++;
+        }
+
+        private void DebugSeparator()
+        {
+            DebugText($"===================================");
         }
 
         public void ImGui()

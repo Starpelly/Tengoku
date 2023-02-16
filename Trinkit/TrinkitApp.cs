@@ -1,4 +1,5 @@
 ﻿using Raylib_CsLo;
+using Trinkit.Debug;
 
 namespace Trinkit
 {
@@ -29,6 +30,8 @@ namespace Trinkit
         {
             while (!Raylib.WindowShouldClose())
             {
+                Counters.Reset();
+
                 OnUpdate();
                 Raylib.BeginDrawing();
                 OnDraw();

@@ -25,6 +25,8 @@ namespace Trinkit.Graphics
                 rotation,
                 position.z,
                 tint);
+
+            Debug.Counters.SpritesRendered++;
         }
 
         private static void DrawTexturePro3D(Texture texture, Rectangle sourceRec, Rectangle destRec, Vector3 origin, float rotation, float posZ, Color tint)
