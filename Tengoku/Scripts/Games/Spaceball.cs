@@ -10,8 +10,9 @@ namespace Tengoku.Games
     {
         private Texture refTex;
 
-        private AudioSource music;
         private Sound _hitSound;
+        private Sound _shootSound;
+        private Sound _shootHighSound;
 
         Camera3D _cam;
 
@@ -39,11 +40,9 @@ namespace Tengoku.Games
             _spaceballProps = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_props.png");
             _spaceballRoom = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_room.png");
 
-            music = new AudioSource();
-            music.Clip = Resources.Load<AudioClip>("audio/music/remix1.ogg");
-            music.Play();
-
             _hitSound = Raylib.LoadSound("Resources/audio/sfx/games/spaceball/hit.ogg");
+            _shootSound = Raylib.LoadSound("Resources/audio/sfx/games/spaceball/shoot.ogg");
+            _shootHighSound = Raylib.LoadSound("Resources/audio/sfx/games/spaceball/shootHigh.ogg");
 
             _cam = new Camera3D();
             _cam.projection_ = CameraProjection.CAMERA_PERSPECTIVE;
@@ -91,8 +90,6 @@ namespace Tengoku.Games
                 _playerAnim.Play();
                 Raylib.PlaySound(_hitSound);
             }
-
-            music.Update();
         }
 
         public void Draw()
@@ -132,7 +129,7 @@ namespace Tengoku.Games
             Sprite.DrawSprite(_spaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white,
                 new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
 
-            float beat = music.Time / ((60.0f / 119.0f) * 2f);
+            float beat = GameManager.Instance.Conductor.SongPositionInBeats;
             var addPos = 0.77f;
             var addPosY = 1.25f;
             var normalizedBallTime = Mathf.Repeat(beat, 1f);
@@ -175,6 +172,10 @@ namespace Tengoku.Games
             DebugSeparator();
             DebugText("Game: Spaceball");
             DebugSeparator();
+            DebugText($"BPM: {GameManager.Instance.Conductor.InitialTempo}");
+            DebugText($"SongPos: {GameManager.Instance.Conductor.SongPosition}");
+            DebugText($"SongPosBeat: {GameManager.Instance.Conductor.SongPositionInBeats}");
+            DebugSeparator();
 
             Raylib.DrawCircle((int)Raylib.GetMousePosition().X, (int)Raylib.GetMousePosition().Y, 30, Trinkit.Color.black.ChangeAlpha(0.25f));
         }
@@ -198,9 +199,9 @@ namespace Tengoku.Games
 
         public void Dispose()
         {
-            music.OnDestroy();
-
             Raylib.UnloadSound(_hitSound);
+            Raylib.UnloadSound(_shootSound);
+            Raylib.UnloadSound(_shootHighSound);
 
             Raylib.UnloadTexture(refTex);
 
@@ -210,6 +211,12 @@ namespace Tengoku.Games
             Raylib.UnloadTexture(_spaceballPlayerSheet3);
             Raylib.UnloadTexture(_spaceballProps);
             Raylib.UnloadTexture(_spaceballRoom);
+        }
+
+        public void Ball(float beat, bool high)
+        {
+            Console.WriteLine(beat + ", " + high);
+            Raylib.PlaySound((high) ? _shootHighSound : _shootSound);
         }
     }
 }

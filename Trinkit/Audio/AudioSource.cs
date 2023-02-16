@@ -9,6 +9,8 @@ namespace Trinkit.Audio
         public float Time => (float)Clip.GetTime();
         public float Volume = 1.0f;
 
+        public bool IsPlaying { get; set; }
+
         public void Play()
         {
             Clip.PlayStream();

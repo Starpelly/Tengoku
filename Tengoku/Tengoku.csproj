@@ -27,6 +27,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\audio\music\remix1.ogg" />
 	  <None Remove="Resources\audio\music\spaceball.wav" />
+	  <None Remove="Resources\levels\remix1.tkf" />
 	</ItemGroup>
 
 
@@ -43,6 +44,13 @@
 	  <None Update="Resources\icon.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+
+
+
+	<ItemGroup>
+	  <Folder Include="Tickflow\" />
 	</ItemGroup>
 
 </Project>

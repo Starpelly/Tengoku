@@ -10,6 +10,7 @@ namespace Tengoku
     public class Game : TrinkitApp
     {
         Spaceball spaceball;
+        GameManager gameManager;
 
         private RenderTexture _renderTexture;
         private int _screenWidth = 280;
@@ -26,11 +27,14 @@ namespace Tengoku
 
             TrinkitImGui.Setup(false);
 
+            gameManager = new GameManager();
             spaceball = new Spaceball();
+            gameManager.Spaceball = spaceball;
         }
 
         public override void OnUpdate()
         {
+            gameManager.Update();
             spaceball.Update();
         }
 
