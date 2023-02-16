@@ -25,6 +25,8 @@ namespace Tengoku.Games
 
         private Animation _playerAnim;
 
+        private float _camPosZ = 10.0f;
+
         public Spaceball()
         {
             refTex = Raylib.LoadTexture("resources/sprites/games/spaceball/refff.png");
@@ -49,12 +51,31 @@ namespace Tengoku.Games
             _playerAnim = new Animation(5, 20);
         }
 
+        Vector3 GetPointOnBezierCurve(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        {
+            float u = 1f - t;
+            float t2 = t * t;
+            float u2 = u * u;
+            float u3 = u2 * u;
+            float t3 = t2 * t;
+
+            Vector3 result =
+                (u3) * p0 +
+                (3f * u2 * t) * p1 +
+                (3f * u * t2) * p2 +
+                (t3) * p3;
+
+            return result;
+        }
+
         public void Update()
         {
             _cam.fovy = 10.125f;
-            _cam.position = new System.Numerics.Vector3(0.0f, 0.0f, -10.0f);
+            _cam.position = new System.Numerics.Vector3(0.0f, 0.0f, -_camPosZ);
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
+
+            // _camPosZ = Mathf.Lerp(10.0f, 200.0f, Mathf.Normalize(music.Time, 0, 10));
             
             if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
                 _cam.position += new System.Numerics.Vector3(5, 0, 0) * Raylib.GetFrameTime();
@@ -101,6 +122,7 @@ namespace Tengoku.Games
 
             var _playerFrame = _playerAnim.Frame;
 
+
             Sprite.DrawSprite(_spaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white, 
                 new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
             Sprite.DrawSprite(_spaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, new Trinkit.Color("63e600"),
@@ -109,6 +131,23 @@ namespace Tengoku.Games
                 new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
             Sprite.DrawSprite(_spaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white,
                 new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+
+            var addPos = 0.77f;
+            var addPosY = 1.25f;
+            var normalizedBallTime = Mathf.Repeat((float)music.Time, 1f);
+            var ballRot = normalizedBallTime * 240f;
+
+            // Ball
+            Sprite.DrawSprite(_spaceballProps,
+                GetPointOnBezierCurve(
+                    new Vector3(-0.55f, -0.43f),
+                    new Vector3(-0.55f, -0.53f + addPosY),
+                    new Vector3(-0.55f + addPos, -0.53f + addPosY),
+                    new Vector3(-0.55f + addPos, -0.62f),
+                    normalizedBallTime
+                    ),
+                ballRot, Trinkit.Color.white,
+                new Rectangle(0, 32 * 2, 32, 32), 90f);
 
             Raylib.EndMode3D();
         }

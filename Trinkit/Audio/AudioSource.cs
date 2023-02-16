@@ -6,6 +6,9 @@ namespace Trinkit.Audio
     {
         public AudioClip Clip;
 
+        public double Time => Clip.GetTime();
+        public float Volume;
+
         public void Play()
         {
             Clip.PlayStream();
@@ -14,6 +17,7 @@ namespace Trinkit.Audio
         public override void Update()
         {
             Clip.UpdateStream();
+            Clip.SetVolume(Volume);
         }
 
         public override void OnDestroy()

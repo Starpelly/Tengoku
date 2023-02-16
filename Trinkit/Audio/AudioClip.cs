@@ -33,6 +33,16 @@ namespace Trinkit.Audio
             _loadedStream = true;
         }
 
+        internal double GetTime()
+        {
+            return Raylib.GetMusicTimePlayed(_stream);
+        }
+
+        internal void SetVolume(float volume)
+        {
+            Raylib.SetMusicVolume(_stream, volume);
+        }
+
         internal void PlayStream()
         {
             Raylib.PlayMusicStream(_stream);

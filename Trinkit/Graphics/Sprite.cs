@@ -20,8 +20,8 @@ namespace Trinkit.Graphics
             DrawTexturePro3D(
                 texture,
                 new Rectangle(-region.x - region.width, -region.y - region.height, region.width, region.height),
-                new Rectangle(-position.x - (widthUnit * 0.5f), position.y - (heightUnit * 0.5f), widthUnit, heightUnit),
-                new Vector3(0.0f, 0.0f),
+                new Rectangle(-position.x, position.y, widthUnit, heightUnit),
+                new Vector3(widthUnit * 0.5f, heightUnit * 0.5f),
                 rotation,
                 position.z,
                 tint);
