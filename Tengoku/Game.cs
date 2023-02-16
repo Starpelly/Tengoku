@@ -11,8 +11,13 @@ namespace Tengoku
     {
         Spaceball spaceball;
 
+        private RenderTexture _renderTexture;
+        private int _screenWidth = 280;
+        private int _screenHeight = 160;
+
         public Game(string title, int width, int height) : base(title, width, height)
         {
+            _renderTexture = Raylib.LoadRenderTexture(_screenWidth, _screenHeight);
         }
 
         public override void OnLoad()
@@ -33,46 +38,26 @@ namespace Tengoku
         {
             Raylib.ClearBackground(Raylib.WHITE);
 
+            Raylib.BeginTextureMode(_renderTexture);
+
             spaceball.Draw();
 
-            TrinkitImGui.Begin();
-            
-            if (ImGui.BeginMainMenuBar())
-            {
-                if (ImGui.BeginMenu("Window"))
-                {
-                    if (ImGui.MenuItem("Resolution")) { }
-                    ImGui.EndMenu();
-                }
-                if (ImGui.BeginMenu("Audio"))
-                {
-                    if (ImGui.MenuItem("Latency")) { }
-                    ImGui.EndMenu();
-                }
-                if (ImGui.BeginMenu("Scenes")) 
-                {
-                    if (ImGui.MenuItem("Splashscreen")) { }
-                    if (ImGui.MenuItem("Title")) { }
-                    if (ImGui.MenuItem("Menu")) { }
-                    if (ImGui.MenuItem("GameSelect")) { }
-                    if (ImGui.MenuItem("Game")) { }
-                    ImGui.EndMenu();
-                }
-                if (ImGui.BeginMenu("Games"))
-                {
-                    if (ImGui.MenuItem("Load Custom...")) { }
-                    ImGui.Separator();
-                    if (ImGui.MenuItem("Karate Man")) { }
-                    if (ImGui.MenuItem("Rhythm Tweezers")) { }
-                    if (ImGui.MenuItem("Marching Orders")) { }
-                    if (ImGui.MenuItem("Spaceball")) { }
-                    if (ImGui.MenuItem("The Clappy Trio")) { }
-                    if (ImGui.MenuItem("Remix 1")) { }
-                    ImGui.EndMenu();
-                }
+            Raylib.EndTextureMode();
+            Raylib.ClearBackground(Raylib.BLACK);
+            Raylib.DrawTexturePro(
+                _renderTexture.texture,
+                    new Rectangle(0, 0, (float)_renderTexture.texture.width, (float)-_renderTexture.texture.height),
+                    new Rectangle(0, 19, Raylib.GetScreenWidth(), Raylib.GetScreenHeight() - 19),
+                    new System.Numerics.Vector2(0.0f, 0.0f),
+                    0.0f,
+                    Raylib.WHITE
+                );
 
-                ImGui.EndMainMenuBar();
-            }
+            spaceball.DrawGUI();
+
+            TrinkitImGui.Begin();
+
+            Debug.Menubar.Layout();
 
             spaceball.ImGui();
 
@@ -82,6 +67,8 @@ namespace Tengoku
         public override void OnQuit()
         {
             spaceball.Dispose();
+
+            Raylib.UnloadRenderTexture(_renderTexture);
 
             TrinkitImGui.Shutdown();
             Raylib.CloseAudioDevice();

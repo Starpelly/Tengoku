@@ -14,12 +14,6 @@ namespace Tengoku.Games
 
         Camera3D cam;
 
-        RenderTexture renderTexture;
-
-        private float virtualRatio = 1;
-        private int _screenWidth = 280;
-        private int _screenHeight = 160;
-
         private Texture spaceballPlayerSheet0;
         private Texture spaceballPlayerSheet1;
         private Texture spaceballPlayerSheet2;
@@ -27,8 +21,6 @@ namespace Tengoku.Games
 
         private Texture spaceballProps;
         private Texture spaceballRoom;
-
-        public Vector2 texturePos;
 
         public Spaceball()
         {
@@ -48,8 +40,6 @@ namespace Tengoku.Games
 
             cam = new Camera3D();
             cam.projection_ = CameraProjection.CAMERA_PERSPECTIVE;
-
-            renderTexture = Raylib.LoadRenderTexture(_screenWidth, _screenHeight);
         }
 
         public void Update()
@@ -74,68 +64,58 @@ namespace Tengoku.Games
 
         public void Draw()
         {
-            Raylib.BeginTextureMode(renderTexture);
             Raylib.ClearBackground(new Trinkit.Color("000073"));
             Raylib.BeginMode3D(cam);
 
             // Room
-            Sprite.DrawSprite(spaceballRoom, new Vector3(0.0f, 0.58f), 0.0f, Trinkit.Color.white, new Rectangle(), 90f);
+            Sprite.DrawSprite(spaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Trinkit.Color.white, new Rectangle(), 90f);
 
             // Dispenser
-            Sprite.DrawSprite(spaceballProps, new Vector3(-0.55f, -0.49f), 0.0f, Trinkit.Color.white,
+            Sprite.DrawSprite(spaceballProps, new Vector3(-0.55f, -0.53f), 0.0f, Trinkit.Color.white,
                 new Rectangle(0, 32, 32, 32), 90f);
 
             // Umpire
-            Sprite.DrawSprite(spaceballProps, new Vector3(0.0f, -0.07f), 0.0f, Trinkit.Color.white,
+            Sprite.DrawSprite(spaceballProps, new Vector3(0.0f, -0.11f), 0.0f, Trinkit.Color.white,
                 new Rectangle(32, 0, 32, 32), 90f);
 
             // Player Shadow
-            Sprite.DrawSprite(spaceballProps, new Vector3(0.64f, -0.56f), 0.0f, Trinkit.Color.white,
+            Sprite.DrawSprite(spaceballProps, new Vector3(0.64f, -0.61f), 0.0f, Trinkit.Color.white,
                 new Rectangle(0, 128, 32, 32), 90f);
 
+            // Player
             var playerFrame = 0;
+            var playerYPos = -0.045f;
 
-            Sprite.DrawSprite(spaceballPlayerSheet0, new Vector3(0.54f, 0.0f), 0.0f, Trinkit.Color.white, 
+            Sprite.DrawSprite(spaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white, 
                 new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(spaceballPlayerSheet1, new Vector3(0.54f, 0.0f), 0.0f, new Trinkit.Color("63e600"),
+            Sprite.DrawSprite(spaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, new Trinkit.Color("63e600"),
                 new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(spaceballPlayerSheet2, new Vector3(0.54f, 0.0f), 0.0f, Trinkit.Color.black,
+            Sprite.DrawSprite(spaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.black,
                 new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(spaceballPlayerSheet3, new Vector3(0.54f, 0.0f), 0.0f, Trinkit.Color.white,
+            Sprite.DrawSprite(spaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white,
                 new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
 
             Raylib.EndMode3D();
+        }
 
-            Raylib.EndTextureMode();
-
-            Raylib.ClearBackground(Raylib.BLACK);
-
-            Raylib.DrawTexturePro(
-                renderTexture.texture,
-                    new Rectangle(0, 0, (float)renderTexture.texture.width, (float)-renderTexture.texture.height),
-		            new Rectangle(0, 19, Raylib.GetScreenWidth(), Raylib.GetScreenHeight()),
-		            new System.Numerics.Vector2(0.0f, 0.0f),
-		            0.0f,
-		            Raylib.WHITE
-	            );
-
+        public void DrawGUI()
+        {
             /*Raylib.DrawTexturePro(
                 refTex,
                     new Rectangle(0, 0, 280, 160),
-                    new Rectangle(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight()),
+                    new Rectangle(0, 19, Raylib.GetScreenWidth(), Raylib.GetScreenHeight() - 19),
                     new System.Numerics.Vector2(0.0f, 0.0f),
                     0.0f,
                     new Trinkit.Color(1, 1, 1, 0.5f)
                 );*/
+            Raylib.DrawFPS(10, 29);
+            Raylib.DrawCircle((int)Raylib.GetMousePosition().X, (int)Raylib.GetMousePosition().Y, 10, Trinkit.Color.red);
         }
 
         public void ImGui()
         {
             if (ImGuiNET.ImGui.Begin("Spaceball Debug"))
             {
-                var tp = texturePos.ToNumerics();
-                ImGuiNET.ImGui.DragFloat2("region", ref tp);
-                texturePos = new Vector2(tp.X, tp.Y);
                 ImGuiNET.ImGui.End();
             }
         }
@@ -147,8 +127,11 @@ namespace Tengoku.Games
             Raylib.UnloadTexture(refTex);
 
             Raylib.UnloadTexture(spaceballPlayerSheet0);
-
-            Raylib.UnloadRenderTexture(renderTexture);
+            Raylib.UnloadTexture(spaceballPlayerSheet1);
+            Raylib.UnloadTexture(spaceballPlayerSheet2);
+            Raylib.UnloadTexture(spaceballPlayerSheet3);
+            Raylib.UnloadTexture(spaceballProps);
+            Raylib.UnloadTexture(spaceballRoom);
         }
     }
 }
