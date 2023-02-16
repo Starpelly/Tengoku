@@ -74,6 +74,8 @@ namespace Tengoku
                 ImGui.EndMainMenuBar();
             }
 
+            spaceball.ImGui();
+
             TrinkitImGui.End();
         }
 

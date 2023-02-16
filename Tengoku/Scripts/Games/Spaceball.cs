@@ -28,6 +28,8 @@ namespace Tengoku.Games
         private Texture spaceballProps;
         private Texture spaceballRoom;
 
+        public Vector2 texturePos;
+
         public Spaceball()
         {
             refTex = Raylib.LoadTexture("resources/sprites/games/spaceball/refff.png");
@@ -76,27 +78,31 @@ namespace Tengoku.Games
             Raylib.ClearBackground(new Trinkit.Color("000073"));
             Raylib.BeginMode3D(cam);
 
-            var multConst = 1.2f;
-            var multSize = new Vector2(2.825f, 2.825f);
+            // Room
+            Sprite.DrawSprite(spaceballRoom, new Vector3(0.0f, 0.58f), 0.0f, Trinkit.Color.white, new Rectangle(), 90f);
 
-            // Sprite.DrawSprite(spaceballRoom, new Rectangle(0, 0, spaceballRoom.width, spaceballRoom.height), new Vector3(0.0f, 0.48f), Vector2.one, 0.0f, Trinkit.Color.white);
+            // Dispenser
+            Sprite.DrawSprite(spaceballProps, new Vector3(-0.55f, -0.49f), 0.0f, Trinkit.Color.white,
+                new Rectangle(0, 32, 32, 32), 90f);
 
-            Sprite.DrawSprite(spaceballRoom, new Vector3(0.0f, 0.58f), 0f, Trinkit.Color.white, 90f);
+            // Umpire
+            Sprite.DrawSprite(spaceballProps, new Vector3(0.0f, -0.07f), 0.0f, Trinkit.Color.white,
+                new Rectangle(32, 0, 32, 32), 90f);
 
-            // Sprite.DrawSprite(cam, spaceballRoom, new Rectangle(0, 0, spaceballRoom.width, spaceballRoom.height), new Vector3(0.0f, 0.48f), Vector2.one, Trinkit.Color.white);
-            /*Sprite.DrawSprite(spaceballProps, new Rectangle(32*2, 0, 32, 32), new Vector3(0.0f, 0.0f), Vector2.one, 0.0f, Trinkit.Color.white);
-
-            // Sprite.DrawSprite(refTex, new Rectangle(0, 0, refTex.width, refTex.height), new Vector3(), Vector2.one, 0.0f, Trinkit.Color.white);
-            
             // Player Shadow
-            Sprite.DrawSprite(spaceballProps, new Rectangle(32*0, 32*4, 32, 32), new Vector3(-0.58f, -0.55f), Vector2.one, 0.0f, Trinkit.Color.white);
+            Sprite.DrawSprite(spaceballProps, new Vector3(0.64f, -0.56f), 0.0f, Trinkit.Color.white,
+                new Rectangle(0, 128, 32, 32), 90f);
 
-            // Player body
-            Sprite.DrawSprite(spaceballPlayerSheet0, new Rectangle(0, 0, spaceballPlayerSheet0.width/5, spaceballPlayerSheet0.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, Trinkit.Color.white);
-            Sprite.DrawSprite(spaceballPlayerSheet1, new Rectangle(0, 0, spaceballPlayerSheet1.width/5, spaceballPlayerSheet1.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, new Trinkit.Color("63e600"));
-            Sprite.DrawSprite(spaceballPlayerSheet2, new Rectangle(0, 0, spaceballPlayerSheet2.width/5, spaceballPlayerSheet2.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, Trinkit.Color.black);
-            Sprite.DrawSprite(spaceballPlayerSheet3, new Rectangle(0, 0, spaceballPlayerSheet3.width/5, spaceballPlayerSheet3.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, Trinkit.Color.white);*/
+            var playerFrame = 0;
 
+            Sprite.DrawSprite(spaceballPlayerSheet0, new Vector3(0.54f, 0.0f), 0.0f, Trinkit.Color.white, 
+                new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+            Sprite.DrawSprite(spaceballPlayerSheet1, new Vector3(0.54f, 0.0f), 0.0f, new Trinkit.Color("63e600"),
+                new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+            Sprite.DrawSprite(spaceballPlayerSheet2, new Vector3(0.54f, 0.0f), 0.0f, Trinkit.Color.black,
+                new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+            Sprite.DrawSprite(spaceballPlayerSheet3, new Vector3(0.54f, 0.0f), 0.0f, Trinkit.Color.white,
+                new Rectangle((spaceballPlayerSheet0.width / 5) * playerFrame, 0, spaceballPlayerSheet0.width / 5, 0.0f), 90f);
 
             Raylib.EndMode3D();
 
@@ -121,6 +127,17 @@ namespace Tengoku.Games
                     0.0f,
                     new Trinkit.Color(1, 1, 1, 0.5f)
                 );*/
+        }
+
+        public void ImGui()
+        {
+            if (ImGuiNET.ImGui.Begin("Spaceball Debug"))
+            {
+                var tp = texturePos.ToNumerics();
+                ImGuiNET.ImGui.DragFloat2("region", ref tp);
+                texturePos = new Vector2(tp.X, tp.Y);
+                ImGuiNET.ImGui.End();
+            }
         }
 
         public void Dispose()
