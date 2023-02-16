@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Tickflow.Tokens;
+﻿using Tickflow.Tokens;
 
 namespace Tickflow
 {
@@ -7,12 +6,12 @@ namespace Tickflow
     {
         public TickflowLox tickflowLox;
 
-        private readonly string source;
-        private readonly List<Token> tokens = new List<Token>();
-        private int start = 0;
-        private int current = 0;
-        private int line = 1;
-        private readonly Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>
+        private readonly string _source;
+        private readonly List<Token> _tokens = new List<Token>();
+        private int _start = 0;
+        private int _current = 0;
+        private int _line = 1;
+        private readonly Dictionary<string, TokenType> _keywords = new Dictionary<string, TokenType>
         {
             ["using"]   = TokenType.USING,
             ["start"]   = TokenType.START,
@@ -32,9 +31,9 @@ namespace Tickflow
             ["log"]     = TokenType.LOG,
         };
 
-        public Scanner(string source, TickflowLox tickflowLox)
+        public Scanner(string _source, TickflowLox tickflowLox)
         {
-            this.source = source;
+            this._source = _source;
             this.tickflowLox = tickflowLox;
         }
 
@@ -42,12 +41,12 @@ namespace Tickflow
         {
             while (!IsAtEnd())
             {
-                start = current;
+                _start = _current;
                 ScanToken();
             }
 
-            tokens.Add(new Token(TokenType.EOF, "", null, line));
-            return tokens;
+            _tokens.Add(new Token(TokenType.EOF, "", null, _line));
+            return _tokens;
         }
 
         private void ScanToken()
@@ -98,7 +97,7 @@ namespace Tickflow
                 case '\t':
                     break;
                 case '\n':
-                    line++;
+                    _line++;
                     break;
                 case '"': LiteralString(); break;
 
@@ -113,7 +112,7 @@ namespace Tickflow
                     }
                     else
                     {
-                        tickflowLox.Error(line, "Unexpected character.");
+                        tickflowLox.Error(_line, "Unexpected character.");
                     }
                     break;
             }
@@ -125,7 +124,7 @@ namespace Tickflow
         /// <returns></returns>
         private char Advance()
         {
-            return source[current++];
+            return _source[_current++];
         }
 
         /// <summary>
@@ -134,16 +133,16 @@ namespace Tickflow
         private char Peak()
         {
             if (IsAtEnd()) return '\0';
-            return source[current];
+            return _source[_current];
         }
 
         /// <summary>
-        /// Looks two characters ahead of the current character.
+        /// Looks two characters ahead of the _current character.
         /// </summary>
         private char PeakNext()
         {
-            if (current + 1 >= source.Length) return '\0';
-            return source[current + 1];
+            if (_current + 1 >= _source.Length) return '\0';
+            return _source[_current + 1];
         }
 
         /// <summary>
@@ -153,8 +152,8 @@ namespace Tickflow
         private bool Match(char expected)
         {
             if (IsAtEnd()) return false;
-            if (source[current] != expected) return false;
-            current++;
+            if (_source[_current] != expected) return false;
+            _current++;
             return true;
         }
 
@@ -166,16 +165,16 @@ namespace Tickflow
 
         private void AddToken(TokenType type, object literal)
         {
-            var text = source.Substring(start, current - start);
-            tokens.Add(new Token(type, text, literal, line));
+            var text = _source.Substring(_start, _current - _start);
+            _tokens.Add(new Token(type, text, literal, _line));
         }
 
         private void Identifier()
         {
             while (IsAlphaNumeric(Peak())) Advance();
-            var keyword = source.Substring(start, current - start);
+            var keyword = _source.Substring(_start, _current - _start);
             TokenType type;
-            var exists = keywords.TryGetValue(keyword, out type);
+            var exists = _keywords.TryGetValue(keyword, out type);
             if (!exists) type = TokenType.IDENTIFIER;
             AddToken(type);
         }
@@ -213,20 +212,20 @@ namespace Tickflow
         {
             while (Peak() != '"' && !IsAtEnd())
             {
-                if (Peak() == '\n') line++;
+                if (Peak() == '\n') _line++;
                 Advance();
             }
 
             if (IsAtEnd())
             {
-                tickflowLox.Error(line, "Unterminated string.");
+                tickflowLox.Error(_line, "Unterminated string.");
                 return;
             }
 
             // Incase we find the second "
             Advance();
 
-            var value = source.Substring(start + 1, current - start - 2);
+            var value = _source.Substring(_start + 1, _current - _start - 2);
             AddToken(TokenType.STRING, value);
         }
 
@@ -241,8 +240,8 @@ namespace Tickflow
                 while (IsDigit(Peak())) Advance();
             }
 
-            var negative = source[start - 1] == '-';
-            var num = double.Parse(source.Substring(start, current - start));
+            var negative = _source[_start - 1] == '-';
+            var num = double.Parse(_source.Substring(_start, _current - _start));
             if (negative) num = -num;
 
             AddToken(TokenType.NUMBER, num);
@@ -250,7 +249,7 @@ namespace Tickflow
 
         private bool IsAtEnd()
         {
-            return current >= source.Length;
+            return _current >= _source.Length;
         }
     }
 }

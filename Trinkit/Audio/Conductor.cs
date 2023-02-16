@@ -46,5 +46,13 @@
                 SongPositionInBeats = Time / SecPerBeat;
             }
         }
+
+        /// <summary>
+        /// Get the normalized position from a beat to length. (For example on Beat 3 between a startBeat of 2 and a length of 2, the position will be 0.5)
+        /// </summary>
+        public float GetPositionFromBeat(float startBeat, float length)
+        {
+            return Mathf.Normalize(SongPositionInBeats, startBeat, startBeat + length);
+        }
     }
 }

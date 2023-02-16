@@ -4,6 +4,7 @@ using Raylib_CsLo;
 using Tengoku.Games;
 
 using ImGuiNET;
+using Tengoku.Games.Spaceball;
 
 namespace Tengoku
 {

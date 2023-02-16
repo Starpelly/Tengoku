@@ -1,5 +1,6 @@
 ﻿using System;
 using Tengoku.Games;
+using Tengoku.Games.Spaceball;
 using Tickflow;
 using Trinkit;
 using Trinkit.Audio;
@@ -35,12 +36,12 @@ namespace Tengoku
             if (Instance == null)
                 Instance = this;
 
-            TickflowLox.Run(File.ReadAllText("Resources/levels/spaceball.tkf"));
+            TickflowLox.Run(File.ReadAllText("Resources/levels/remix1.tkf"));
             commands.GameManager = this;
 
             Conductor = new Conductor();
-            Conductor.InitialTempo = 104.275f;
-            Conductor.Clip = Resources.Load<AudioClip>("audio/music/spaceball.wav");
+            Conductor.InitialTempo = 119f;
+            Conductor.Clip = Resources.Load<AudioClip>("audio/music/remix1.ogg");
             Conductor.Play();
         }
 

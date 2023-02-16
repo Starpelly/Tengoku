@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Folder Include="Libs\" />
+    <Folder Include="BezierCurves\" />
   </ItemGroup>
 
 </Project>
