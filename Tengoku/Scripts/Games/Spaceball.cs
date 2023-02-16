@@ -59,7 +59,7 @@ namespace Tengoku.Games.Spaceball
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
-            _camPosZ = Mathf.Lerp(10.0f, 50.0f, Mathf.Normalize(GameManager.Instance.Conductor.SongPositionInBeats, 0, 4));
+            _camPosZ = Mathf.Lerp(10.0f, 250.0f, Mathf.Normalize(GameManager.Instance.Conductor.SongPositionInBeats, 0, 32));
             
             if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
                 _cam.position += new System.Numerics.Vector3(5, 0, 0) * Raylib.GetFrameTime();

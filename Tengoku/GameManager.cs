@@ -36,12 +36,12 @@ namespace Tengoku
             if (Instance == null)
                 Instance = this;
 
-            TickflowLox.Run(File.ReadAllText("Resources/levels/remix1.tkf"));
+            TickflowLox.Run(File.ReadAllText("Resources/levels/spaceball.tkf"));
             commands.GameManager = this;
 
             Conductor = new Conductor();
-            Conductor.InitialTempo = 119f;
-            Conductor.Clip = Resources.Load<AudioClip>("audio/music/remix1.ogg");
+            Conductor.InitialTempo = 104.275f;
+            Conductor.Clip = Resources.Load<AudioClip>("audio/music/spaceball.wav");
             Conductor.Play();
         }
 
