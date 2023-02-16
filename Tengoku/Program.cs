@@ -4,7 +4,8 @@
     {
         static void Main(string[] args)
         {
-            using (var rhythmTengoku = new Game("Rhythm Tengoku", 1280, 720))
+            // account window height for menubar
+            using (var rhythmTengoku = new Game("Rhythm Tengoku", 1280, 720 + 19))
             {
                 rhythmTengoku.Run();
             }

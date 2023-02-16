@@ -76,9 +76,15 @@ namespace Tengoku.Games
             Raylib.ClearBackground(new Trinkit.Color("000073"));
             Raylib.BeginMode3D(cam);
 
+            var multConst = 1.2f;
+            var multSize = new Vector2(2.825f, 2.825f);
 
-            Sprite.DrawSprite(spaceballRoom, new Rectangle(0, 0, spaceballRoom.width, spaceballRoom.height), new Vector3(0.0f, 0.48f), Vector2.one, 0.0f, Trinkit.Color.white);
-            Sprite.DrawSprite(spaceballProps, new Rectangle(32*2, 0, 32, 32), new Vector3(0.0f, 0.0f), Vector2.one, 0.0f, Trinkit.Color.white);
+            // Sprite.DrawSprite(spaceballRoom, new Rectangle(0, 0, spaceballRoom.width, spaceballRoom.height), new Vector3(0.0f, 0.48f), Vector2.one, 0.0f, Trinkit.Color.white);
+
+            Sprite.DrawSprite(spaceballRoom, new Vector3(0.0f, 0.58f), 0f, Trinkit.Color.white, 90f);
+
+            // Sprite.DrawSprite(cam, spaceballRoom, new Rectangle(0, 0, spaceballRoom.width, spaceballRoom.height), new Vector3(0.0f, 0.48f), Vector2.one, Trinkit.Color.white);
+            /*Sprite.DrawSprite(spaceballProps, new Rectangle(32*2, 0, 32, 32), new Vector3(0.0f, 0.0f), Vector2.one, 0.0f, Trinkit.Color.white);
 
             // Sprite.DrawSprite(refTex, new Rectangle(0, 0, refTex.width, refTex.height), new Vector3(), Vector2.one, 0.0f, Trinkit.Color.white);
             
@@ -89,10 +95,11 @@ namespace Tengoku.Games
             Sprite.DrawSprite(spaceballPlayerSheet0, new Rectangle(0, 0, spaceballPlayerSheet0.width/5, spaceballPlayerSheet0.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, Trinkit.Color.white);
             Sprite.DrawSprite(spaceballPlayerSheet1, new Rectangle(0, 0, spaceballPlayerSheet1.width/5, spaceballPlayerSheet1.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, new Trinkit.Color("63e600"));
             Sprite.DrawSprite(spaceballPlayerSheet2, new Rectangle(0, 0, spaceballPlayerSheet2.width/5, spaceballPlayerSheet2.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, Trinkit.Color.black);
-            Sprite.DrawSprite(spaceballPlayerSheet3, new Rectangle(0, 0, spaceballPlayerSheet3.width/5, spaceballPlayerSheet3.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, Trinkit.Color.white);
-            
+            Sprite.DrawSprite(spaceballPlayerSheet3, new Rectangle(0, 0, spaceballPlayerSheet3.width/5, spaceballPlayerSheet3.height), new Vector3(-0.48f, -0.04f), Vector2.one, 0.0f, Trinkit.Color.white);*/
+
 
             Raylib.EndMode3D();
+
             Raylib.EndTextureMode();
 
             Raylib.ClearBackground(Raylib.BLACK);
@@ -100,7 +107,7 @@ namespace Tengoku.Games
             Raylib.DrawTexturePro(
                 renderTexture.texture,
                     new Rectangle(0, 0, (float)renderTexture.texture.width, (float)-renderTexture.texture.height),
-		            new Rectangle(0, 0, Raylib.GetScreenWidth(), Raylib.GetScreenHeight()),
+		            new Rectangle(0, 19, Raylib.GetScreenWidth(), Raylib.GetScreenHeight()),
 		            new System.Numerics.Vector2(0.0f, 0.0f),
 		            0.0f,
 		            Raylib.WHITE
