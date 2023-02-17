@@ -6,8 +6,8 @@ rest 0;
 
 // Intro Zoom
 
-call spaceball.zoom(-30.0, 0.0);
-call spaceball.zoom(-80.0, 4.0), rest 4;
+call spaceball.zoom(30.0, 0.0);
+call spaceball.zoom(80.0, 4.0), rest 4;
 
 // Intro
 
@@ -24,11 +24,11 @@ call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-180.0, 4.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(180.0, 4.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-80.0, 0.5), rest 2;
+call spaceball.zoom(80.0, 0.5), rest 2;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 
@@ -40,7 +40,7 @@ call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-200.0, 4.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(200.0, 4.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
@@ -50,7 +50,7 @@ call spaceball.ball(true), rest 3;
 
 call spaceball.prepare(), rest 1;
 
-call spaceball.zoom(-80.0, 4.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(80.0, 4.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
@@ -62,25 +62,25 @@ call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-200.0, 1.0), call spaceball.ball(true), rest 3;
+call spaceball.zoom(200.0, 1.0), call spaceball.ball(true), rest 3;
 call spaceball.prepare(), rest 1;
 
-call spaceball.zoom(-80.0, 4.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(80.0, 4.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-200.0, 1.0), call spaceball.ball(true), rest 3;
+call spaceball.zoom(200.0, 1.0), call spaceball.ball(true), rest 3;
 
-call spaceball.prepare(), call spaceball.zoom(-80.0, 1.0), rest 1;
+call spaceball.prepare(), call spaceball.zoom(80.0, 1.0), rest 1;
 
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-200.0, 1.0), call spaceball.ball(true), rest 3;
+call spaceball.zoom(200.0, 1.0), call spaceball.ball(true), rest 3;
 call spaceball.prepare(), rest 1;
 
-call spaceball.zoom(-80.0, 4.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(80.0, 4.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
@@ -91,30 +91,30 @@ call spaceball.prepare(), rest 1;
 
 // Zoom fake-out
 
-call spaceball.zoom(-60.0, 1.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(60.0, 1.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), call spaceball.umpireShow(), rest 1;
-call spaceball.zoom(-38.0, 1.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(38.0, 1.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), call spaceball.umpireShow(), rest 1;
-call spaceball.zoom(-200.0, 1.0), call spaceball.umpireIdle(), call spaceball.ball(true), rest 1;
+call spaceball.zoom(200.0, 1.0), call spaceball.umpireIdle(), call spaceball.ball(true), rest 1;
 call spaceball.prepare(), rest 1;
 
-call spaceball.zoom(-80.0, 2.0), rest 2;
+call spaceball.zoom(80.0, 2.0), rest 2;
 
 // Zoom in on Umpire
 
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-60.0, 1.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(60.0, 1.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), call spaceball.umpireShow(), rest 1;
-call spaceball.zoom(-40.0, 1.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(40.0, 1.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-20.0, 1.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(20.0, 1.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), call spaceball.umpireIdle(), call spaceball.costume(1, "ffceff", "b500d6", "ff21ad"), rest 1;
-call spaceball.zoom(-80.0, 1.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(80.0, 1.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-1480.0, 4.0), call spaceball.ball(true), rest 3;
+call spaceball.zoom(1480.0, 4.0), call spaceball.ball(true), rest 3;
 call spaceball.prepare(), rest 1;
 
 // Far out
@@ -136,7 +136,7 @@ call spaceball.prepare(), rest 1;
 
 // Zoom back in
 
-call spaceball.zoom(-80.0, 8.0), call spaceball.ball(false), rest 1;
+call spaceball.zoom(80.0, 8.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
@@ -148,17 +148,17 @@ call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(-200.0, 1.0), call spaceball.ball(true), rest 4;
+call spaceball.zoom(200.0, 1.0), call spaceball.ball(true), rest 4;
 
 // Zoom on music
 
-call spaceball.zoom(-170.0, 0.5), rest 1;
-call spaceball.zoom(-140.0, 0.5), rest 1;
-call spaceball.zoom(-100.0, 0.5), rest 1;
-call spaceball.prepare(), call spaceball.zoom(-80.0, 0.5), rest 1;
+call spaceball.zoom(170.0, 0.5), rest 1;
+call spaceball.zoom(140.0, 0.5), rest 1;
+call spaceball.zoom(100.0, 0.5), rest 1;
+call spaceball.prepare(), call spaceball.zoom(80.0, 0.5), rest 1;
 
 // Riceball
 
-call spaceball.zoom(-2820.0, 6.0), call spaceball.riceball(true), rest 6;
+call spaceball.zoom(2820.0, 6.0), call spaceball.riceball(true), rest 6;
 
 end;

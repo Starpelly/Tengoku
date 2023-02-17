@@ -30,6 +30,12 @@ namespace Tengoku.Games.Spaceball
 
         public List<Ball> Balls = new();
 
+        public bool ZoomingEnabled = false;
+        public float CameraZoomBeat = -4;
+        public float CameraZoomLength = 0;
+        public float CameraZoomZoom = 0;
+        public float LastZoom = -80f;
+
         public Spaceball()
         {
             refTex = Raylib.LoadTexture("resources/sprites/games/spaceball/refff.png");
@@ -59,7 +65,8 @@ namespace Tengoku.Games.Spaceball
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
-            _camPosZ = Mathf.Lerp(10.0f, 250.0f, Mathf.Normalize(GameManager.Instance.Conductor.SongPositionInBeats, 0, 32));
+            if (ZoomingEnabled)
+            _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, GameManager.Instance.Conductor.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
             
             if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
                 _cam.position += new System.Numerics.Vector3(5, 0, 0) * Raylib.GetFrameTime();
@@ -187,7 +194,6 @@ namespace Tengoku.Games.Spaceball
 
         public void Ball(float beat, bool high)
         {
-            Console.WriteLine(beat + ", " + high);
             Raylib.PlaySound((high) ? ShootHighSound : ShootSound);
 
             var newBall = new Ball();
@@ -195,6 +201,16 @@ namespace Tengoku.Games.Spaceball
             newBall.StartBeat = beat;
             newBall.High = high;
             Balls.Add(newBall);
+        }
+
+        public void Zoom(float beat, float zoom, float length)
+        {
+            LastZoom = _camPosZ;
+
+            ZoomingEnabled = true;
+            CameraZoomBeat = beat;
+            CameraZoomLength = length;
+            CameraZoomZoom = zoom / 8.0f;
         }
     }
 }

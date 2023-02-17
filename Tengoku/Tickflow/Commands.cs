@@ -60,6 +60,8 @@ namespace Tickflow
             // Debug.Log(engine + "  :  " + function);
             if (function == "ball")
                 GameManager.Spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0]);
+            else if (function == "zoom")
+                GameManager.Spaceball.Zoom(GameManager.CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
             /*else if (function == "riceball")
                 GameManager.Spaceball.Riceball(GameManager.CommandBeat, (bool)parameters[0]);
             else if (function == "prepare")
@@ -69,9 +71,7 @@ namespace Tickflow
             else if (function == "umpireIdle")
                 GameManager.Spaceball.Umpire(false);
             else if (function == "costume")
-                GameManager.Spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);   
-            else if (function == "zoom")
-                GameManager.Spaceball.Zoom(GameManager.CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]); */
+                GameManager.Spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);    */
         }
 
         public void EOF(ref bool inCommandList)
