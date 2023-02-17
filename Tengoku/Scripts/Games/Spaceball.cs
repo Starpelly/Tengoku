@@ -66,18 +66,9 @@ namespace Tengoku.Games.Spaceball
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
             if (ZoomingEnabled)
-            _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, GameManager.Instance.Conductor.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
-            
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
-                _cam.position += new System.Numerics.Vector3(5, 0, 0) * Raylib.GetFrameTime();
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
-                _cam.position += new System.Numerics.Vector3(-5, 0, 0) * Raylib.GetFrameTime();
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
-                _cam.position += new System.Numerics.Vector3(0, 5, 0) * Raylib.GetFrameTime();
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
-                _cam.position += new System.Numerics.Vector3(0, -5, 0) * Raylib.GetFrameTime();
+                _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, GameManager.Instance.Conductor.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (PlayerInput.GetPlayerDown())
             {
                 _playerAnim.Play();
             }
@@ -142,6 +133,7 @@ namespace Tengoku.Games.Spaceball
 
             _textAdd = 0;
 
+#if DEBUG
             DebugText($"Rhythm Tengoku '{Environment.UserName}' Debug");
             DebugSeparator();
             DebugText($"FPS: {Raylib.GetFPS()}");
@@ -155,8 +147,7 @@ namespace Tengoku.Games.Spaceball
             DebugText($"SongPos: {GameManager.Instance.Conductor.SongPosition}");
             DebugText($"SongPosBeat: {GameManager.Instance.Conductor.SongPositionInBeats}");
             DebugSeparator();
-
-            Raylib.DrawCircle((int)Raylib.GetMousePosition().X, (int)Raylib.GetMousePosition().Y, 30, Trinkit.Color.black.ChangeAlpha(0.25f));
+#endif
         }
 
         private int _textAdd;

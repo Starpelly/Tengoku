@@ -40,7 +40,7 @@ namespace Tengoku.Games.Spaceball
                     var addPosY = (High) ? 2.5f : 1.35f;
                     var ballRot = normalizedPitchAnim * 440f;
 
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    if (PlayerInput.GetPlayerDown())
                     {
                         _hitBeat = GameManager.Instance.Conductor.SongPositionInBeats;
                         _hit = true;

@@ -16,7 +16,7 @@ namespace Trinkit
         {
             Name = title;
 
-            Raylib.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT | ConfigFlags.FLAG_WINDOW_ALWAYS_RUN);
+            // Raylib.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT | ConfigFlags.FLAG_WINDOW_ALWAYS_RUN);
             Raylib.SetTraceLogLevel((int)rlTraceLogLevel.RL_LOG_ERROR);
             Raylib.InitWindow(width, height, Name);
 
