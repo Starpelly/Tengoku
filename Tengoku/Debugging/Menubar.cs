@@ -1,6 +1,6 @@
 ﻿using ImGuiNET;
 
-namespace Tengoku.Debug
+namespace Tengoku.Debugging
 {
     public class Menubar
     {

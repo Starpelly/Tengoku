@@ -7,19 +7,19 @@ namespace Tengoku
         public static bool GetPlayer()
         {
             return Input.GetKey(KeyCode.Space) ||
-                Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.X) || Input.GetMouseButton(0);
+                Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.X);
         }
 
         public static bool GetPlayerDown()
         {
             return Input.GetKeyDown(KeyCode.Space) ||
-                Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X) || Input.GetMouseButtonDown(0);
+                Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X);
         }
 
         public static bool GetPlayerUp()
         {
             return Input.GetKeyUp(KeyCode.Space) ||
-                Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.X) || Input.GetMouseButtonUp(0);
+                Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.X);
         }
     }
 }

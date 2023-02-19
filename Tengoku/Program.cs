@@ -7,7 +7,7 @@
             // account window height for menubar
 
 #if DEBUG
-            using (var rhythmTengoku = new Game("Rhythm Tengoku (DEBUG)", 1280, 720 + 19))
+            using (var rhythmTengoku = new Game("Rhythm Tengoku (DEBUG)", 1280, 720 + 19, true))
             {
                 rhythmTengoku.Run();
             }

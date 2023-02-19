@@ -24,7 +24,7 @@ namespace Tengoku.Games.Spaceball
         public Texture TexSpaceballProps;
         private Texture _spaceballRoom;
 
-        private Animation _playerAnim;
+        private Animator _playerAnim;
 
         private float _camPosZ = 10.0f;
 
@@ -55,7 +55,7 @@ namespace Tengoku.Games.Spaceball
             _cam = new Camera3D();
             _cam.projection_ = CameraProjection.CAMERA_PERSPECTIVE;
 
-            _playerAnim = new Animation(5, 20);
+            _playerAnim = new Animator();
         }
 
         public void Update()
@@ -70,7 +70,7 @@ namespace Tengoku.Games.Spaceball
 
             if (PlayerInput.GetPlayerDown())
             {
-                _playerAnim.Play();
+                // _playerAnim.Play();
             }
         }
 

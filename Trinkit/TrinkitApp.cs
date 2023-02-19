@@ -12,11 +12,13 @@ namespace Trinkit
 
         private Image _icon;
 
-        public TrinkitApp(string title, int width, int height)
+        public TrinkitApp(string title, int width, int height, bool resizable = false)
         {
             Name = title;
+            ConfigFlags flags = ConfigFlags.FLAG_WINDOW_ALWAYS_RUN;
+            if (resizable) flags |= ConfigFlags.FLAG_WINDOW_RESIZABLE;
 
-            // Raylib.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT | ConfigFlags.FLAG_WINDOW_ALWAYS_RUN);
+            Raylib.SetConfigFlags(flags);
             Raylib.SetTraceLogLevel((int)rlTraceLogLevel.RL_LOG_ERROR);
             Raylib.InitWindow(width, height, Name);
 
