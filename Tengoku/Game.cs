@@ -92,7 +92,7 @@ namespace Tengoku
 
             GameView.Gui();
             Menubar.Layout();
-            AnimationEditor.Gui();
+            // AnimationEditor.Gui();
             ConsoleView.Gui();
 
             TrinkitImGui.End();
