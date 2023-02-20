@@ -16,7 +16,7 @@ namespace Tengoku.Games.Spaceball
 
         Camera3D _cam;
 
-        private Texture _spaceballPlayerSheet0;
+        public Texture SpaceballPlayerSheet0;
         private Texture _spaceballPlayerSheet1;
         private Texture _spaceballPlayerSheet2;
         private Texture _spaceballPlayerSheet3;
@@ -40,7 +40,7 @@ namespace Tengoku.Games.Spaceball
         {
             refTex = Raylib.LoadTexture("resources/sprites/games/spaceball/refff.png");
 
-            _spaceballPlayerSheet0 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_0.png");
+            SpaceballPlayerSheet0 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_0.png");
             _spaceballPlayerSheet1 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_1.png");
             _spaceballPlayerSheet2 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_2.png");
             _spaceballPlayerSheet3 = Raylib.LoadTexture("resources/sprites/games/spaceball/spaceball_player_sheet_3.png");
@@ -102,14 +102,14 @@ namespace Tengoku.Games.Spaceball
             var _playerFrame = _playerAnim.Frame;
 
 
-            Sprite.DrawSprite(_spaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white, 
-                new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+            Sprite.DrawSprite(SpaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white, 
+                new Rectangle((SpaceballPlayerSheet0.width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.width / 5, 0.0f), 90f);
             Sprite.DrawSprite(_spaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, new Trinkit.Color("63e600"),
-                new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+                new Rectangle((SpaceballPlayerSheet0.width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.width / 5, 0.0f), 90f);
             Sprite.DrawSprite(_spaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.black,
-                new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+                new Rectangle((SpaceballPlayerSheet0.width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.width / 5, 0.0f), 90f);
             Sprite.DrawSprite(_spaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Trinkit.Color.white,
-                new Rectangle((_spaceballPlayerSheet0.width / 5) * _playerFrame, 0, _spaceballPlayerSheet0.width / 5, 0.0f), 90f);
+                new Rectangle((SpaceballPlayerSheet0.width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.width / 5, 0.0f), 90f);
 
             // Balls
             for (int i = 0; i < Balls.Count; i++)
@@ -175,7 +175,7 @@ namespace Tengoku.Games.Spaceball
 
             Raylib.UnloadTexture(refTex);
 
-            Raylib.UnloadTexture(_spaceballPlayerSheet0);
+            Raylib.UnloadTexture(SpaceballPlayerSheet0);
             Raylib.UnloadTexture(_spaceballPlayerSheet1);
             Raylib.UnloadTexture(_spaceballPlayerSheet2);
             Raylib.UnloadTexture(_spaceballPlayerSheet3);

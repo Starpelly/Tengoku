@@ -14,7 +14,7 @@ namespace Tengoku
     {
         public static Game? Instance { get; private set; }
 
-        Spaceball spaceball;
+        public Spaceball spaceball;
         GameManager gameManager;
         DSGuy dsGuy;
 

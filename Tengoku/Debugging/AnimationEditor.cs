@@ -5,6 +5,7 @@ namespace Tengoku.Debugging
     public class AnimationEditor
     {
         private static int selected = 0;
+        private static int frame;
 
         public static void Gui()
         {
@@ -29,7 +30,24 @@ namespace Tengoku.Debugging
                 {
                     if (ImGui.BeginChild("item view", new System.Numerics.Vector2(0, -ImGui.GetFrameHeightWithSpacing()), true))
                     {
-                        ImGui.Text("hello");
+                        ImGui.Text("AnimSet Spaceball/PlayerSwing");
+                        ImGui.Separator();
+                        ImGui.Button("<<");
+                        ImGui.SameLine();
+                        ImGui.Button("Play");
+                        ImGui.SameLine();
+                        ImGui.Button(">>");
+                        ImGui.Separator();
+                        
+                        ImGui.SliderInt("Frame##FrameSlider", ref frame, 0, 5, $"{frame}/{5}");
+
+                        var spaceball = Game.Instance!.spaceball;
+                        var frameStartX = (spaceball.SpaceballPlayerSheet0.width / 5) * (frame);
+
+                        ImGui.Image(new IntPtr(spaceball.SpaceballPlayerSheet0.id), new System.Numerics.Vector2(spaceball.SpaceballPlayerSheet0.width / 5, spaceball.SpaceballPlayerSheet0.height),
+                            new System.Numerics.Vector2(frameStartX, 0), 
+                            new System.Numerics.Vector2(Trinkit.Mathf.Normalize(frameStartX - ((spaceball.SpaceballPlayerSheet0.width / 5) * (frame + 1)), 0, spaceball.SpaceballPlayerSheet0.width), 1));
+
                         ImGui.EndChild();
                     }
                     ImGui.SameLine();
