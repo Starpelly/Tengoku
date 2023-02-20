@@ -51,7 +51,7 @@ namespace Tengoku
 
         public override void OnUpdate()
         {
-            gameManager.Update();
+            // gameManager.Update();
             spaceball.Update();
         }
 

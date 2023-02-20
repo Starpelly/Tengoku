@@ -15,16 +15,16 @@ namespace Tengoku.UI
 
         public override void DrawGUI()
         {
-            var pos = Input.mousePosition / (GameWindow.Width / 280.0f);
+            var pos = Input.mousePosition;
+            pos.x /= (GameWindow.Width / 280.0f);
+            pos.y /= (GameWindow.Height / 160.0f);
+
 
             if (PlayerInput.GetPlayer())
-            {
                 _realRadius += Time.deltaTime * _growSpeed;
-            }
             else
-            {
                 _realRadius -= Time.deltaTime * _growSpeed;
-            }
+
             _realRadius = Mathf.Clamp(_realRadius, 0, 16);
 
             if (_realRadius != 0)

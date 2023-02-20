@@ -26,7 +26,7 @@ namespace Tengoku.Discord
 
             _client.Initialize();
 
-            _client.SetPresence(DefaultPresences.PlayingLevel);
+            _client.SetPresence(DefaultPresences.Debugging);
         }
 
         public void Dispose()
