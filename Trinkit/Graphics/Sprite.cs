@@ -56,7 +56,8 @@ namespace Trinkit.Graphics
                     RlGl.rlBegin(RlGl.RL_QUADS);
                     {
                         RlGl.rlColor4f(tint.r, tint.g, tint.b, tint.a);
-                        RlGl.rlNormal3f(0.0f, 0.0f, 1.0f);                          // Normal vector pointing towards viewer
+                        // Normal vector pointing towards viewer
+                        RlGl.rlNormal3f(0.0f, 0.0f, 1.0f);
 
                         // Bottom-left corner for texture and quad
                         if (flipX) RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, sourceRec.y / height);

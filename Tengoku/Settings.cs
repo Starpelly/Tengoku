@@ -6,6 +6,6 @@
         public static float MusicVolume { get; set; }
         public static float SoundVolume { get; set; }
 
-        public static bool DiscordEnabled { get; set; }
+        public static bool DiscordEnabled { get; set; } = true;
     }
 }

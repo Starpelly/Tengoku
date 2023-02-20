@@ -5,38 +5,25 @@
       <TargetFramework>net6.0</TargetFramework>
       <ImplicitUsings>enable</ImplicitUsings>
       <Nullable>enable</Nullable>
-      <ApplicationIcon>Resources/icon.ico</ApplicationIcon>
+      <ApplicationIcon>icon.ico</ApplicationIcon>
+      <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     </PropertyGroup>
 
     <ItemGroup>
+      <Content Include="icon.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tengoku-Resources\Tengoku-Resources.csproj" />
       <ProjectReference Include="..\Trinkit\Trinkit.csproj" />
-    </ItemGroup>
-	
-    <ItemGroup>
-    	<Content Include="Resources\**">
-    		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    	</Content>
-    </ItemGroup>
-    
-    <ItemGroup>
-      <None Remove="Resources\audio\music\remix1.ogg" />
-      <None Remove="Resources\audio\music\spaceball.wav" />
-      <None Remove="Resources\levels\remix1.tkf" />
     </ItemGroup>
     
     <ItemGroup>
       <PackageReference Include="DiscordRichPresence" Version="1.1.3.18" />
       <PackageReference Include="ImGui.NET" Version="1.89.4" />
-    </ItemGroup> 
-    
-    <ItemGroup>
-      <None Update="Resources\icon.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
     
     <ItemGroup>
-      <Folder Include="Localization\" />
       <Folder Include="Tickflow\" />
     </ItemGroup>
 

@@ -89,7 +89,7 @@ namespace Tengoku
 
             Dockspace();
             Menubar.Layout();
-            ConsoleView.Gui();
+            DebugView.Gui();
 
             TrinkitImGui.End();
         }
