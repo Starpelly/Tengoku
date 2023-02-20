@@ -2,12 +2,12 @@
 
 namespace Trinkit.Audio
 {
-    public class AudioSource : Behavior
+    public class AudioSource : Component
     {
         public AudioClip Clip;
 
         public float Time => (float)Clip.GetTime();
-        public float Volume = 0.0f;
+        public float Volume = 1.0f;
 
         public bool IsPlaying { get; set; }
 
@@ -22,7 +22,7 @@ namespace Trinkit.Audio
             Clip.SetVolume(Volume);
         }
 
-        public override void OnDestroy()
+        public override void Dispose()
         {
             Clip.Dispose();
         }

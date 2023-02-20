@@ -3,15 +3,19 @@ using Trinkit;
 
 namespace Tengoku.UI
 {
-    public class DSGuy : Behavior
+    public class DSGuy : Component
     {
         private float _realRadius;
         private float _growSpeed = 140.0f;
         private int _radius => (int)_realRadius;
 
+        public override void Dispose()
+        {
+        }
+
         public override void DrawGUI()
         {
-            var pos = Input.mousePosition / (Raylib.GetScreenWidth() / 280.0f);
+            var pos = Input.mousePosition / (GameWindow.Width / 280.0f);
 
             if (PlayerInput.GetPlayer())
             {

@@ -7,7 +7,7 @@ using Trinkit.Audio;
 
 namespace Tengoku
 {
-    public class GameManager : Behavior
+    public class GameManager : Component
     {
         public static GameManager Instance { get; private set; }
 
@@ -16,8 +16,6 @@ namespace Tengoku
         public TickflowLox TickflowLox = new TickflowLox();
 
         private Commands commands = new Commands();
-
-        public Spaceball Spaceball;
 
         public bool Started = false;
         public bool Ended = false;
@@ -116,9 +114,8 @@ namespace Tengoku
 
         }
 
-        public override void OnDestroy()
+        public override void Dispose()
         {
-            Conductor.OnDestroy();
         }
     }
 }

@@ -59,9 +59,9 @@ namespace Tickflow
 
             // Debug.Log(engine + "  :  " + function);
             if (function == "ball")
-                GameManager.Spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0]);
+                Game.Instance.spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0]);
             else if (function == "zoom")
-                GameManager.Spaceball.Zoom(GameManager.CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
+                Game.Instance.spaceball.Zoom(GameManager.CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
             /*else if (function == "riceball")
                 GameManager.Spaceball.Riceball(GameManager.CommandBeat, (bool)parameters[0]);
             else if (function == "prepare")

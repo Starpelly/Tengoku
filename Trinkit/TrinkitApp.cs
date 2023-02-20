@@ -5,15 +5,21 @@ namespace Trinkit
 {
     public abstract class TrinkitApp : IDisposable
     {
+        public static TrinkitApp Instance { get; private set; }
+
         /// <summary>
         /// The application name.
         /// </summary>
         public string Name = "";
 
+        public List<Component> Components = new List<Component>();
+
         private Image _icon;
 
         public TrinkitApp(string title, int width, int height, bool resizable = false)
         {
+            Instance = this;
+
             Name = title;
             ConfigFlags flags = ConfigFlags.FLAG_WINDOW_ALWAYS_RUN;
             if (resizable) flags |= ConfigFlags.FLAG_WINDOW_RESIZABLE;
@@ -24,9 +30,6 @@ namespace Trinkit
 
             _icon = Raylib.LoadImage("Resources/icon.png");
             Raylib.SetWindowIcon(_icon);
-
-
-            OnLoad();
         }
 
         public void Run()
@@ -42,7 +45,6 @@ namespace Trinkit
             }
         }
 
-        public abstract void OnLoad();
         public abstract void OnUpdate();
         public abstract void OnDraw();
         public abstract void OnQuit();

@@ -15,8 +15,8 @@ namespace Trinkit.Graphics
 
         public static void DrawSprite(Texture texture, Vector3 position, float rotation, Color tint, Rectangle region = default, float pixelsPerUnit = 100.0f)
         {
-            if (region.width == 0) region.width = texture.width;
-            if (region.height == 0) region.height = texture.height;
+            if (region.width == 0) region.width = texture.Width;
+            if (region.height == 0) region.height = texture.Height;
 
             var widthUnit = region.width / pixelsPerUnit;
             var heightUnit = region.height / pixelsPerUnit;
@@ -36,17 +36,17 @@ namespace Trinkit.Graphics
         private static void DrawTexturePro3D(Texture texture, Rectangle sourceRec, Rectangle destRec, Vector3 origin, float rotation, float posZ, Color tint)
         {
             // Check if texture is valid
-            if (texture.id > 0)
+            if (texture.ID > 0)
             {
-                float width = -(float)texture.width;
-                float height = -(float)texture.height;
+                float width = -(float)texture.Width;
+                float height = -(float)texture.Height;
 
                 bool flipX = false;
 
                 if (sourceRec.width < 0) { flipX = true; sourceRec.width *= -1; }
                 if (sourceRec.height < 0) sourceRec.y -= sourceRec.height;
 
-                RlGl.rlSetTexture(texture.id);
+                RlGl.rlSetTexture(texture.ID);
                 RlGl.rlPushMatrix();
                 {
                     RlGl.rlTranslatef(destRec.x, destRec.y, 0.0f);

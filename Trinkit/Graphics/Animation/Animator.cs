@@ -1,6 +1,6 @@
 ﻿namespace Trinkit.Graphics
 {
-    public class Animator : Behavior
+    public class Animator : Component
     {
         public List<Animation> Animations = new();
 
@@ -56,6 +56,10 @@
         {
             Frame = 0;
             _frame = 0;
+        }
+
+        public override void Dispose()
+        {
         }
     }
 }

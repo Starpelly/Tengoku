@@ -1,39 +1,37 @@
 ﻿using Trinkit;
 
-using Raylib_CsLo;
-using Tengoku.Games;
-
-using ImGuiNET;
 using Tengoku.Games.Spaceball;
 using Tengoku.UI;
 using Tengoku.Debugging;
+
+using ImGuiNET;
+using Tengoku.Discord;
+using Trinkit.Graphics;
 
 namespace Tengoku
 {
     public class Game : TrinkitApp
     {
-        public static Game? Instance { get; private set; }
+        public static new Game Instance { get; private set; } = null!;
 
         public Spaceball spaceball;
         GameManager gameManager;
         DSGuy dsGuy;
 
         private RenderTexture _renderTexture;
+        public static RenderTexture RenderTexture => Instance!._renderTexture;
         private int _screenWidth = 280;
         private int _screenHeight = 160;
 
-        public static RenderTexture RenderTexture => Instance!._renderTexture;
+        private DiscordRichPresence richPresence;
 
         public Game(string title, int width, int height, bool resizable = false) : base(title, width, height, resizable)
         {
             Instance = this;
 
-            _renderTexture = Raylib.LoadRenderTexture(_screenWidth, _screenHeight);
-        }
+            _renderTexture = new RenderTexture(_screenWidth, _screenHeight);
 
-        public override void OnLoad()
-        {
-            Raylib.InitAudioDevice();
+            Raylib_CsLo.Raylib.InitAudioDevice();
 
             TrinkitImGui.Setup(true);
 
@@ -44,59 +42,56 @@ namespace Tengoku
 
             ImGui.GetStyle().WindowRounding = 8f;
 
-            gameManager = new GameManager();
             spaceball = new Spaceball();
-            gameManager.Spaceball = spaceball;
+            gameManager = new GameManager();
             dsGuy = new DSGuy();
+
+            richPresence = new DiscordRichPresence();
         }
 
         public override void OnUpdate()
         {
-            // gameManager.Update();
+            gameManager.Update();
             spaceball.Update();
         }
 
         public override void OnDraw()
         {
-            Raylib.ClearBackground(Raylib.WHITE);
+            Window.Clear(Color.black);
 
-            Raylib.BeginTextureMode(_renderTexture);
+            _renderTexture.Begin();
 
             spaceball.Draw();
             dsGuy.DrawGUI();
 
-            Raylib.EndTextureMode();
-#if DEBUG
-            var menubarHeight = 19;
-#else
-            var menubarHeight = 0;
-#endif
-            Raylib.ClearBackground(new Trinkit.Color("#1f1f1f"));
-#if RELEASE
-            Raylib.DrawTexturePro(
+            _renderTexture.End();
+
+            Window.Clear(new Color("#1f1f1f"));
+
+            Raylib_CsLo.Raylib.DrawTexturePro(
                 _renderTexture.texture,
-                    new Rectangle(0, 0, (float)_renderTexture.texture.width, (float)-_renderTexture.texture.height),
-                    new Rectangle(0, menubarHeight, Raylib.GetScreenWidth(), Raylib.GetScreenHeight() - menubarHeight),
+                    new Raylib_CsLo.Rectangle(0, 0, (float)_renderTexture.texture.width, (float)-_renderTexture.texture.height),
+                    new Raylib_CsLo.Rectangle(0, 19, GameWindow.Width, GameWindow.Height - 19),
                     new System.Numerics.Vector2(0.0f, 0.0f),
                     0.0f,
-                    Raylib.WHITE
+                    Color.white
                 );
-#endif
-#if DEBUG
-            spaceball.DrawGUI();
 
+#if RELEASE
+#else
+            GuiLayer();
+#endif
+        }
+
+        private void GuiLayer()
+        {
             TrinkitImGui.Begin();
 
             Dockspace();
-            spaceball.ImGui();
-
-            GameView.Gui();
             Menubar.Layout();
-            // AnimationEditor.Gui();
             ConsoleView.Gui();
 
             TrinkitImGui.End();
-#endif
         }
 
         private void Dockspace()
@@ -104,7 +99,7 @@ namespace Tengoku
             ImGui.PushStyleColor(ImGuiCol.WindowBg, (uint)Trinkit.Color.transparent);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new System.Numerics.Vector2(0, 0));
             ImGui.SetNextWindowPos(new System.Numerics.Vector2(0f, 0), ImGuiCond.Always);
-            ImGui.SetNextWindowSize(new System.Numerics.Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()));
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(GameWindow.Width, GameWindow.Height));
             ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0f);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0f);
             ImGuiWindowFlags dockSpaceFlags = ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse |
@@ -121,12 +116,15 @@ namespace Tengoku
 
         public override void OnQuit()
         {
-            spaceball.Dispose();
+            for (int i = 0; i < Components.Count; i++)
+            {
+                Components[i].Dispose();
+            }
 
-            Raylib.UnloadRenderTexture(_renderTexture);
+            richPresence.Dispose();
 
             TrinkitImGui.Shutdown();
-            Raylib.CloseAudioDevice();
+            Raylib_CsLo.Raylib.CloseAudioDevice();
         }
     }
 }

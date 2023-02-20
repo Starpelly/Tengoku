@@ -1,10 +1,11 @@
 ﻿using Raylib_CsLo;
 using Trinkit;
+using Trinkit.Audio;
 using Trinkit.Graphics;
 
 namespace Tengoku.Games.Spaceball
 {
-    public class Ball : Behavior
+    public class Ball : Component
     {
         public Spaceball Spaceball { get; set; }
 
@@ -46,9 +47,7 @@ namespace Tengoku.Games.Spaceball
                         _hit = true;
                         _hitPos = _lastPos;
                         _lastRot = ballRot;
-                        Raylib.PlaySound(Spaceball.HitSound);
                     }
-
 
                     _lastPos = GetPointOnBezierCurve(
                             new Vector3(-0.55f, -0.43f),
@@ -91,5 +90,8 @@ namespace Tengoku.Games.Spaceball
             return result;
         }
 
+        public override void Dispose()
+        {
+        }
     }
 }
