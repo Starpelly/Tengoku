@@ -25,6 +25,8 @@ namespace Tengoku
 
         private DiscordRichPresence richPresence;
 
+        Raylib_CsLo.Shader shader;
+
         public Game(string title, int width, int height, bool resizable = false) : base(title, width, height, resizable)
         {
             Instance = this;
@@ -47,6 +49,8 @@ namespace Tengoku
             dsGuy = new DSGuy();
 
             richPresence = new DiscordRichPresence();
+
+            shader = Raylib_CsLo.Raylib.LoadShader(null, Raylib_CsLo.Raylib.TextFormat("resources/shaders/vignette.glsl", 330));
         }
 
         public override void OnUpdate()
@@ -68,6 +72,7 @@ namespace Tengoku
 
             Window.Clear(new Color("#1f1f1f"));
 
+            Raylib_CsLo.Raylib.BeginShaderMode(shader);
             Raylib_CsLo.Raylib.DrawTexturePro(
                 _renderTexture.texture,
                     new Raylib_CsLo.Rectangle(0, 0, (float)_renderTexture.texture.width, (float)-_renderTexture.texture.height),
@@ -76,6 +81,7 @@ namespace Tengoku
                     0.0f,
                     Color.white
                 );
+            Raylib_CsLo.Raylib.EndShaderMode();
 
 #if RELEASE
 #else
@@ -120,6 +126,8 @@ namespace Tengoku
             {
                 Components[i].Dispose();
             }
+
+            Raylib_CsLo.Raylib.UnloadShader(shader);
 
             richPresence.Dispose();
 
