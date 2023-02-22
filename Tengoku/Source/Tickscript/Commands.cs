@@ -1,6 +1,6 @@
 using Tengoku;
 
-namespace Tickflow
+namespace Tickscript
 {
     public class Commands
     {
@@ -23,14 +23,14 @@ namespace Tickflow
             GameManager.CommandBeat += GameManager.RestingTime;
         }
 
-        public void Call(string engine, string function, List<Tickflow.Tokens.Token> tokens)
+        public void Call(string engine, string function, List<Tickscript.Tokens.Token> tokens)
         {
             if (IsSkipping()) return;
 
             List<object> parameters = new List<object>();
             int parametersIndex = 0;
 
-            if (tokens[GameManager.TokenIndex + 3].Type == Tickflow.Tokens.TokenType.LEFT_PAREN)
+            if (tokens[GameManager.TokenIndex + 3].Type == Tickscript.Tokens.TokenType.LEFT_PAREN)
             {
                 GameManager.InParams = true;
             }
@@ -38,20 +38,20 @@ namespace Tickflow
             while (GameManager.InParams)
             {
                 var newToken = tokens[GameManager.TokenIndex + 4 + parametersIndex];
-                if (newToken.Type == Tickflow.Tokens.TokenType.RIGHT_PAREN)
+                if (newToken.Type == Tickscript.Tokens.TokenType.RIGHT_PAREN)
                 {
                     GameManager.InParams = false;
                     continue;
                 }
-                else if (newToken.Type == Tickflow.Tokens.TokenType.COMMA)
+                else if (newToken.Type == Tickscript.Tokens.TokenType.COMMA)
                 {
                     parametersIndex++;
                     continue;
                 }
 
                 var literal = newToken.Literal;
-                if (newToken.Type == Tickflow.Tokens.TokenType.TRUE || newToken.Type == Tickflow.Tokens.TokenType.FALSE)
-                    literal = (newToken.Type == Tickflow.Tokens.TokenType.TRUE) ? true : false;
+                if (newToken.Type == Tickscript.Tokens.TokenType.TRUE || newToken.Type == Tickscript.Tokens.TokenType.FALSE)
+                    literal = (newToken.Type == Tickscript.Tokens.TokenType.TRUE) ? true : false;
 
                 parameters.Add(literal);
                 parametersIndex++;

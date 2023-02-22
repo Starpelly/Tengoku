@@ -1,7 +1,7 @@
 ﻿using System;
 using Tengoku.Games;
 using Tengoku.Games.Spaceball;
-using Tickflow;
+using Tickscript;
 using Trinkit;
 using Trinkit.Audio;
 
@@ -13,7 +13,7 @@ namespace Tengoku
 
         public Conductor Conductor { get; private set; }
 
-        public TickflowLox TickflowLox = new TickflowLox();
+        public TickscriptLox TickscriptLox = new TickscriptLox();
 
         private Commands commands = new Commands();
 
@@ -34,7 +34,7 @@ namespace Tengoku
             if (Instance == null)
                 Instance = this;
 
-            TickflowLox.Run(File.ReadAllText("Resources/levels/spaceball.tkf"));
+            TickscriptLox.Run(File.ReadAllText("Resources/levels/spaceball.tkf"));
             commands.GameManager = this;
 
             Conductor = new Conductor();
@@ -52,9 +52,9 @@ namespace Tengoku
 
             if (!Started)
             {
-                for (int i = 0; i < TickflowLox.tokens.Count; i++)
+                for (int i = 0; i < TickscriptLox.tokens.Count; i++)
                 {
-                    if (TickflowLox.tokens[i].Type == Tickflow.Tokens.TokenType.START)
+                    if (TickscriptLox.tokens[i].Type == Tickscript.Tokens.TokenType.START)
                     {
                         Started = true;
                         break;
@@ -68,7 +68,7 @@ namespace Tengoku
                     bool inCommandList = true;
                     while (inCommandList || GoingToBeat)
                     {
-                        var token = TickflowLox.tokens[TokenIndex];
+                        var token = TickscriptLox.tokens[TokenIndex];
                         TokenIndex++;
 
                         if (GoingToBeat && CommandBeat >= Conductor.SongPositionInBeats)
@@ -79,32 +79,32 @@ namespace Tengoku
 
                         switch (token.Type)
                         {
-                            case Tickflow.Tokens.TokenType.EOF:
+                            case Tickscript.Tokens.TokenType.EOF:
                                 commands.EOF(ref inCommandList);
                                 break;
-                            case Tickflow.Tokens.TokenType.NATIVE:
-                                // commands.Native(TickflowLox.tokens[tokenIndex + 1].Lexeme, TickflowLox.tokens[tokenIndex + 3].Lexeme);
+                            case Tickscript.Tokens.TokenType.NATIVE:
+                                // commands.Native(TickscriptLox.tokens[tokenIndex + 1].Lexeme, TickscriptLox.tokens[tokenIndex + 3].Lexeme);
                                 break;
-                            case Tickflow.Tokens.TokenType.REST:
-                                commands.Rest((double)TickflowLox.tokens[TokenIndex].Literal);
+                            case Tickscript.Tokens.TokenType.REST:
+                                commands.Rest((double)TickscriptLox.tokens[TokenIndex].Literal);
                                 break;
-                            case Tickflow.Tokens.TokenType.GOTO:
-                                // Conductor.SetBeat((float)(double)TickflowLox.tokens[TokenIndex].Literal);
+                            case Tickscript.Tokens.TokenType.GOTO:
+                                // Conductor.SetBeat((float)(double)TickscriptLox.tokens[TokenIndex].Literal);
                                 // goingToBeat = true;
                                 break;
-                            case Tickflow.Tokens.TokenType.LOG:
-                                commands.Log(TickflowLox.tokens[TokenIndex].Literal);
+                            case Tickscript.Tokens.TokenType.LOG:
+                                commands.Log(TickscriptLox.tokens[TokenIndex].Literal);
                                 break;
-                            case Tickflow.Tokens.TokenType.CALL:
+                            case Tickscript.Tokens.TokenType.CALL:
                                 commands.Call(
-                                    (string)TickflowLox.tokens[TokenIndex].Lexeme,
-                                    (string)TickflowLox.tokens[TokenIndex + 2].Lexeme,
-                                    TickflowLox.tokens);
+                                    (string)TickscriptLox.tokens[TokenIndex].Lexeme,
+                                    (string)TickscriptLox.tokens[TokenIndex + 2].Lexeme,
+                                    TickscriptLox.tokens);
                                 break;
-                            case Tickflow.Tokens.TokenType.SKIP:
-                                SkipCommands = (int)(double)TickflowLox.tokens[TokenIndex].Literal + 1; // Add one to compensate for the skip semicolon
+                            case Tickscript.Tokens.TokenType.SKIP:
+                                SkipCommands = (int)(double)TickscriptLox.tokens[TokenIndex].Literal + 1; // Add one to compensate for the skip semicolon
                                 break;
-                            case Tickflow.Tokens.TokenType.SEMICOLON:
+                            case Tickscript.Tokens.TokenType.SEMICOLON:
                                 SkipCommands -= 1;
                                 inCommandList = false;
                                 break;

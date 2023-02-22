@@ -7,6 +7,8 @@ using Tengoku.Debugging;
 using ImGuiNET;
 using Tengoku.Discord;
 using Trinkit.Graphics;
+using Trinkit.Localization;
+using Newtonsoft.Json;
 
 namespace Tengoku
 {
@@ -26,6 +28,8 @@ namespace Tengoku
         private DiscordRichPresence richPresence;
 
         Raylib_CsLo.Shader shader;
+
+        Language languageTest;
 
         public Game(string title, int width, int height, bool resizable = false) : base(title, width, height, resizable)
         {
@@ -51,6 +55,12 @@ namespace Tengoku
             richPresence = new DiscordRichPresence();
 
             shader = Raylib_CsLo.Raylib.LoadShader(null, Raylib_CsLo.Raylib.TextFormat("resources/shaders/vignette.glsl", 330));
+
+            languageTest = new Language();
+
+            var str = File.ReadAllText("Resources/localization/eng.json");
+            var a = JsonConvert.DeserializeObject<Language>(str);
+            Console.WriteLine(a.APPNAME);
         }
 
         public override void OnUpdate()
@@ -99,6 +109,7 @@ namespace Tengoku
             Menubar.Layout();
             DebugView.Gui();
             // GameView.Gui();
+            LocalizerView.Gui();
 
             TrinkitImGui.End();
         }

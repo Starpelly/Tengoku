@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="ImGui.NET" Version="1.89.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3-beta1" />
     <PackageReference Include="Raylib-CsLo" Version="4.2.0.5" />
   </ItemGroup>
 

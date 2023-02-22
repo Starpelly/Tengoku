@@ -1,7 +1,7 @@
 using System;
-using Tickflow.Tokens;
+using Tickscript.Tokens;
 
-namespace Tickflow
+namespace Tickscript
 {
     public abstract class Expression
     {

@@ -1,8 +1,8 @@
-using Tickflow.Tokens;
+using Tickscript.Tokens;
 
-namespace Tickflow
+namespace Tickscript
 {
-    public class TickflowLox
+    public class TickscriptLox
     {
         private bool HadErrors = false;
         public Scanner scanner;

@@ -1,10 +1,10 @@
-﻿using Tickflow.Tokens;
+﻿using Tickscript.Tokens;
 
-namespace Tickflow
+namespace Tickscript
 {
     public class Scanner
     {
-        public TickflowLox tickflowLox;
+        public TickscriptLox TickscriptLox;
 
         private readonly string _source;
         private readonly List<Token> _tokens = new List<Token>();
@@ -31,10 +31,10 @@ namespace Tickflow
             ["log"]     = TokenType.LOG,
         };
 
-        public Scanner(string _source, TickflowLox tickflowLox)
+        public Scanner(string _source, TickscriptLox TickscriptLox)
         {
             this._source = _source;
-            this.tickflowLox = tickflowLox;
+            this.TickscriptLox = TickscriptLox;
         }
 
         public List<Token> ScanTokens()
@@ -112,7 +112,7 @@ namespace Tickflow
                     }
                     else
                     {
-                        tickflowLox.Error(_line, "Unexpected character.");
+                        TickscriptLox.Error(_line, "Unexpected character.");
                     }
                     break;
             }
@@ -218,7 +218,7 @@ namespace Tickflow
 
             if (IsAtEnd())
             {
-                tickflowLox.Error(_line, "Unterminated string.");
+                TickscriptLox.Error(_line, "Unterminated string.");
                 return;
             }
 

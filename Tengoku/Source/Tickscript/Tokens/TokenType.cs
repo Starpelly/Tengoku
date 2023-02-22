@@ -1,4 +1,4 @@
-﻿namespace Tickflow.Tokens
+﻿namespace Tickscript.Tokens
 {
     public enum TokenType
     {
