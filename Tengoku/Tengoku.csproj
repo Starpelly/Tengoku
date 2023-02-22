@@ -24,4 +24,10 @@
 		</Content>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Resources\localization\eng.json" />
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties resources_4localization_4english_1json__JsonSchema="https://fasterci.com/config.schema.json" /></VisualStudio></ProjectExtensions>
+
 </Project>

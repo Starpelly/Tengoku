@@ -4,7 +4,7 @@ using Trinkit.Graphics;
 
 namespace Tengoku.Games.Spaceball
 {
-    public class Spaceball
+    public class Spaceball : IDisposable
     {
         private Texture refTex;
 
@@ -30,6 +30,9 @@ namespace Tengoku.Games.Spaceball
         public float CameraZoomZoom = 0;
         public float LastZoom = -80f;
 
+        public Raylib_CsLo.Sound HitSnd;
+        public Raylib_CsLo.Sound ShootSnd;
+
         public Spaceball()
         {
             refTex = new Texture("resources/sprites/games/spaceball/refff.png");
@@ -46,6 +49,9 @@ namespace Tengoku.Games.Spaceball
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
 
             _playerAnim = new Animator();
+
+            ShootSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/shoot.ogg");
+            HitSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/hit.ogg");
         }
 
         public void Update()
@@ -110,10 +116,19 @@ namespace Tengoku.Games.Spaceball
             Raylib_CsLo.Raylib.EndMode3D();
         }
 
+        public void DrawGUI()
+        {
+            for (int i = 0; i < Balls.Count; i++)
+            {
+                Balls[i].DrawGUI();
+            }
+        }
+
         public void Ball(float beat, bool high)
         {
             var newBall = new Ball();
             newBall.Spaceball = this;
+            newBall.Start();
             newBall.StartBeat = beat;
             newBall.High = high;
             Balls.Add(newBall);
@@ -127,6 +142,12 @@ namespace Tengoku.Games.Spaceball
             CameraZoomBeat = beat;
             CameraZoomLength = length;
             CameraZoomZoom = zoom / 8.0f;
+        }
+
+        public void Dispose()
+        {
+            Raylib_CsLo.Raylib.UnloadSound(HitSnd);
+            Raylib_CsLo.Raylib.UnloadSound(ShootSnd);
         }
     }
 }

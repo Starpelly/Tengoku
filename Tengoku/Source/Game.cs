@@ -55,7 +55,7 @@ namespace Tengoku
 
         public override void OnUpdate()
         {
-            // gameManager.Update();
+            gameManager.Update();
             spaceball.Update();
         }
 
@@ -72,7 +72,7 @@ namespace Tengoku
 
             Window.Clear(new Color("#1f1f1f"));
 
-            Raylib_CsLo.Raylib.BeginShaderMode(shader);
+            // Raylib_CsLo.Raylib.BeginShaderMode(shader);
             Raylib_CsLo.Raylib.DrawTexturePro(
                 _renderTexture.texture,
                     new Raylib_CsLo.Rectangle(0, 0, (float)_renderTexture.texture.width, (float)-_renderTexture.texture.height),
@@ -81,7 +81,9 @@ namespace Tengoku
                     0.0f,
                     Color.white
                 );
-            Raylib_CsLo.Raylib.EndShaderMode();
+            // Raylib_CsLo.Raylib.EndShaderMode();
+
+            spaceball.DrawGUI();
 
 #if RELEASE
 #else
@@ -96,6 +98,7 @@ namespace Tengoku
             Dockspace();
             Menubar.Layout();
             DebugView.Gui();
+            // GameView.Gui();
 
             TrinkitImGui.End();
         }

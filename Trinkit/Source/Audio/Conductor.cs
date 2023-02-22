@@ -2,6 +2,8 @@
 {
     public class Conductor : AudioSource
     {
+        public static Conductor Instance { get; set; }
+
         /// <summary>
         /// The tempo the song will start at.
         /// </summary>
@@ -33,6 +35,11 @@
         /// </summary>
         public float FirstBeatOffset;
 
+        /// <summary>
+        /// List of TempoChanges that changes the tempo using the beat it starts and length of the change.
+        /// </summary>
+        public List<TempoChange> tempoChanges = new();
+
         public override void Update()
         {
             base.Update();
@@ -53,6 +60,31 @@
         public float GetPositionFromBeat(float startBeat, float length)
         {
             return Mathf.Normalize(SongPositionInBeats, startBeat, startBeat + length);
+        }
+
+        /// <summary>
+        /// Uses the tempo changes to accurately get what the song position would be at this beat.
+        /// </summary>
+        public float GetSongPosFromBeat(float beat)
+        {
+            float counter = 0.0f;
+            float lastTempoChangeBeat = 0.0f;
+
+            for (int i = 0; i < tempoChanges.Count; i++)
+            {
+                var tempoChange = tempoChanges[i];
+
+                if (tempoChange.beat > beat)
+                    break;
+
+                counter += (tempoChange.beat - lastTempoChangeBeat) * SecPerBeat;
+
+                lastTempoChangeBeat = tempoChange.beat;
+            }
+
+            counter += (beat - lastTempoChangeBeat) * SecPerBeat;
+
+            return counter;
         }
     }
 }

@@ -1,0 +1,8 @@
+﻿{
+    "GAMES": {
+        "GAME_SPACEBALL": {
+            "NAME": "Spaceball",
+            "GAME_DESC": "Don't worry about the camera's zooms! Hit the ball with your heart! Don't blink! Don't wipe your tears!"
+        }
+    }
+}

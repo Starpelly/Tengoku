@@ -38,6 +38,7 @@ namespace Tengoku
             commands.GameManager = this;
 
             Conductor = new Conductor();
+            Conductor.Instance = Conductor;
             Conductor.InitialTempo = 104.275f;
             Conductor.Clip = Resources.Load<AudioClip>("audio/music/spaceball.wav");
             Conductor.Play();

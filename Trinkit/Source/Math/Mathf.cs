@@ -170,5 +170,78 @@ namespace Trinkit
         {
             return val >= min && val <= max;
         }
+
+        public static float Max(float a, float b) { return a > b ? a : b; }
+        /// <summary>
+        /// Returns largest of two or more values.
+        /// </summary>
+        public static float Max(params float[] values)
+        {
+            int len = values.Length;
+            if (len == 0)
+                return 0;
+            float m = values[0];
+            for (int i = 1; i < len; i++)
+            {
+                if (values[i] > m)
+                    m = values[i];
+            }
+            return m;
+        }
+
+        public static int Max(int a, int b) { return a > b ? a : b; }
+        /// <summary>
+        /// Returns largest of two or more values.
+        /// </summary>
+        public static int Max(params int[] values)
+        {
+            int len = values.Length;
+            if (len == 0)
+                return 0;
+            int m = values[0];
+            for (int i = 1; i < len; i++)
+            {
+                if (values[i] > m)
+                    m = values[i];
+            }
+            return m;
+        }
+
+
+        public static float Min(float a, float b) { return a < b ? a : b; }
+        /// <summary>
+        /// Returns smallest of two or more values.
+        /// </summary>
+        public static float Min(params float[] values)
+        {
+            int len = values.Length;
+            if (len == 0)
+                return 0;
+            float m = values[0];
+            for (int i = 1; i < len; i++)
+            {
+                if (values[i] < m)
+                    m = values[i];
+            }
+            return m;
+        }
+
+        public static int Min(int a, int b) { return a < b ? a : b; }
+        /// <summary>
+        /// Returns smallest of two or more values.
+        /// </summary>
+        public static int Min(params int[] values)
+        {
+            int len = values.Length;
+            if (len == 0)
+                return 0;
+            int m = values[0];
+            for (int i = 1; i < len; i++)
+            {
+                if (values[i] < m)
+                    m = values[i];
+            }
+            return m;
+        }
     }
 }

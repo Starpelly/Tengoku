@@ -6,5 +6,10 @@
         {
             return new Color(color.r, color.g, color.b, alpha);
         }
+
+        public static Color Hex2RGB(this string hex)
+        {
+            return new Color(hex);
+        }
     }
 }
