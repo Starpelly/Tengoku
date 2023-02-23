@@ -10,6 +10,11 @@ namespace Trinkit.Graphics
         public int Width => _internTexture.width;
         public int Height => _internTexture.height;
 
+        public Texture()
+        {
+            _internTexture = Raylib.LoadTexture("resources/pixel.png");
+        }
+
         public Texture(string location)
         {
             _internTexture = Raylib.LoadTexture(location);
