@@ -27,6 +27,7 @@ namespace Tengoku.Games.Spaceball
 
         private float _camPosZ = 10.0f;
         private Animator _playerAnim;
+        private Animator _dispenserAnim;
         private Raylib_CsLo.Camera3D _cam;
 
         public Spaceball()
@@ -42,12 +43,12 @@ namespace Tengoku.Games.Spaceball
             _cam = new Raylib_CsLo.Camera3D();
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
 
-            _playerAnim = new Animator();
 
             ShootSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/shoot.ogg");
             HitSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/hit.ogg");
 
-            _playerAnim.LoadAnimations("resources/animations/spaceballplayer.json");
+            _playerAnim = new Animator("resources/animations/spaceballplayer.json");
+            _dispenserAnim = new Animator("resources/animations/spaceballdispenser.json");
         }
 
         public void Update()
@@ -74,9 +75,21 @@ namespace Tengoku.Games.Spaceball
             // Room
             Sprite.DrawSprite(SpaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Color.white, new Raylib_CsLo.Rectangle(), 90f);
 
+            _dispenserAnim.Update();
+            var dispenserFrame = 0;
+            switch (_dispenserAnim.CurrentAnimation.Name)
+            {
+                case "SpaceballDispenserIdle":
+                    dispenserFrame = 2;
+                    break;
+                case "SpaceballDispenserShoot":
+                    dispenserFrame = _dispenserAnim.CurrentFrame + 1;
+                    break;
+            }
+
             // Dispenser
             Sprite.DrawSprite(TexSpaceballProps, new Vector3(-0.55f, -0.53f), 0.0f, Color.white,
-                new Raylib_CsLo.Rectangle(0, 32, 32, 32), 90f);
+                new Raylib_CsLo.Rectangle(32 * dispenserFrame, 32, 32, 32), 90f);
 
             // Umpire
             Sprite.DrawSprite(TexSpaceballProps, new Vector3(0.0f, -0.11f), 0.0f, Color.white,
@@ -91,16 +104,16 @@ namespace Tengoku.Games.Spaceball
 
             _playerAnim.Update();
 
-            var _playerFrame = (_playerAnim.CurrentAnimation.Name == "SpaceballPlayerSwing") ? _playerAnim.CurrentFrame + 1 : 0;
+            var playerFrame = (_playerAnim.CurrentAnimation.Name == "SpaceballPlayerSwing") ? _playerAnim.CurrentFrame + 1 : 0;
 
             Sprite.DrawSprite(SpaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, Color.white, 
-                new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
+                new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
             Sprite.DrawSprite(SpaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, new Color("63e600"),
-                new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
+                new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
             Sprite.DrawSprite(SpaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, Color.black,
-                new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
+                new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
             Sprite.DrawSprite(SpaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Color.white,
-                new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
+                new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
 
             // Balls
             for (int i = 0; i < Balls.Count; i++)
@@ -127,6 +140,8 @@ namespace Tengoku.Games.Spaceball
             newBall.StartBeat = beat;
             newBall.High = high;
             Balls.Add(newBall);
+
+            _dispenserAnim.Play("SpaceballDispenserShoot");
         }
 
         public void Zoom(float beat, float zoom, float length)
@@ -137,6 +152,11 @@ namespace Tengoku.Games.Spaceball
             CameraZoomBeat = beat;
             CameraZoomLength = length;
             CameraZoomZoom = zoom / 8.0f;
+        }
+
+        public void DispenserPrepare()
+        {
+            _dispenserAnim.Play("SpaceballDispenserPrepare");
         }
 
         public void Dispose()

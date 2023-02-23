@@ -1,0 +1,30 @@
+﻿[
+    {
+        "Name": "SpaceballDispenserIdle",
+        "Frames": [
+            {
+                "Length": 1
+            }
+        ]
+    },
+    {
+        "Name": "SpaceballDispenserPrepare",
+        "Frames": [
+            {
+                "Length": 1
+            }
+        ]
+    },
+    {
+        "Name": "SpaceballDispenserShoot",
+        "FPS": 30,
+        "Frames": [
+            {
+                "Length": 2
+            },
+            {
+                "Length": 1
+            }
+        ]
+    }
+]
