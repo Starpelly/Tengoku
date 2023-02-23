@@ -9,24 +9,21 @@
     },
     {
         "Name": "SpaceballPlayerSwing",
-        "FPS": 20,
+        "FPS": 60,
         "Loop": false,
         "Fallback": "SpaceballPlayerIdle",
         "Frames": [
             {
-                "Length": 1
+                "Length": 3
             },
             {
-                "Length": 1
+                "Length": 3
             },
             {
-                "Length": 1
+                "Length": 3
             },
             {
-                "Length": 1
-            },            
-            {
-                "Length": 1
+                "Length": 5
             }
         ]
     }

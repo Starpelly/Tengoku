@@ -17,10 +17,10 @@
     },
     {
         "Name": "SpaceballDispenserShoot",
-        "FPS": 30,
+        "FPS": 60,
         "Frames": [
             {
-                "Length": 2
+                "Length": 4
             },
             {
                 "Length": 1

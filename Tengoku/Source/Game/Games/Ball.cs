@@ -24,28 +24,28 @@ namespace Tengoku.Games.Spaceball
 
         public override void Start()
         {
-            Raylib.PlaySound(Spaceball.ShootSnd);
+            Raylib.PlaySound(High ? Spaceball.ShootHighSnd : Spaceball.ShootSnd);
         }
 
         public override void Draw()
         {
             if (!_hit)
             {
-                var length = (High) ? 2 : 1;
+                var length = High ? 2 : 1;
                 normalizedPitchAnim = GameManager.Instance.Conductor.GetPositionFromBeat(StartBeat, length + 0.175f);
 
                 if (normalizedPitchAnim < 1.0f)
                 {
                     var addPos = 0.77f;
-                    var addPosY = (High) ? 2.5f : 1.35f;
-                    var ballRot = normalizedPitchAnim * 440f;
+                    var addPosY = High ? 2.5f : 1.35f;
+                    var ballRot = normalizedPitchAnim * 240f * addPosY;
 
                     bool down = PlayerInput.GetPlayerDown();
                     // if (delta <= 0.035f) down = true;
 
                     if (down)
                     {
-                        var signedDelta = JudgementManager.GetDelta((High) ? StartBeat + 2 : StartBeat + 1, Conductor.Instance.SongPosition);
+                        var signedDelta = JudgementManager.GetDelta(High ? StartBeat + 2 : StartBeat + 1, Conductor.Instance.SongPosition);
                         Console.WriteLine(signedDelta * 1);
 
                         var missRange = 0.13f;
@@ -80,7 +80,7 @@ namespace Tengoku.Games.Spaceball
                     }
 
                     _lastPos = GetPointOnBezierCurve(
-                            new Vector3(-0.55f, -0.43f),
+                            new Vector3(-0.55f, -0.4f),
                             new Vector3(-0.55f + (addPos * 0.5f) - 0.2f, -0.53f + addPosY),
                             new Vector3(-0.55f + (addPos * 0.5f) + 0.1f, -0.53f + addPosY),
                             new Vector3(-0.55f + addPos, -0.62f),

@@ -24,6 +24,7 @@ namespace Tengoku.Games.Spaceball
 
         public Raylib_CsLo.Sound HitSnd;
         public Raylib_CsLo.Sound ShootSnd;
+        public Raylib_CsLo.Sound ShootHighSnd;
 
         private float _camPosZ = 10.0f;
         private Animator _playerAnim;
@@ -43,8 +44,8 @@ namespace Tengoku.Games.Spaceball
             _cam = new Raylib_CsLo.Camera3D();
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
 
-
             ShootSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/shoot.ogg");
+            ShootHighSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/shootHigh.ogg");
             HitSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/hit.ogg");
 
             _playerAnim = new Animator("resources/animations/spaceballplayer.json");
@@ -135,10 +136,11 @@ namespace Tengoku.Games.Spaceball
         public void Ball(float beat, bool high)
         {
             var newBall = new Ball();
-            newBall.Spaceball = this;
-            newBall.Start();
             newBall.StartBeat = beat;
             newBall.High = high;
+
+            newBall.Spaceball = this;
+            newBall.Start();
             Balls.Add(newBall);
 
             _dispenserAnim.Play("SpaceballDispenserShoot");
@@ -163,6 +165,7 @@ namespace Tengoku.Games.Spaceball
         {
             Raylib_CsLo.Raylib.UnloadSound(HitSnd);
             Raylib_CsLo.Raylib.UnloadSound(ShootSnd);
+            Raylib_CsLo.Raylib.UnloadSound(ShootHighSnd);
         }
     }
 }

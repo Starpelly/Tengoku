@@ -54,7 +54,7 @@ namespace Tengoku
 
             richPresence = new DiscordRichPresence();
 
-            shader = Raylib_CsLo.Raylib.LoadShader(null, Raylib_CsLo.Raylib.TextFormat("resources/shaders/vignette.glsl", 330));
+            shader = Raylib_CsLo.Raylib.LoadShader(null, Raylib_CsLo.Raylib.TextFormat("resources/shaders/vignette.shader", 330));
 
             languageTest = new Language();
 
