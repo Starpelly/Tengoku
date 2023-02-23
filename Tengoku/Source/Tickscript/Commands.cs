@@ -64,12 +64,12 @@ namespace Tickscript
                 Game.Instance.spaceball.Zoom(GameManager.CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
             else if (function == "prepare")
                 Game.Instance.spaceball.DispenserPrepare();
+            else if (function == "umpireShow")
+                Game.Instance.spaceball.Umpire(true);
+            else if (function == "umpireIdle")
+                Game.Instance.spaceball.Umpire(false);
             /*else if (function == "riceball")
                 GameManager.Spaceball.Riceball(GameManager.CommandBeat, (bool)parameters[0]);
-            else if (function == "umpireShow")
-                GameManager.Spaceball.Umpire(true);
-            else if (function == "umpireIdle")
-                GameManager.Spaceball.Umpire(false);
             else if (function == "costume")
                 GameManager.Spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);    */
         }

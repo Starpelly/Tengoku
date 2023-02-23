@@ -8,6 +8,7 @@ namespace Trinkit.Audio
 
         public float Time => (float)Clip.GetTime();
         public float Volume = 1.0f;
+        public float Pitch = 1.0f;
 
         public bool IsPlaying { get; set; }
 
@@ -20,6 +21,7 @@ namespace Trinkit.Audio
         {
             Clip.UpdateStream();
             Clip.SetVolume(Volume);
+            // Clip.SetPitch(Pitch);
         }
 
         public override void Dispose()

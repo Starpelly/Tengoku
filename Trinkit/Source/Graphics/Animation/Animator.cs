@@ -11,7 +11,7 @@ namespace Trinkit.Graphics
 
         public List<Animation> Animations = new();
         public Animation CurrentAnimation => _currentAnimation!;
-        public int CurrentFrame => (_currentAnimation == null) ? 0 : _frame;
+        public int CurrentFrame => (_currentAnimation == null) ? 0 : _frame % _currentAnimation.MaxFrames;
 
         public Animator(string fileLoc)
         {
@@ -24,7 +24,7 @@ namespace Trinkit.Graphics
             if (_currentAnimation != null && !_finishedAnim)
             {
                 _clock += Time.deltaTime;
-                float secondsPerFrame = (float)_currentAnimation.Frames[_frame].Length / _currentAnimation.FPS;
+                float secondsPerFrame = (float)_currentAnimation.Frames[CurrentFrame].Length / _currentAnimation.FPS;
                 while (_clock >= secondsPerFrame)
                 {
                     _clock -= secondsPerFrame;

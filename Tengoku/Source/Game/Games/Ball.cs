@@ -89,7 +89,7 @@ namespace Tengoku.Games.Spaceball
                     Sprite.DrawSprite(Spaceball.TexSpaceballProps,
                         _lastPos,
                         ballRot, Trinkit.Color.white,
-                        new Rectangle(0, 32 * 2, 32, 32), 90f);
+                        new Rectangle(0, 96, 32, 32), 90f);
                 }
                 else
                 {
@@ -102,7 +102,7 @@ namespace Tengoku.Games.Spaceball
                 Sprite.DrawSprite(Spaceball.TexSpaceballProps,
                     Vector3.Lerp(_hitPos, new Vector3(0f, 0, -1300f), nba),
                     _lastRot * nba * 12f, Trinkit.Color.white,
-                    new Rectangle(0, 32 * 2, 32, 32), 90f);
+                    new Rectangle(0, 96, 32, 32), 90f);
 
                 if (Conductor.Instance.SongPositionInBeats > _hitBeat + 14)
                     Destroy();

@@ -1,0 +1,55 @@
+﻿[
+    {
+        "Name": "SpaceballUmpireIdle",
+        "FPS": 60,
+        "Loop": true,
+        "Frames": [
+            {
+                "Length": 4
+            },
+            {
+                "Length": 4
+            },
+            {
+                "Length": 4
+            },
+            {
+                "Length": 4
+            },
+            {
+                "Length": 4
+            },
+            {
+                "Length": 4
+            },
+            {
+                "Length": 4
+            },
+            {
+                "Length": 4
+            }
+        ]
+    },
+    {
+        "Name": "SpaceballUmpireShow",
+        "FPS": 30,
+        "Loop": true,
+        "Frames": [
+            {
+                "Length": 11
+            },
+            {
+                "Length": 6
+            },
+            {
+                "Length": 5
+            },
+            {
+                "Length": 4
+            },
+            {
+                "Length": 1
+            }
+        ]
+    }
+]

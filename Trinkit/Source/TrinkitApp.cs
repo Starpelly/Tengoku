@@ -21,7 +21,7 @@ namespace Trinkit
             Instance = this;
 
             Name = title;
-            ConfigFlags flags = ConfigFlags.FLAG_WINDOW_ALWAYS_RUN;
+            ConfigFlags flags = ConfigFlags.FLAG_WINDOW_ALWAYS_RUN | ConfigFlags.FLAG_VSYNC_HINT;
             if (resizable) flags |= ConfigFlags.FLAG_WINDOW_RESIZABLE;
 
             Raylib.SetConfigFlags(flags);

@@ -43,6 +43,11 @@ namespace Trinkit.Audio
             Raylib.SetMusicVolume(_stream, volume);
         }
 
+        internal void SetPitch(float pitch)
+        {
+            Raylib.SetMusicPitch(_stream, pitch);
+        }
+
         internal void PlayStream()
         {
             Raylib.PlayMusicStream(_stream);
