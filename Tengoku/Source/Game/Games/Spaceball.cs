@@ -6,21 +6,13 @@ namespace Tengoku.Games.Spaceball
 {
     public class Spaceball : IDisposable
     {
-        private Texture refTex;
-
-        Raylib_CsLo.Camera3D _cam;
-
         public Texture SpaceballPlayerSheet0;
-        private Texture _spaceballPlayerSheet1;
-        private Texture _spaceballPlayerSheet2;
-        private Texture _spaceballPlayerSheet3;
+        public Texture SpaceballPlayerSheet1;
+        public Texture SpaceballPlayerSheet2;
+        public Texture SpaceballPlayerSheet3;
 
         public Texture TexSpaceballProps;
-        private Texture _spaceballRoom;
-
-        private Animator _playerAnim;
-
-        private float _camPosZ = 10.0f;
+        public Texture SpaceballRoom;
 
         public List<Ball> Balls = new();
 
@@ -33,17 +25,19 @@ namespace Tengoku.Games.Spaceball
         public Raylib_CsLo.Sound HitSnd;
         public Raylib_CsLo.Sound ShootSnd;
 
+        private float _camPosZ = 10.0f;
+        private Animator _playerAnim;
+        private Raylib_CsLo.Camera3D _cam;
+
         public Spaceball()
         {
-            refTex = new Texture("resources/sprites/games/spaceball/refff.png");
-
             SpaceballPlayerSheet0 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_0.png");
-            _spaceballPlayerSheet1 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_1.png");
-            _spaceballPlayerSheet2 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_2.png");
-            _spaceballPlayerSheet3 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_3.png");
+            SpaceballPlayerSheet1 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_1.png");
+            SpaceballPlayerSheet2 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_2.png");
+            SpaceballPlayerSheet3 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_3.png");
 
             TexSpaceballProps = new Texture("resources/sprites/games/spaceball/spaceball_props.png");
-            _spaceballRoom = new Texture("resources/sprites/games/spaceball/spaceball_room.png");
+            SpaceballRoom = new Texture("resources/sprites/games/spaceball/spaceball_room.png");
 
             _cam = new Raylib_CsLo.Camera3D();
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
@@ -52,6 +46,8 @@ namespace Tengoku.Games.Spaceball
 
             ShootSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/shoot.ogg");
             HitSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/hit.ogg");
+
+            _playerAnim.LoadAnimations("resources/animations/spaceballplayer.json");
         }
 
         public void Update()
@@ -66,7 +62,7 @@ namespace Tengoku.Games.Spaceball
 
             if (PlayerInput.GetPlayerDown())
             {
-                // _playerAnim.Play();
+                _playerAnim.Play("SpaceballPlayerSwing");
             }
         }
 
@@ -76,7 +72,7 @@ namespace Tengoku.Games.Spaceball
             Raylib_CsLo.Raylib.BeginMode3D(_cam);
 
             // Room
-            Sprite.DrawSprite(_spaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Color.white, new Raylib_CsLo.Rectangle(), 90f);
+            Sprite.DrawSprite(SpaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Color.white, new Raylib_CsLo.Rectangle(), 90f);
 
             // Dispenser
             Sprite.DrawSprite(TexSpaceballProps, new Vector3(-0.55f, -0.53f), 0.0f, Color.white,
@@ -95,16 +91,15 @@ namespace Tengoku.Games.Spaceball
 
             _playerAnim.Update();
 
-            var _playerFrame = _playerAnim.Frame;
-
+            var _playerFrame = (_playerAnim.CurrentAnimation.Name == "SpaceballPlayerSwing") ? _playerAnim.CurrentFrame + 1 : 0;
 
             Sprite.DrawSprite(SpaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, Color.white, 
                 new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(_spaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, new Color("63e600"),
+            Sprite.DrawSprite(SpaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, new Color("63e600"),
                 new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(_spaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, Color.black,
+            Sprite.DrawSprite(SpaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, Color.black,
                 new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(_spaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Color.white,
+            Sprite.DrawSprite(SpaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Color.white,
                 new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * _playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
 
             // Balls

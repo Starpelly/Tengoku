@@ -14,7 +14,6 @@ namespace Tengoku.Games.Spaceball
 
         private float _hitBeat;
         private Vector3 _hitPos;
-        private float randomEndPosX;
         private bool _hit;
         private Vector3 _lastPos;
         private float _lastRot;
@@ -26,10 +25,6 @@ namespace Tengoku.Games.Spaceball
         public override void Start()
         {
             Raylib.PlaySound(Spaceball.ShootSnd);
-        }
-
-        public override void Update()
-        {
         }
 
         public override void Draw()
@@ -116,6 +111,7 @@ namespace Tengoku.Games.Spaceball
 
         public override void DrawGUI()
         {
+            /*
             var hitBeat = 1f;
             var actionLength = (High) ? 2.25f : 1.25f;
 
@@ -137,7 +133,7 @@ namespace Tengoku.Games.Spaceball
                 "6de23b".Hex2RGB());
 
             var normalizedX = (int)Mathf.Lerp(20, endWidth, normalizedPitchAnim);
-            Raylib.DrawLineEx(new System.Numerics.Vector2(normalizedX, 20+19), new System.Numerics.Vector2(normalizedX, 20 + 19 + 24), 4, Trinkit.Color.black);
+            Raylib.DrawLineEx(new System.Numerics.Vector2(normalizedX, 20+19), new System.Numerics.Vector2(normalizedX, 20 + 19 + 24), 4, Trinkit.Color.black);*/
         }
 
         Vector3 GetPointOnBezierCurve(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)

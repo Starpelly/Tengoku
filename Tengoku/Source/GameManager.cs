@@ -34,7 +34,7 @@ namespace Tengoku
             if (Instance == null)
                 Instance = this;
 
-            TickscriptLox.Run(File.ReadAllText("Resources/levels/spaceball.tkf"));
+            TickscriptLox.Run(File.ReadAllText("Resources/levels/spaceball.tks"));
             commands.GameManager = this;
 
             Conductor = new Conductor();

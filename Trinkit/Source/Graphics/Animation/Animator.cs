@@ -1,10 +1,39 @@
-﻿namespace Trinkit.Graphics
+﻿using Newtonsoft.Json;
+
+namespace Trinkit.Graphics
 {
     public class Animator : Component
     {
-        public List<Animation> Animations = new();
+        private float _clock = 0.0f;
+        private int _frame = 0;
+        private Animation? _currentAnimation;
 
-        private Animation CurrentAnimation;
+        public List<Animation> Animations = new();
+        public Animation CurrentAnimation => _currentAnimation!;
+        public int CurrentFrame => (_currentAnimation == null) ? 0 : _frame % _currentAnimation.MaxFrames;
+
+        public override void Update()
+        {
+            if (_currentAnimation != null)
+            {
+                _clock += Time.deltaTime;
+                float secondsPerFrame = 1.0f / _currentAnimation.FPS;
+                while (_clock >= secondsPerFrame)
+                {
+                    _clock -= secondsPerFrame;
+                    _frame++;
+                    if (_frame >= _currentAnimation.MaxFrames && !_currentAnimation.Loop)
+                    {
+                        ResetClock();
+                        _currentAnimation = 
+                            (_currentAnimation.Fallback != string.Empty) 
+                            ? GetAnimation(_currentAnimation.Fallback)
+                            : _currentAnimation;
+                        return;
+                    }
+                }
+            }
+        }
 
         public Animation? GetAnimation(string name)
         {
@@ -15,47 +44,30 @@
         {
             var anim = GetAnimation(name);
             if (anim != null)
-                CurrentAnimation = anim;
-            throw new Exception("Animation not found!");
+            {
+                _currentAnimation = anim;
+                _frame = 0; // Use normalized time in the future.
+                _clock = 0.0f;
+            }
+            else
+                throw new Exception("Animation not found!");
         }
 
-        public int Frame;
-        public bool ResetOnEnd;
-
-        private bool _isPlaying = false;
-        private int _frame = 0;
-        private float _timer = 0.0f;
-
-        public override void Update()
+        public void LoadAnimations(string fileLoc)
         {
-            if (_isPlaying)
+            var jsonFile = File.ReadAllText(fileLoc);
+            var animations = JsonConvert.DeserializeObject<List<Animation>>(jsonFile);
+            if (animations != null)
             {
-                if (_frame > CurrentAnimation.MaxFrames && !CurrentAnimation.Loop)
-                {
-                    if (ResetOnEnd)
-                    {
-                        Reset();
-                    }
-                    _isPlaying = false;
-                    return;
-                }
-
-                _timer += Time.deltaTime;
-
-                if (_timer > 1f / CurrentAnimation.FramesPerSecond)
-                {
-                    _timer = 0.0f;
-                    _frame += 1;
-                }
-
-                Frame = _frame % CurrentAnimation.MaxFrames;
+                Animations = animations;
+                _currentAnimation = Animations[0];
             }
         }
 
-        private void Reset()
+        private void ResetClock()
         {
-            Frame = 0;
             _frame = 0;
+            _clock = 0.0f;
         }
 
         public override void Dispose()

@@ -109,7 +109,7 @@ namespace Tengoku
             Menubar.Layout();
             DebugView.Gui();
             // GameView.Gui();
-            LocalizerView.Gui();
+            // LocalizerView.Gui();
 
             TrinkitImGui.End();
         }
