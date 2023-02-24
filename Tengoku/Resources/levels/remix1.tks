@@ -3,11 +3,11 @@ tempo 119;
 
 start;
 
-rest 0.0000000000000000000000000000000001;
+call spaceball.costume(3, "f89c0f", "437b9e", "60c7f6"), rest 2;
 
-call spaceball.zoom(-1480.0, 0.0);
+// call spaceball.zoom(-1480.0, 0.0);
 
-call spaceball.zoom(-80.0, 2.0), rest 2;
+// call spaceball.zoom(-80.0, 2.0), rest 2;
 
 call spaceball.ball(false) rest 1;
 call spaceball.prepare(), rest 1;

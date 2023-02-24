@@ -18,6 +18,7 @@ namespace Tengoku.Games.Spaceball
             new Texture(),
             new Texture("resources/sprites/games/spaceball/spaceball_player_hat_0.png"),
             new Texture("resources/sprites/games/spaceball/spaceball_player_hat_1.png"),
+            new Texture("resources/sprites/games/spaceball/spaceball_player_hat_2.png"),
         };
 
         public Texture TexSpaceballProps;
@@ -65,7 +66,7 @@ namespace Tengoku.Games.Spaceball
             refTex = new Texture("resources/sprites/games/spaceball/spaceball_ref.png");
 
             TexSpaceballProps = new Texture("resources/sprites/games/spaceball/spaceball_props.png");
-            SpaceballRoom = new Texture("resources/sprites/games/spaceball/spaceball_room.png");
+            SpaceballRoom = new Texture("resources/sprites/games/spaceball/spaceball_room_alt.png");
 
             _cam = new Raylib_CsLo.Camera3D();
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;

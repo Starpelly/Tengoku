@@ -29,10 +29,10 @@ namespace Tengoku
 
         public GameManager()
         {
-            TickscriptLox.Run(File.ReadAllText("Resources/levels/spaceball.tks"));
+            TickscriptLox.Run(File.ReadAllText("Resources/levels/remix1.tks"));
 
-            Conductor.Instance.InitialTempo = 104.275f;
-            Conductor.Instance.Clip = Resources.Load<AudioClip>("audio/music/spaceball.wav");
+            Conductor.Instance.InitialTempo = 119f;
+            Conductor.Instance.Clip = Resources.Load<AudioClip>("audio/music/remix1.ogg");
             Conductor.Instance.Play();
         }
 
