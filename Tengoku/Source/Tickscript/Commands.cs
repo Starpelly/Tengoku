@@ -60,6 +60,8 @@ namespace Tickscript
             // Debug.Log(engine + "  :  " + function);
             if (function == "ball")
                 Game.Instance.spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0]);
+            else if (function == "riceball")
+                Game.Instance.spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0], true);
             else if (function == "zoom")
                 Game.Instance.spaceball.Zoom(GameManager.CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
             else if (function == "prepare")
@@ -70,9 +72,6 @@ namespace Tickscript
                 Game.Instance.spaceball.Umpire(false);
             else if (function == "costume")
                 Game.Instance.spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);
-            /*else if (function == "riceball")
-                GameManager.Spaceball.Riceball(GameManager.CommandBeat, (bool)parameters[0]);
-                */
         }
 
         public void EOF(ref bool inCommandList)

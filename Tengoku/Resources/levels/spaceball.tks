@@ -95,7 +95,7 @@ call spaceball.prepare(), rest 1;
 call spaceball.zoom(60.0, 1.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), call spaceball.umpireShow(), rest 1;
 call spaceball.zoom(38.0, 1.0), call spaceball.ball(false), rest 1;
-call spaceball.prepare(), call spaceball.umpireShow(), rest 1;
+call spaceball.prepare(), rest 1;
 call spaceball.zoom(200.0, 1.0), call spaceball.umpireIdle(), call spaceball.ball(true), rest 1;
 call spaceball.prepare(), rest 1;
 
@@ -115,7 +115,7 @@ call spaceball.ball(false), rest 1;
 call spaceball.prepare(), call spaceball.umpireIdle(), call spaceball.costume(1, "ffceff", "b500d6", "ff21ad"), rest 1;
 call spaceball.zoom(80.0, 1.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
-call spaceball.zoom(1480.0, 4.0), call spaceball.ball(true), rest 3;
+call spaceball.zoom(1600.0, 4.0), call spaceball.ball(true), rest 3;
 call spaceball.prepare(), rest 1;
 
 // Far out
@@ -160,6 +160,6 @@ call spaceball.prepare(), call spaceball.zoom(80.0, 0.5), rest 1;
 
 // Riceball
 
-call spaceball.zoom(2820.0, 6.0), call spaceball.riceball(true), rest 6;
+call spaceball.zoom(1600.0, 6.0), call spaceball.riceball(true), rest 6;
 
 end;

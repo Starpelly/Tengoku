@@ -47,6 +47,8 @@ namespace Trinkit.Graphics
                 if (sourceRec.height < 0) sourceRec.y -= sourceRec.height;
 
                 RlGl.rlSetTexture(texture.ID);
+                RlGl.rlDisableDepthTest();
+                RlGl.rlEnableDepthMask();
                 RlGl.rlPushMatrix();
                 {
                     RlGl.rlTranslatef(destRec.x, destRec.y, 0.0f);
@@ -82,6 +84,8 @@ namespace Trinkit.Graphics
                     RlGl.rlEnd();
                 }
                 RlGl.rlPopMatrix();
+                RlGl.rlEnableDepthTest();
+                RlGl.rlDisableDepthMask();
                 RlGl.rlSetTexture(0);
             }
         }

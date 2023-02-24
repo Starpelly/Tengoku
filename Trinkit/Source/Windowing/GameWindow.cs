@@ -4,7 +4,7 @@ namespace Trinkit
 {
     public class GameWindow
     {
-        public static float Width => Raylib.GetScreenWidth();
-        public static float Height => Raylib.GetScreenHeight();
+        public static int Width => Raylib.GetScreenWidth();
+        public static int Height => Raylib.GetScreenHeight();
     }
 }

@@ -11,9 +11,11 @@ namespace Tengoku.Games.Spaceball
 
         public float StartBeat;
         public bool High;
+        public bool Riceball;
 
         private float _hitBeat;
         private Vector3 _hitPos;
+        private float _randomHitX;
         private bool _hit;
         private Vector3 _lastPos;
         private float _lastRot;
@@ -76,6 +78,7 @@ namespace Tengoku.Games.Spaceball
                             _hit = true;
                             _hitPos = _lastPos;
                             _lastRot = ballRot;
+                            _randomHitX = Trinkit.Random.Range(0.45f, 1.25f);
                         }
                     }
 
@@ -89,7 +92,7 @@ namespace Tengoku.Games.Spaceball
                     Sprite.DrawSprite(Spaceball.TexSpaceballProps,
                         _lastPos,
                         ballRot, Trinkit.Color.white,
-                        new Rectangle(0, 96, 32, 32), 90f);
+                        new Rectangle(Riceball ? 32 : 0, 96, 32, 32), 90f);
                 }
                 else
                 {
@@ -100,9 +103,9 @@ namespace Tengoku.Games.Spaceball
             {
                 var nba = GameManager.Instance.Conductor.GetPositionFromBeat(_hitBeat, 14);
                 Sprite.DrawSprite(Spaceball.TexSpaceballProps,
-                    Vector3.Lerp(_hitPos, new Vector3(0f, 0, -1300f), nba),
+                    Vector3.Lerp(_hitPos, new Vector3(_randomHitX, 0, -1300f), nba),
                     _lastRot * nba * 12f, Trinkit.Color.white,
-                    new Rectangle(0, 96, 32, 32), 90f);
+                    new Rectangle(Riceball ? 32 : 0, 96, 32, 32), 90f);
 
                 if (Conductor.Instance.SongPositionInBeats > _hitBeat + 14)
                     Destroy();

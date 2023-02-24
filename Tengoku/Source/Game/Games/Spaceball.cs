@@ -42,6 +42,18 @@ namespace Tengoku.Games.Spaceball
         private Animator _umpireAnim;
         private Raylib_CsLo.Camera3D _cam;
 
+        private List<Vector3> _stars = new();
+        private float _starsClock = 0.0f;
+        private float _nextStarTime = 0.0f;
+        private float _nextStarPeriod = 0.03f;
+        private int _maxStars = 300;
+
+        struct Star
+        {
+            public Vector3 initialPos;
+            public Vector3 randomDir;
+        }
+
         private Color[] playerColors = new Color[]
         {
             Color.white,
@@ -91,12 +103,39 @@ namespace Tengoku.Games.Spaceball
             _playerAnim.Update();
             _dispenserAnim.Update();
             _umpireAnim.Update();
+
+            if (_starsClock > _nextStarTime)
+            {
+                _nextStarTime += _nextStarPeriod;
+
+                var maxStarRangeX = 1.75f;
+                var maxStarRangeXMin = 1.75f;
+                var maxStarRangeY = 2.45f;
+                _stars.Add(
+                    new Vector3(
+                        Trinkit.Random.Range(-maxStarRangeX - maxStarRangeXMin, maxStarRangeXMin + maxStarRangeX),
+                        Trinkit.Random.Range(-maxStarRangeY, maxStarRangeY),
+                        -6f
+                        ));
+                if (_stars.Count > _maxStars)
+                    _stars.RemoveAt(0);
+
+            }
+            _starsClock += Time.deltaTime;
         }
 
         public void Draw()
         {
             Window.Clear(new Color("#000073"));
             Raylib_CsLo.Raylib.BeginMode3D(_cam);
+
+            for (int i = 0; i < _stars.Count; i++)
+            {
+                Vector3 star = _stars[i];
+                _stars[i] -= new Vector3(0, 0, Time.deltaTime * 30f);
+                _stars[i] += new Vector3(_stars[i].x * 0.2f * Time.deltaTime, _stars[i].y * 0.2f * Time.deltaTime, 0f);
+                Sprite.DrawSprite(TexSpaceballProps, star, 0.0f, Color.white, new Raylib_CsLo.Rectangle(32, 160, 32, 32), 40);
+            }
 
             // Room
             Sprite.DrawSprite(SpaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Color.white, new Raylib_CsLo.Rectangle(), 90f);
@@ -152,7 +191,6 @@ namespace Tengoku.Games.Spaceball
             {
                 Balls[i].Draw();
             }
-
             Raylib_CsLo.Raylib.EndMode3D();
         }
 
@@ -172,11 +210,12 @@ namespace Tengoku.Games.Spaceball
                 new Color(1, 1, 0.5f, 0.5f));*/
         }
 
-        public void Ball(float beat, bool high)
+        public void Ball(float beat, bool high, bool riceball = false)
         {
             var newBall = new Ball();
             newBall.StartBeat = beat;
             newBall.High = high;
+            newBall.Riceball = riceball;
 
             newBall.Spaceball = this;
             newBall.Start();
