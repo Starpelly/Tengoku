@@ -7,7 +7,7 @@ namespace Tengoku.Games.Spaceball
 {
     public class Ball : Component
     {
-        public Spaceball Spaceball { get; set; }
+        public Spaceball Spaceball;
 
         public float StartBeat;
         public bool High;
@@ -24,6 +24,11 @@ namespace Tengoku.Games.Spaceball
 
         private float normalizedPitchAnim;
 
+        public Ball(Spaceball spaceball)
+        {
+            this.Spaceball = spaceball;
+        }
+
         public override void Start()
         {
             Raylib.PlaySound(High ? Spaceball.ShootHighSnd : Spaceball.ShootSnd);
@@ -34,7 +39,7 @@ namespace Tengoku.Games.Spaceball
             if (!_hit)
             {
                 var length = High ? 2 : 1;
-                normalizedPitchAnim = GameManager.Instance.Conductor.GetPositionFromBeat(StartBeat, length + 0.175f);
+                normalizedPitchAnim = Conductor.Instance.GetPositionFromBeat(StartBeat, length + 0.175f);
 
                 if (normalizedPitchAnim < 1.0f)
                 {
@@ -74,7 +79,7 @@ namespace Tengoku.Games.Spaceball
                         if (State == Judgement.Perfect || State == Judgement.Hit)
                         {
                             Raylib.PlaySound(Spaceball.HitSnd);
-                            _hitBeat = GameManager.Instance.Conductor.SongPositionInBeats;
+                            _hitBeat = Conductor.Instance.SongPositionInBeats;
                             _hit = true;
                             _hitPos = _lastPos;
                             _lastRot = ballRot;
@@ -101,7 +106,7 @@ namespace Tengoku.Games.Spaceball
             }
             else
             {
-                var nba = GameManager.Instance.Conductor.GetPositionFromBeat(_hitBeat, 14);
+                var nba = Conductor.Instance.GetPositionFromBeat(_hitBeat, 14);
                 Sprite.DrawSprite(Spaceball.TexSpaceballProps,
                     Vector3.Lerp(_hitPos, new Vector3(_randomHitX, 0, -1300f), nba),
                     _lastRot * nba * 12f, Trinkit.Color.white,

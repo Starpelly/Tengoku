@@ -129,7 +129,7 @@ namespace Trinkit
             return ToString(format, null);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
             if (formatProvider == null)
                 formatProvider = CultureInfo.InvariantCulture.NumberFormat;

@@ -4,7 +4,7 @@ namespace Tickscript
 {
     public class Commands
     {
-        public GameManager GameManager { get; set; }
+        public GameManager GameManager => GameManager.Instance;
 
         public void Log(object val)
         {
@@ -53,7 +53,8 @@ namespace Tickscript
                 if (newToken.Type == Tickscript.Tokens.TokenType.TRUE || newToken.Type == Tickscript.Tokens.TokenType.FALSE)
                     literal = (newToken.Type == Tickscript.Tokens.TokenType.TRUE) ? true : false;
 
-                parameters.Add(literal);
+                if (literal != null)
+                    parameters.Add(literal);
                 parametersIndex++;
             }
 
@@ -88,8 +89,8 @@ namespace Tickscript
             var functionName = fullInvokeName;
 
             var typeInfo = Type.GetType(className);
-            var methodInfo = typeInfo.GetMethod(functionName);
-            methodInfo.Invoke(null, null);
+            var methodInfo = typeInfo?.GetMethod(functionName);
+            methodInfo?.Invoke(null, null);
         }
 
         public bool IsSkipping()

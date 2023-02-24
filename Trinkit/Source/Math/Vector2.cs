@@ -145,7 +145,7 @@ namespace Trinkit
             return ((IFormattable)this).ToString(null, null);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
             if (string.IsNullOrEmpty(format))
                 format = "F2";

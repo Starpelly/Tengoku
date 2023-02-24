@@ -24,7 +24,7 @@
         /// </summary>
         public Vector4(float x, float y, float z, float w) { this.x = x; this.y = y; this.z = z; this.w = w; }
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             if (!(other is Vector4)) return false;
 

@@ -9,9 +9,7 @@ namespace Tengoku
 {
     public class GameManager : Component
     {
-        public static GameManager Instance { get; private set; }
-
-        public Conductor Conductor { get; private set; }
+        public static readonly GameManager Instance = new GameManager();
 
         public TickscriptLox TickscriptLox = new TickscriptLox();
 
@@ -31,25 +29,19 @@ namespace Tengoku
 
         public GameManager()
         {
-            if (Instance == null)
-                Instance = this;
-
             TickscriptLox.Run(File.ReadAllText("Resources/levels/spaceball.tks"));
-            commands.GameManager = this;
 
-            Conductor = new Conductor();
-            Conductor.Instance = Conductor;
-            Conductor.InitialTempo = 104.275f;
-            Conductor.Clip = Resources.Load<AudioClip>("audio/music/spaceball.wav");
-            Conductor.Play();
+            Conductor.Instance.InitialTempo = 104.275f;
+            Conductor.Instance.Clip = Resources.Load<AudioClip>("audio/music/spaceball.wav");
+            Conductor.Instance.Play();
         }
 
         public override void Update()
         {
-            Conductor.Update();
+            Conductor.Instance.Update();
+            if (TickscriptLox == null || TickscriptLox.tokens == null) return;
 
-            IsResting = !(Conductor.SongPositionInBeats >= StartRestingBeat + RestingTime);
-
+            IsResting = !(Conductor.Instance.SongPositionInBeats >= StartRestingBeat + RestingTime);
             if (!Started)
             {
                 for (int i = 0; i < TickscriptLox.tokens.Count; i++)
@@ -71,11 +63,14 @@ namespace Tengoku
                         var token = TickscriptLox.tokens[TokenIndex];
                         TokenIndex++;
 
-                        if (GoingToBeat && CommandBeat >= Conductor.SongPositionInBeats)
+                        if (GoingToBeat && CommandBeat >= Conductor.Instance.SongPositionInBeats)
                         {
                             GoingToBeat = false;
                             return;
                         }
+
+                        var tokenLiteral = TickscriptLox.tokens[TokenIndex].Literal;
+                        if (tokenLiteral == null) tokenLiteral = 0;
 
                         switch (token.Type)
                         {
@@ -86,14 +81,14 @@ namespace Tengoku
                                 // commands.Native(TickscriptLox.tokens[tokenIndex + 1].Lexeme, TickscriptLox.tokens[tokenIndex + 3].Lexeme);
                                 break;
                             case Tickscript.Tokens.TokenType.REST:
-                                commands.Rest((double)TickscriptLox.tokens[TokenIndex].Literal);
+                                commands.Rest((double)tokenLiteral);
                                 break;
                             case Tickscript.Tokens.TokenType.GOTO:
                                 // Conductor.SetBeat((float)(double)TickscriptLox.tokens[TokenIndex].Literal);
                                 // goingToBeat = true;
                                 break;
                             case Tickscript.Tokens.TokenType.LOG:
-                                commands.Log(TickscriptLox.tokens[TokenIndex].Literal);
+                                commands.Log(tokenLiteral);
                                 break;
                             case Tickscript.Tokens.TokenType.CALL:
                                 commands.Call(
@@ -102,7 +97,7 @@ namespace Tengoku
                                     TickscriptLox.tokens);
                                 break;
                             case Tickscript.Tokens.TokenType.SKIP:
-                                SkipCommands = (int)(double)TickscriptLox.tokens[TokenIndex].Literal + 1; // Add one to compensate for the skip semicolon
+                                SkipCommands = (int)(double)tokenLiteral + 1; // Add one to compensate for the skip semicolon
                                 break;
                             case Tickscript.Tokens.TokenType.SEMICOLON:
                                 SkipCommands -= 1;

@@ -2,7 +2,7 @@
 {
     public class Conductor : AudioSource
     {
-        public static Conductor Instance { get; set; }
+        public static readonly Conductor Instance = new Conductor();
 
         /// <summary>
         /// The tempo the song will start at.

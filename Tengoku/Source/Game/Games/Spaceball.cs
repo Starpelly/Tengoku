@@ -48,12 +48,6 @@ namespace Tengoku.Games.Spaceball
         private float _nextStarPeriod = 0.03f;
         private int _maxStars = 300;
 
-        struct Star
-        {
-            public Vector3 initialPos;
-            public Vector3 randomDir;
-        }
-
         private Color[] playerColors = new Color[]
         {
             Color.white,
@@ -93,7 +87,7 @@ namespace Tengoku.Games.Spaceball
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
             if (ZoomingEnabled)
-                _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, GameManager.Instance.Conductor.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
+                _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, Conductor.Instance.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
 
             if (PlayerInput.GetPlayerDown())
             {
@@ -212,12 +206,11 @@ namespace Tengoku.Games.Spaceball
 
         public void Ball(float beat, bool high, bool riceball = false)
         {
-            var newBall = new Ball();
+            var newBall = new Ball(this);
             newBall.StartBeat = beat;
             newBall.High = high;
             newBall.Riceball = riceball;
 
-            newBall.Spaceball = this;
             newBall.Start();
             Balls.Add(newBall);
 

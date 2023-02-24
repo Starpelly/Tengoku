@@ -4,9 +4,9 @@ namespace Trinkit.Audio
 {
     public class AudioSource : Component
     {
-        public AudioClip Clip;
+        public AudioClip? Clip;
 
-        public float Time => (float)Clip.GetTime();
+        public float Time => (Clip != null) ? (float)Clip.GetTime() : 0.0f;
         public float Volume = 1.0f;
         public float Pitch = 1.0f;
 
@@ -14,19 +14,24 @@ namespace Trinkit.Audio
 
         public void Play()
         {
-            Clip.PlayStream();
+            if (Clip != null)
+                Clip.PlayStream();
         }
 
         public override void Update()
         {
-            Clip.UpdateStream();
-            Clip.SetVolume(Volume);
+            if (Clip != null)
+            {
+                Clip.UpdateStream();
+                Clip.SetVolume(Volume);
+            }
             // Clip.SetPitch(Pitch);
         }
 
         public override void Dispose()
         {
-            Clip.Dispose();
+            if (Clip != null)
+                Clip.Dispose();
         }
     }
 }

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tengoku", "Tengoku\Tengoku.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trinkit", "Trinkit\Trinkit.csproj", "{EF2C2D7E-DD27-45BC-AC1A-89C1372C08FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tickscript", "Tickscript\Tickscript.csproj", "{838C1382-01B7-4D79-ACBE-976613DD1951}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tickscript", "Tickscript\Tickscript.csproj", "{838C1382-01B7-4D79-ACBE-976613DD1951}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

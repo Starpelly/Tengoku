@@ -9,9 +9,9 @@ namespace Trinkit
     {
         internal static IntPtr ImGuiContext = IntPtr.Zero;
 
-        private static ImGuiMouseCursor CurrentMouseCursor = ImGuiMouseCursor.COUNT;
-        private static Dictionary<ImGuiMouseCursor, MouseCursor> MouseCursorMap;
-        private static KeyboardKey[] KeyEnumMap;
+        private static ImGuiMouseCursor? CurrentMouseCursor = ImGuiMouseCursor.COUNT;
+        private static Dictionary<ImGuiMouseCursor, MouseCursor>? MouseCursorMap;
+        private static KeyboardKey[]? KeyEnumMap;
 
         private static Texture FontTexture;
 
@@ -39,6 +39,7 @@ namespace Trinkit
 
         private static void SetupMouseCursors()
         {
+            if (MouseCursorMap == null) return;
             MouseCursorMap.Clear();
             MouseCursorMap[ImGuiMouseCursor.Arrow] = MouseCursor.MOUSE_CURSOR_ARROW;
             MouseCursorMap[ImGuiMouseCursor.TextInput] = MouseCursor.MOUSE_CURSOR_IBEAM;
@@ -166,11 +167,13 @@ namespace Trinkit
 
                         if ((io.ConfigFlags & ImGuiConfigFlags.NoMouseCursorChange) == 0)
                         {
-
-                            if (!MouseCursorMap.ContainsKey(imgui_cursor))
-                                Raylib.SetMouseCursor(MouseCursor.MOUSE_CURSOR_DEFAULT);
-                            else
-                                Raylib.SetMouseCursor(MouseCursorMap[imgui_cursor]);
+                            if (MouseCursorMap != null)
+                            {
+                                if (!MouseCursorMap.ContainsKey(imgui_cursor))
+                                    Raylib.SetMouseCursor(MouseCursor.MOUSE_CURSOR_DEFAULT);
+                                else
+                                    Raylib.SetMouseCursor(MouseCursorMap[imgui_cursor]);
+                            }
                         }
                     }
                 }
@@ -182,10 +185,11 @@ namespace Trinkit
         {
             ImGuiIOPtr io = ImGui.GetIO();
 
-            foreach (KeyboardKey key in KeyEnumMap)
-            {
-                io.KeysDown[(int)key] = Raylib.IsKeyDown(key);
-            }
+            if (KeyEnumMap != null)
+                foreach (KeyboardKey key in KeyEnumMap)
+                {
+                    io.KeysDown[(int)key] = Raylib.IsKeyDown(key);
+                }
 
             uint pressed = (uint)Raylib.GetCharPressed();
             while (pressed != 0)

@@ -17,7 +17,6 @@ namespace Tengoku
         public static new Game Instance { get; private set; } = null!;
 
         public Spaceball spaceball;
-        GameManager gameManager;
         DSGuy dsGuy;
 
         private RenderTexture _renderTexture;
@@ -49,7 +48,6 @@ namespace Tengoku
             ImGui.GetStyle().WindowRounding = 8f;
 
             spaceball = new Spaceball();
-            gameManager = new GameManager();
             dsGuy = new DSGuy();
 
             richPresence = new DiscordRichPresence();
@@ -58,14 +56,14 @@ namespace Tengoku
 
             languageTest = new Language();
 
-            var str = File.ReadAllText("Resources/localization/eng.json");
+            /*var str = File.ReadAllText("Resources/localization/eng.json");
             var a = JsonConvert.DeserializeObject<Language>(str);
-            Console.WriteLine(a.APPNAME);
+            Console.WriteLine(a.APPNAME);*/
         }
 
         public override void OnUpdate()
         {
-            gameManager.Update();
+            GameManager.Instance.Update();
             spaceball.Update();
         }
 

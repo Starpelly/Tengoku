@@ -36,7 +36,7 @@ namespace Trinkit
                 );
         }
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             if (!(other is Vector3)) return false;
 
@@ -48,7 +48,7 @@ namespace Trinkit
             return x == other.x && y == other.y && z == other.z;
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
             if (string.IsNullOrEmpty(format))
                 format = "F2";

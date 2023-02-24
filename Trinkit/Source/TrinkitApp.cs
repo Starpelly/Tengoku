@@ -5,7 +5,9 @@ namespace Trinkit
 {
     public abstract class TrinkitApp : IDisposable
     {
-        public static TrinkitApp Instance { get; private set; }
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public static TrinkitApp Instance;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         /// <summary>
         /// The application name.

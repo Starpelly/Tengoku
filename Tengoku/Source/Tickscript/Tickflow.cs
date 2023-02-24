@@ -4,9 +4,9 @@ namespace Tickscript
 {
     public class TickscriptLox
     {
-        private bool HadErrors = false;
-        public Scanner scanner;
-        public List<Token> tokens;
+        // private bool HadErrors = false;
+        public Scanner? scanner;
+        public List<Token>? tokens;
 
         public void RunFile(string path)
         {
@@ -39,7 +39,7 @@ namespace Tickscript
         public void Report(int line, string where, string message)
         {
             Console.WriteLine($"[line {line}] Error {where}: {message}");
-            HadErrors = true;
+            // HadErrors = true;
         }
     }
 }
