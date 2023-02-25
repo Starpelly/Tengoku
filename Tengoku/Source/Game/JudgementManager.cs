@@ -7,7 +7,7 @@ namespace Tengoku
     {
         public static float GetDelta(float targetBeats, float currentSecond)
         {
-            float num = GameManager.Instance.Conductor!.GetSongPosFromBeat((float)targetBeats);
+            float num = Conductor.Instance!.GetSongPosFromBeat((float)targetBeats);
             var max = Mathf.Max(currentSecond, num);
             var min = Mathf.Min(currentSecond, num);
             return (float)(currentSecond - num);

@@ -24,7 +24,7 @@ namespace Tengoku.Scenes
         private float _squaresClock = 0.0f;
         private float _nextSquareTime = 0.0f;
         private float _nextSquarePeriod = 0.03f;
-        private int _maxSquares = 300;
+        private int _maxSquares = 400;
 
         private Raylib_CsLo.Camera3D _cam;
 
@@ -87,7 +87,7 @@ namespace Tengoku.Scenes
                 _squares.Add(
                     new Vector3(
                         8f,
-                        Trinkit.Random.Range(-4f, 2f),
+                        Trinkit.Random.Range(-4f, 4f),
                         Trinkit.Random.Range(15f, -6f)
                         ));
                 if (_squares.Count > _maxSquares)

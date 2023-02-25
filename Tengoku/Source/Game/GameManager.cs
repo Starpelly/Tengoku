@@ -10,7 +10,6 @@ namespace Tengoku
         public static GameManager Instance { get; private set; }
 
         public TickscriptLox TickscriptLox = new TickscriptLox();
-        public Conductor Conductor = new Conductor();
 
         private Commands commands = new Commands();
 
@@ -32,7 +31,6 @@ namespace Tengoku
 
             commands.gameManager = this;
             LoadScript("Resources/levels/spaceball.tks");
-            Conductor = new Conductor();
         }
 
         public void LoadScript(string location)
@@ -41,10 +39,10 @@ namespace Tengoku
             commands.OnCommand += OnCommand;
 
             // This is just bad, make a proper way of doing this in the future.
-            Conductor.Dispose();
-            Conductor.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
-            Conductor.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[4].Literal}");
-            Conductor.Play();
+            Conductor.Instance.Dispose();
+            Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
+            Conductor.Instance.Clip = new AudioClip($"resources/audio/music/{TickscriptLox.tokens[4].Literal}");
+            Conductor.Instance.Play();
         }
 
         public void OnCommand(string engine, string function, List<object> parameters)
@@ -68,10 +66,11 @@ namespace Tengoku
 
         public override void Update()
         {
-            Conductor.Update();
+            Conductor.Instance.Update();
+
             if (TickscriptLox == null || TickscriptLox.tokens == null) return;
 
-            IsResting = !(Conductor.SongPositionInBeats >= StartRestingBeat + RestingTime);
+            IsResting = !(Conductor.Instance.SongPositionInBeats >= StartRestingBeat + RestingTime);
             if (!Started)
             {
                 for (int i = 0; i < TickscriptLox.tokens.Count; i++)
@@ -93,7 +92,7 @@ namespace Tengoku
                         var token = TickscriptLox.tokens[TokenIndex];
                         TokenIndex++;
 
-                        if (GoingToBeat && CommandBeat >= Conductor.SongPositionInBeats)
+                        if (GoingToBeat && CommandBeat >= Conductor.Instance.SongPositionInBeats)
                         {
                             GoingToBeat = false;
                             return;
@@ -111,7 +110,7 @@ namespace Tengoku
                                 commands.Rest((double)TickscriptLox.tokens[TokenIndex].Literal);
                                 break;
                             case Tickscript.Tokens.TokenType.GOTO:
-                                // Conductor.SetBeat((float)(double)TickscriptLox.tokens[TokenIndex].Literal);
+                                // Conductor.Instance.SetBeat((float)(double)TickscriptLox.tokens[TokenIndex].Literal);
                                 // goingToBeat = true;
                                 break;
                             case Tickscript.Tokens.TokenType.LOG:

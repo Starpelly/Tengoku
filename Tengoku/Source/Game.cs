@@ -44,7 +44,7 @@ namespace Tengoku
         {
             Instance = this;
 
-            LoadScene<GameSelect>();
+            LoadScene<GameScene>();
 
             _debugRenderTexture = new RenderTexture(_screenWidth, _screenHeight);
 

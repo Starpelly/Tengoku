@@ -85,7 +85,7 @@ namespace Tengoku.Games.Spaceball
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
             if (ZoomingEnabled)
-                _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, GameManager.Instance.Conductor.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
+                _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, Conductor.Instance.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
 
             if (PlayerInput.GetPlayerDown())
             {

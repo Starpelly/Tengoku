@@ -39,7 +39,7 @@ namespace Tengoku.Games.Spaceball
             if (!_hit)
             {
                 var length = High ? 2 : 1;
-                normalizedPitchAnim = GameManager.Instance.Conductor.GetPositionFromBeat(StartBeat, length + 0.175f);
+                normalizedPitchAnim = Conductor.Instance.GetPositionFromBeat(StartBeat, length + 0.175f);
 
                 if (normalizedPitchAnim < 1.0f)
                 {
@@ -52,7 +52,7 @@ namespace Tengoku.Games.Spaceball
 
                     if (down)
                     {
-                        var signedDelta = JudgementManager.GetDelta(High ? StartBeat + 2 : StartBeat + 1, GameManager.Instance.Conductor.SongPosition);
+                        var signedDelta = JudgementManager.GetDelta(High ? StartBeat + 2 : StartBeat + 1, Conductor.Instance.SongPosition);
                         Console.WriteLine(signedDelta * 1);
 
                         var missRange = 0.13f;
@@ -79,7 +79,7 @@ namespace Tengoku.Games.Spaceball
                         if (State == Judgement.Perfect || State == Judgement.Hit)
                         {
                             Raylib.PlaySound(Spaceball.HitSnd);
-                            _hitBeat = GameManager.Instance.Conductor.SongPositionInBeats;
+                            _hitBeat = Conductor.Instance.SongPositionInBeats;
                             _hit = true;
                             _hitPos = _lastPos;
                             _lastRot = ballRot;
@@ -106,13 +106,13 @@ namespace Tengoku.Games.Spaceball
             }
             else
             {
-                var nba = GameManager.Instance.Conductor.GetPositionFromBeat(_hitBeat, 14);
+                var nba = Conductor.Instance.GetPositionFromBeat(_hitBeat, 14);
                 Sprite.DrawSprite(Spaceball.TexSpaceballProps,
                     Vector3.Lerp(_hitPos, new Vector3(_randomHitX, 0, -1300f), nba),
                     _lastRot * nba * 12f, Trinkit.Color.white,
                     new Rectangle(Riceball ? 32 : 0, 96, 32, 32), 90f);
 
-                if (GameManager.Instance.Conductor.SongPositionInBeats > _hitBeat + 14)
+                if (Conductor.Instance.SongPositionInBeats > _hitBeat + 14)
                     Destroy();
             }
         }

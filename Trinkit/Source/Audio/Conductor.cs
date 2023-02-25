@@ -1,7 +1,11 @@
-﻿namespace Trinkit.Audio
+﻿using System.IO;
+
+namespace Trinkit.Audio
 {
     public class Conductor : AudioSource
     {
+        public static readonly Conductor Instance = new Conductor();
+
         /// <summary>
         /// The tempo the song will start at.
         /// </summary>
