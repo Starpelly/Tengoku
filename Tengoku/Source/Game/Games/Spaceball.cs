@@ -4,10 +4,8 @@ using Trinkit.Graphics;
 
 namespace Tengoku.Games.Spaceball
 {
-    public class Spaceball : Scene, IDisposable
+    public class Spaceball : IDisposable
     {
-        public Texture refTex;
-
         public Texture SpaceballPlayerSheet0;
         public Texture SpaceballPlayerSheet1;
         public Texture SpaceballPlayerSheet2;
@@ -63,8 +61,6 @@ namespace Tengoku.Games.Spaceball
             SpaceballPlayerSheet2 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_2.png");
             SpaceballPlayerSheet3 = new Texture("resources/sprites/games/spaceball/spaceball_player_sheet_3.png");
             
-            refTex = new Texture("resources/sprites/games/spaceball/spaceball_ref.png");
-
             TexSpaceballProps = new Texture("resources/sprites/games/spaceball/spaceball_props.png");
             SpaceballRoom = new Texture("resources/sprites/games/spaceball/spaceball_room.png");
 
@@ -80,10 +76,11 @@ namespace Tengoku.Games.Spaceball
             _umpireAnim = new Animator("resources/animations/games/spaceball/spaceballumpire.json");
         }
 
-        public override void Update()
+        public void Update()
         {
-            _cam.fovy = 10.125f;
-            _cam.position = new System.Numerics.Vector3(0.0f, 0.0f, -_camPosZ);
+            // _cam.fovy = 10.125f;
+            _cam.fovy = 10f;
+            _cam.position = new System.Numerics.Vector3(0.0f, -0.012f, -_camPosZ);
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
@@ -119,7 +116,7 @@ namespace Tengoku.Games.Spaceball
             _starsClock += Time.deltaTime;
         }
 
-        public override void Draw()
+        public void Draw()
         {
             Window.Clear(new Color("#000073"));
             Raylib_CsLo.Raylib.BeginMode3D(_cam);
@@ -189,20 +186,12 @@ namespace Tengoku.Games.Spaceball
             Raylib_CsLo.Raylib.EndMode3D();
         }
 
-        public override void DrawGUI()
+        public void DrawGUI()
         {
             for (int i = 0; i < Balls.Count; i++)
             {
                 Balls[i].DrawGUI();
             }
-
-            /*Raylib_CsLo.Raylib.DrawTexturePro(
-                refTex,
-                new Raylib_CsLo.Rectangle(0, 0, 280, 160),
-                new Raylib_CsLo.Rectangle(0, 19, GameWindow.Width, GameWindow.Height - 19),
-                new System.Numerics.Vector2(0, 0),
-                0,
-                new Color(1, 1, 0.5f, 0.5f));*/
         }
 
         public void Ball(float beat, bool high, bool riceball = false)
@@ -254,10 +243,6 @@ namespace Tengoku.Games.Spaceball
             Raylib_CsLo.Raylib.UnloadSound(HitSnd);
             Raylib_CsLo.Raylib.UnloadSound(ShootSnd);
             Raylib_CsLo.Raylib.UnloadSound(ShootHighSnd);
-        }
-
-        public override void DrawBefore()
-        {
         }
     }
 }

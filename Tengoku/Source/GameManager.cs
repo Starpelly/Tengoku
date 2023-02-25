@@ -1,6 +1,7 @@
 ﻿using System;
 using Tengoku.Games;
 using Tengoku.Games.Spaceball;
+using Tengoku.Scenes;
 using Tickscript;
 using Trinkit;
 using Trinkit.Audio;
@@ -9,8 +10,6 @@ namespace Tengoku
 {
     public class GameManager : Component
     {
-        public static readonly GameManager Instance = new GameManager();
-
         public TickscriptLox TickscriptLox = new TickscriptLox();
 
         private Commands commands = new Commands();
@@ -29,6 +28,7 @@ namespace Tengoku
 
         public GameManager()
         {
+            commands.gameManager = this;
             LoadScript("Resources/levels/spaceball.tks");
         }
 
@@ -46,21 +46,21 @@ namespace Tengoku
 
         public void OnCommand(string engine, string function, List<object> parameters)
         {
-            var spaceball = (Spaceball)Game.Instance.scene;
+            var game = (GameScene)Game.Instance.scene;
             if (function == "ball")
-                spaceball.Ball(CommandBeat, (bool)parameters[0]);
+                game.Spaceball.Ball(CommandBeat, (bool)parameters[0]);
             else if (function == "riceball")
-                spaceball.Ball(CommandBeat, (bool)parameters[0], true);
+                game.Spaceball.Ball(CommandBeat, (bool)parameters[0], true);
             else if (function == "zoom")
-                spaceball.Zoom(CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
+                game.Spaceball.Zoom(CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
             else if (function == "prepare")
-                spaceball.DispenserPrepare();
+                game.Spaceball.DispenserPrepare();
             else if (function == "umpireShow")
-                spaceball.Umpire(true);
+                game.Spaceball.Umpire(true);
             else if (function == "umpireIdle")
-                spaceball.Umpire(false);
+                game.Spaceball.Umpire(false);
             else if (function == "costume")
-                spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);
+                game.Spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);
         }
 
         public override void Update()

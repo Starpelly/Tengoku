@@ -6,5 +6,6 @@
         public abstract void DrawBefore();
         public abstract void Draw();
         public abstract void DrawGUI();
+        public abstract void OnExit();
     }
 }

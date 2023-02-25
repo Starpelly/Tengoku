@@ -2,16 +2,14 @@
 
 using Trinkit;
 
-using Tengoku.Games.Spaceball;
 using Tengoku.UI;
 using Tengoku.Debugging;
-
-using ImGuiNET;
 using Tengoku.Discord;
 using Trinkit.Graphics;
 using Trinkit.Localization;
-using Newtonsoft.Json;
-using Tengoku.Menus;
+using Tengoku.Scenes;
+
+using ImGuiNET;
 
 namespace Tengoku
 {
@@ -21,12 +19,12 @@ namespace Tengoku
 
         public Scene scene;
 
-        private RenderTexture _renderTexture;
-        public static RenderTexture RenderTexture => Instance!._renderTexture;
+        private RenderTexture _debugRenderTexture;
+        public static RenderTexture RenderTexture => Instance!._debugRenderTexture;
 
 #if HD
         private int _screenWidth => GameWindow.Width;
-        private int _screenHeight => GameWindow.Height - 19;
+        private int _screenHeight => GameWindow.Height;
 #else
 
         private int _screenWidth = 280;
@@ -46,7 +44,9 @@ namespace Tengoku
         {
             Instance = this;
 
-            _renderTexture = new RenderTexture(_screenWidth, _screenHeight);
+            LoadScene<GameSelect>();
+
+            _debugRenderTexture = new RenderTexture(_screenWidth, _screenHeight);
 
             Raylib_CsLo.Raylib.InitAudioDevice();
 
@@ -61,12 +61,10 @@ namespace Tengoku
 
             richPresence = new DiscordRichPresence();
 
-            scene = new GameSelect();
         }
 
         public override void OnUpdate()
         {
-            // GameManager.Instance.Update();
             scene.Update();
         }
 
@@ -74,23 +72,26 @@ namespace Tengoku
         {
             Window.Clear(Color.black);
 
+            // _debugRenderTexture.Begin();
+
             scene.DrawBefore();
             scene.Draw();
+            scene.DrawGUI();
+
+            // _debugRenderTexture.End();
 
             /*
-            Raylib_CsLo.Raylib.BeginShaderMode(shader);
+            // Raylib_CsLo.Raylib.BeginShaderMode(shader);
             Raylib_CsLo.Raylib.DrawTexturePro(
-                _renderTexture.texture,
-                    new Raylib_CsLo.Rectangle(0, 0, (float)_renderTexture.texture.width, (float)-_renderTexture.texture.height),
+                _debugRenderTexture.texture,
+                    new Raylib_CsLo.Rectangle(0, 0, (float)_debugRenderTexture.texture.width, (float)-_debugRenderTexture.texture.height),
                     new Raylib_CsLo.Rectangle(0, 19, GameWindow.Width, GameWindow.Height - 19),
                     new System.Numerics.Vector2(0.0f, 0.0f),
                     0.0f,
                     Color.white
                 );
-            Raylib_CsLo.Raylib.EndShaderMode();
+            // Raylib_CsLo.Raylib.EndShaderMode();
             */
-
-            scene.DrawGUI();
 
 #if RELEASE
 #else
@@ -142,6 +143,28 @@ namespace Tengoku
 
             TrinkitImGui.Shutdown();
             Raylib_CsLo.Raylib.CloseAudioDevice();
+        }
+
+        public static void LoadScene<T>() where T : Scene
+        {
+
+            if (Instance.scene != null)
+            {
+                if (Instance.scene.GetType() == typeof(T))
+                    return;
+
+                Instance.scene.OnExit();
+
+                for (int i = 0; i < Instance.Components.Count; i++)
+                {
+                    Instance.Components[i].Dispose();
+                }
+            }
+
+            var sceneObj = Activator.CreateInstance(typeof(T)) as T;
+            if (sceneObj == null) throw new Exception("Scene not found!");
+
+            Instance.scene = sceneObj;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Trinkit;
 using Trinkit.Graphics;
 
-namespace Tengoku.Menus
+namespace Tengoku.Scenes
 {
     public class GameSelect : Scene
     {
@@ -19,8 +19,6 @@ namespace Tengoku.Menus
         private Texture _square;
         private Texture _selection;
 
-        private RenderTexture _bgTexture;
-
         private List<Vector3> _squares = new();
         private float _squaresClock = 0.0f;
         private float _nextSquareTime = 0.0f;
@@ -31,7 +29,6 @@ namespace Tengoku.Menus
 
         public GameSelect()
         {
-            _bgTexture = new RenderTexture(1, Game.ViewHeight / 5);
             _gameIcons = new Texture("resources/sprites/gameselect/gameicons.png");
             _extraIcons = new Texture("resources/sprites/gameselect/extras.png");
             _selection = new Texture("resources/sprites/gameselect/selection.png");
@@ -65,7 +62,7 @@ namespace Tengoku.Menus
             currentGameRow = Mathf.Clamp(currentGameRow, -5, 0);
 
             _cam.fovy = 10.125f;
-            _cam.position = new System.Numerics.Vector3(Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f), Time.deltaTime * 20f), Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.deltaTime * 20f), -10.0f);
+            _cam.position = new System.Numerics.Vector3(Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f) - 0.2f, Time.deltaTime * 20f), Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.deltaTime * 20f), -10.0f);
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
@@ -95,28 +92,14 @@ namespace Tengoku.Menus
 
         public override void DrawBefore()
         {
-            
-            _bgTexture.Begin();
             Window.Clear(Color.black);
 
-            Raylib_CsLo.Raylib.DrawRectangleGradientV(0, 0, Game.ViewWidth, Game.ViewHeight / 5, color2, color1);
-            Raylib_CsLo.Raylib.DrawRectangle(0, 0, Game.ViewWidth, Game.ViewHeight / 5, Color.Lerp(Color.white, Color.transparentWhite, SceneClock / 1.25f));
-
-            _bgTexture.End();
+            Raylib_CsLo.Raylib.DrawRectangleGradientV(0, 0, Game.ViewWidth, Game.ViewHeight, color2, color1);
+            Raylib_CsLo.Raylib.DrawRectangle(0, 0, Game.ViewWidth, Game.ViewHeight, Color.Lerp(Color.white, Color.transparentWhite, SceneClock / 1.25f));
         }
 
         public override void Draw()
         {
-            
-            Raylib_CsLo.Raylib.DrawTexturePro(
-                _bgTexture.texture,
-                        new Raylib_CsLo.Rectangle(0, 0, (float)_bgTexture.texture.width, (float)-_bgTexture.texture.height),
-                        new Raylib_CsLo.Rectangle(0, 19, Game.ViewWidth, Game.ViewHeight),
-                    new System.Numerics.Vector2(0.0f, 0.0f),
-                    0.0f,
-                    Color.white
-                );
-
             Raylib_CsLo.Raylib.BeginMode3D(_cam);
 
             for (int i = 0; i < _squares.Count; i++)
@@ -162,6 +145,10 @@ namespace Tengoku.Menus
         }
 
         public override void DrawGUI()
+        {
+        }
+
+        public override void OnExit()
         {
         }
     }

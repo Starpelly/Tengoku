@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using Tengoku.Scenes;
 
 namespace Tengoku.Debugging
 {
@@ -23,18 +24,15 @@ namespace Tengoku.Debugging
                     /*if (ImGui.MenuItem("Splashscreen")) { }
                     if (ImGui.MenuItem("Title")) { }
                     if (ImGui.MenuItem("Menu")) { }
-                    if (ImGui.MenuItem("GameSelect")) { }*/
-                    if (ImGui.MenuItem("Game")) { }
+                    */
+                    if (ImGui.MenuItem("GameSelect")) { Game.LoadScene<GameSelect>(); }
+                    if (ImGui.MenuItem("Game")) { Game.LoadScene<GameScene>(); }
                     ImGui.EndMenu();
                 }
                 if (ImGui.BeginMenu("Games"))
                 {
                     if (ImGui.BeginMenu("Extras")) 
                     {
-                        if (ImGui.MenuItem("Spaceball"))
-                            GameManager.Instance.LoadScript(@"Resources\levels\spaceball.tks");
-                        if (ImGui.MenuItem("Remix 1 Test"))
-                            GameManager.Instance.LoadScript(@"Resources\levels\remix1.tks");
                         ImGui.EndMenu();
                     }
                     /*ImGui.Separator();
