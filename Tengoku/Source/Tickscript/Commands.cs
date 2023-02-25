@@ -59,7 +59,7 @@ namespace Tickscript
             }
 
             // Debug.Log(engine + "  :  " + function);
-            if (function == "ball")
+            /*if (function == "ball")
                 Game.Instance.spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0]);
             else if (function == "riceball")
                 Game.Instance.spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0], true);
@@ -72,7 +72,7 @@ namespace Tickscript
             else if (function == "umpireIdle")
                 Game.Instance.spaceball.Umpire(false);
             else if (function == "costume")
-                Game.Instance.spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);
+                Game.Instance.spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);*/
         }
 
         public void EOF(ref bool inCommandList)

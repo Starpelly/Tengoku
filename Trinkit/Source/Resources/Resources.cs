@@ -1,4 +1,5 @@
 ﻿using Trinkit.Audio;
+using Trinkit.Graphics;
 
 namespace Trinkit
 {
@@ -16,7 +17,7 @@ namespace Trinkit
 
         public static Object? Load(Type type, string location)
         {
-            var assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var assemblyPath = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
 
             if (assemblyPath == null) throw new Exception("AssemblyPath not found.");
 
@@ -28,6 +29,8 @@ namespace Trinkit
 
             if (type == typeof(AudioClip))
                 return new AudioClip(resourceLocation);
+            if (type == typeof(Texture))
+                return new Texture(resourceLocation);
 
             return null;
         }

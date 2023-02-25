@@ -296,7 +296,7 @@ namespace Trinkit
         /// </summary>
         public static Color transparent { get { return new Color(0f, 0f, 0f, 0f); } }
         /// <summary>
-        /// Transparent White. RGBA is (0, 0, 0, 0).
+        /// Transparent White. RGBA is (1, 1, 1, 0).
         /// </summary>
         public static Color transparentWhite { get { return new Color(1f, 1f, 1f, 0f); } }
         /// <summary>

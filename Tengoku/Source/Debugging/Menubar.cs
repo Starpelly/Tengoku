@@ -20,23 +20,30 @@ namespace Tengoku.Debugging
                 }
                 if (ImGui.BeginMenu("Scenes"))
                 {
-                    if (ImGui.MenuItem("Splashscreen")) { }
+                    /*if (ImGui.MenuItem("Splashscreen")) { }
                     if (ImGui.MenuItem("Title")) { }
                     if (ImGui.MenuItem("Menu")) { }
-                    if (ImGui.MenuItem("GameSelect")) { }
+                    if (ImGui.MenuItem("GameSelect")) { }*/
                     if (ImGui.MenuItem("Game")) { }
                     ImGui.EndMenu();
                 }
                 if (ImGui.BeginMenu("Games"))
                 {
-                    if (ImGui.MenuItem("Load Custom...")) { }
-                    ImGui.Separator();
+                    if (ImGui.BeginMenu("Extras")) 
+                    {
+                        if (ImGui.MenuItem("Spaceball"))
+                            GameManager.Instance.LoadScript(@"Resources\levels\spaceball.tks");
+                        if (ImGui.MenuItem("Remix 1 Test"))
+                            GameManager.Instance.LoadScript(@"Resources\levels\remix1.tks");
+                        ImGui.EndMenu();
+                    }
+                    /*ImGui.Separator();
                     if (ImGui.MenuItem("Karate Man")) { }
                     if (ImGui.MenuItem("Rhythm Tweezers")) { }
                     if (ImGui.MenuItem("Marching Orders")) { }
                     if (ImGui.MenuItem("Spaceball")) { }
                     if (ImGui.MenuItem("The Clappy Trio")) { }
-                    if (ImGui.MenuItem("Remix 1")) { }
+                    if (ImGui.MenuItem("Remix 1")) { }*/
                     ImGui.EndMenu();
                 }
 

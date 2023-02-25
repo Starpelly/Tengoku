@@ -29,10 +29,17 @@ namespace Tengoku
 
         public GameManager()
         {
-            TickscriptLox.Run(File.ReadAllText("Resources/levels/remix1.tks"));
+            LoadScript("Resources/levels/spaceball.tks");
+        }
 
-            Conductor.Instance.InitialTempo = 119f;
-            Conductor.Instance.Clip = Resources.Load<AudioClip>("audio/music/remix1.ogg");
+        public void LoadScript(string location)
+        {
+            TickscriptLox.Run(File.ReadAllText(location));
+
+            // This is just bad, make a proper way of doing this in the future.
+            Conductor.Instance.Dispose();
+            Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
+            Conductor.Instance.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[4].Literal}");
             Conductor.Instance.Play();
         }
 
@@ -69,9 +76,6 @@ namespace Tengoku
                             return;
                         }
 
-                        var tokenLiteral = TickscriptLox.tokens[TokenIndex].Literal;
-                        if (tokenLiteral == null) tokenLiteral = 0;
-
                         switch (token.Type)
                         {
                             case Tickscript.Tokens.TokenType.EOF:
@@ -81,14 +85,14 @@ namespace Tengoku
                                 // commands.Native(TickscriptLox.tokens[tokenIndex + 1].Lexeme, TickscriptLox.tokens[tokenIndex + 3].Lexeme);
                                 break;
                             case Tickscript.Tokens.TokenType.REST:
-                                commands.Rest((double)tokenLiteral);
+                                commands.Rest((double)TickscriptLox.tokens[TokenIndex].Literal);
                                 break;
                             case Tickscript.Tokens.TokenType.GOTO:
                                 // Conductor.SetBeat((float)(double)TickscriptLox.tokens[TokenIndex].Literal);
                                 // goingToBeat = true;
                                 break;
                             case Tickscript.Tokens.TokenType.LOG:
-                                commands.Log(tokenLiteral);
+                                commands.Log(TickscriptLox.tokens[TokenIndex].Literal);
                                 break;
                             case Tickscript.Tokens.TokenType.CALL:
                                 commands.Call(
@@ -97,7 +101,7 @@ namespace Tengoku
                                     TickscriptLox.tokens);
                                 break;
                             case Tickscript.Tokens.TokenType.SKIP:
-                                SkipCommands = (int)(double)tokenLiteral + 1; // Add one to compensate for the skip semicolon
+                                SkipCommands = (int)(double)TickscriptLox.tokens[TokenIndex].Literal + 1; // Add one to compensate for the skip semicolon
                                 break;
                             case Tickscript.Tokens.TokenType.SEMICOLON:
                                 SkipCommands -= 1;

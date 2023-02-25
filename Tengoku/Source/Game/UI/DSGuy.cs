@@ -19,7 +19,6 @@ namespace Tengoku.UI
             pos.x /= (GameWindow.Width / 280.0f);
             pos.y /= (GameWindow.Height / 160.0f);
 
-
             if (PlayerInput.GetPlayer())
                 _realRadius += Time.deltaTime * _growSpeed;
             else

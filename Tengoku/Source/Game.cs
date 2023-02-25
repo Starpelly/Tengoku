@@ -16,19 +16,19 @@ namespace Tengoku
     {
         public static new Game Instance { get; private set; } = null!;
 
-        public Spaceball spaceball;
-        DSGuy dsGuy;
+        public Scene scene;
 
         private RenderTexture _renderTexture;
         public static RenderTexture RenderTexture => Instance!._renderTexture;
         private int _screenWidth = 280;
         private int _screenHeight = 160;
 
+        public static int ViewWidth => Instance._screenWidth;
+        public static int ViewHeight => Instance._screenHeight;
+
+        public static Vector2 ViewMousePosition => Input.mousePosition / new Vector2(GameWindow.Width / 280.0f, GameWindow.Height / 160.0f);
+
         private DiscordRichPresence richPresence;
-
-        Raylib_CsLo.Shader shader;
-
-        Language languageTest;
 
         public Game(string title, int width, int height, bool resizable = false) : base(title, width, height, resizable)
         {
@@ -47,38 +47,27 @@ namespace Tengoku
 
             ImGui.GetStyle().WindowRounding = 8f;
 
-            spaceball = new Spaceball();
-            dsGuy = new DSGuy();
-
             richPresence = new DiscordRichPresence();
 
-            shader = Raylib_CsLo.Raylib.LoadShader(null, Raylib_CsLo.Raylib.TextFormat("resources/shaders/vignette.shader", 330));
-
-            languageTest = new Language();
-
-            /*var str = File.ReadAllText("Resources/localization/eng.json");
-            var a = JsonConvert.DeserializeObject<Language>(str);
-            Console.WriteLine(a.APPNAME);*/
+            scene = new Menus.GameSelect();
         }
 
         public override void OnUpdate()
         {
-            GameManager.Instance.Update();
-            spaceball.Update();
+            scene.Update();
         }
 
         public override void OnDraw()
         {
             Window.Clear(Color.black);
 
+            scene.DrawBefore();
+
             _renderTexture.Begin();
 
-            spaceball.Draw();
-            dsGuy.DrawGUI();
+            scene.Draw();
 
             _renderTexture.End();
-
-            Window.Clear(new Color("#1f1f1f"));
 
             // Raylib_CsLo.Raylib.BeginShaderMode(shader);
             Raylib_CsLo.Raylib.DrawTexturePro(
@@ -91,7 +80,7 @@ namespace Tengoku
                 );
             // Raylib_CsLo.Raylib.EndShaderMode();
 
-            spaceball.DrawGUI();
+            scene.DrawGUI();
 
 #if RELEASE
 #else
@@ -138,8 +127,6 @@ namespace Tengoku
             {
                 Components[i].Dispose();
             }
-
-            Raylib_CsLo.Raylib.UnloadShader(shader);
 
             richPresence.Dispose();
 

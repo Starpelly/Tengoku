@@ -4,7 +4,7 @@ using Trinkit.Graphics;
 
 namespace Tengoku.Games.Spaceball
 {
-    public class Spaceball : IDisposable
+    public class Spaceball : Scene, IDisposable
     {
         public Texture refTex;
 
@@ -66,7 +66,7 @@ namespace Tengoku.Games.Spaceball
             refTex = new Texture("resources/sprites/games/spaceball/spaceball_ref.png");
 
             TexSpaceballProps = new Texture("resources/sprites/games/spaceball/spaceball_props.png");
-            SpaceballRoom = new Texture("resources/sprites/games/spaceball/spaceball_room_alt.png");
+            SpaceballRoom = new Texture("resources/sprites/games/spaceball/spaceball_room.png");
 
             _cam = new Raylib_CsLo.Camera3D();
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
@@ -80,7 +80,7 @@ namespace Tengoku.Games.Spaceball
             _umpireAnim = new Animator("resources/animations/spaceballumpire.json");
         }
 
-        public void Update()
+        public override void Update()
         {
             _cam.fovy = 10.125f;
             _cam.position = new System.Numerics.Vector3(0.0f, 0.0f, -_camPosZ);
@@ -119,7 +119,7 @@ namespace Tengoku.Games.Spaceball
             _starsClock += Time.deltaTime;
         }
 
-        public void Draw()
+        public override void Draw()
         {
             Window.Clear(new Color("#000073"));
             Raylib_CsLo.Raylib.BeginMode3D(_cam);
@@ -189,7 +189,7 @@ namespace Tengoku.Games.Spaceball
             Raylib_CsLo.Raylib.EndMode3D();
         }
 
-        public void DrawGUI()
+        public override void DrawGUI()
         {
             for (int i = 0; i < Balls.Count; i++)
             {
@@ -254,6 +254,10 @@ namespace Tengoku.Games.Spaceball
             Raylib_CsLo.Raylib.UnloadSound(HitSnd);
             Raylib_CsLo.Raylib.UnloadSound(ShootSnd);
             Raylib_CsLo.Raylib.UnloadSound(ShootHighSnd);
+        }
+
+        public override void DrawBefore()
+        {
         }
     }
 }
