@@ -97,6 +97,7 @@ namespace Tengoku.Menus
         {
             
             _bgTexture.Begin();
+            Window.Clear(Color.black);
 
             Raylib_CsLo.Raylib.DrawRectangleGradientV(0, 0, Game.ViewWidth, Game.ViewHeight / 5, color2, color1);
             Raylib_CsLo.Raylib.DrawRectangle(0, 0, Game.ViewWidth, Game.ViewHeight / 5, Color.Lerp(Color.white, Color.transparentWhite, SceneClock / 1.25f));
@@ -106,12 +107,11 @@ namespace Tengoku.Menus
 
         public override void Draw()
         {
-            Window.Clear(Color.black);
             
             Raylib_CsLo.Raylib.DrawTexturePro(
                 _bgTexture.texture,
                         new Raylib_CsLo.Rectangle(0, 0, (float)_bgTexture.texture.width, (float)-_bgTexture.texture.height),
-                        new Raylib_CsLo.Rectangle(0, 0, Game.ViewWidth, Game.ViewHeight),
+                        new Raylib_CsLo.Rectangle(0, 19, Game.ViewWidth, Game.ViewHeight),
                     new System.Numerics.Vector2(0.0f, 0.0f),
                     0.0f,
                     Color.white

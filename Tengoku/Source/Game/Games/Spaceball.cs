@@ -75,9 +75,9 @@ namespace Tengoku.Games.Spaceball
             ShootHighSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/shootHigh.ogg");
             HitSnd = Raylib_CsLo.Raylib.LoadSound("resources/audio/sfx/games/spaceball/hit.ogg");
 
-            _playerAnim = new Animator("resources/animations/spaceballplayer.json");
-            _dispenserAnim = new Animator("resources/animations/spaceballdispenser.json");
-            _umpireAnim = new Animator("resources/animations/spaceballumpire.json");
+            _playerAnim = new Animator("resources/animations/games/spaceball/spaceballplayer.json");
+            _dispenserAnim = new Animator("resources/animations/games/spaceball/spaceballdispenser.json");
+            _umpireAnim = new Animator("resources/animations/games/spaceball/spaceballumpire.json");
         }
 
         public override void Update()

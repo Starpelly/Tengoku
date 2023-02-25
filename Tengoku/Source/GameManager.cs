@@ -35,12 +35,32 @@ namespace Tengoku
         public void LoadScript(string location)
         {
             TickscriptLox.Run(File.ReadAllText(location));
+            commands.OnCommand += OnCommand;
 
             // This is just bad, make a proper way of doing this in the future.
             Conductor.Instance.Dispose();
             Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
             Conductor.Instance.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[4].Literal}");
             Conductor.Instance.Play();
+        }
+
+        public void OnCommand(string engine, string function, List<object> parameters)
+        {
+            var spaceball = (Spaceball)Game.Instance.scene;
+            if (function == "ball")
+                spaceball.Ball(CommandBeat, (bool)parameters[0]);
+            else if (function == "riceball")
+                spaceball.Ball(CommandBeat, (bool)parameters[0], true);
+            else if (function == "zoom")
+                spaceball.Zoom(CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
+            else if (function == "prepare")
+                spaceball.DispenserPrepare();
+            else if (function == "umpireShow")
+                spaceball.Umpire(true);
+            else if (function == "umpireIdle")
+                spaceball.Umpire(false);
+            else if (function == "costume")
+                spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);
         }
 
         public override void Update()

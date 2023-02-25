@@ -11,7 +11,7 @@ using Tengoku.Discord;
 using Trinkit.Graphics;
 using Trinkit.Localization;
 using Newtonsoft.Json;
-
+using Tengoku.Menus;
 
 namespace Tengoku
 {
@@ -61,11 +61,12 @@ namespace Tengoku
 
             richPresence = new DiscordRichPresence();
 
-            scene = new Menus.GameSelect();
+            scene = new GameSelect();
         }
 
         public override void OnUpdate()
         {
+            // GameManager.Instance.Update();
             scene.Update();
         }
 
@@ -74,14 +75,10 @@ namespace Tengoku
             Window.Clear(Color.black);
 
             scene.DrawBefore();
-
-            _renderTexture.Begin();
-
             scene.Draw();
 
-            _renderTexture.End();
-
-            // Raylib_CsLo.Raylib.BeginShaderMode(shader);
+            /*
+            Raylib_CsLo.Raylib.BeginShaderMode(shader);
             Raylib_CsLo.Raylib.DrawTexturePro(
                 _renderTexture.texture,
                     new Raylib_CsLo.Rectangle(0, 0, (float)_renderTexture.texture.width, (float)-_renderTexture.texture.height),
@@ -90,7 +87,8 @@ namespace Tengoku
                     0.0f,
                     Color.white
                 );
-            // Raylib_CsLo.Raylib.EndShaderMode();
+            Raylib_CsLo.Raylib.EndShaderMode();
+            */
 
             scene.DrawGUI();
 

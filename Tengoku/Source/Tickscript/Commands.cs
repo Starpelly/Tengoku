@@ -6,6 +6,9 @@ namespace Tickscript
     {
         public GameManager GameManager => GameManager.Instance;
 
+        public delegate void CommandEvent(string engine, string function, List<object> parameters);
+        public event CommandEvent OnCommand;
+
         public void Log(object val)
         {
             if (IsSkipping()) return;
@@ -58,21 +61,10 @@ namespace Tickscript
                 parametersIndex++;
             }
 
+            OnCommand.Invoke(engine, function, parameters);
+
             // Debug.Log(engine + "  :  " + function);
-            /*if (function == "ball")
-                Game.Instance.spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0]);
-            else if (function == "riceball")
-                Game.Instance.spaceball.Ball(GameManager.CommandBeat, (bool)parameters[0], true);
-            else if (function == "zoom")
-                Game.Instance.spaceball.Zoom(GameManager.CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
-            else if (function == "prepare")
-                Game.Instance.spaceball.DispenserPrepare();
-            else if (function == "umpireShow")
-                Game.Instance.spaceball.Umpire(true);
-            else if (function == "umpireIdle")
-                Game.Instance.spaceball.Umpire(false);
-            else if (function == "costume")
-                Game.Instance.spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);*/
+            /**/
         }
 
         public void EOF(ref bool inCommandList)
