@@ -1,4 +1,5 @@
 ﻿using Trinkit;
+using Trinkit.Audio;
 using Trinkit.Graphics;
 
 namespace Tengoku.Scenes
@@ -27,6 +28,8 @@ namespace Tengoku.Scenes
 
         private Raylib_CsLo.Camera3D _cam;
 
+        private AudioSource music;
+
         public GameSelect()
         {
             _gameIcons = new Texture("resources/sprites/gameselect/gameicons.png");
@@ -37,11 +40,15 @@ namespace Tengoku.Scenes
             _cam = new Raylib_CsLo.Camera3D();
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
 
-            color1 = Color.white;
+            music = new AudioSource();
+            music.Clip = Resources.Load<AudioClip>("audio/music/remix1.ogg");
+            music.Play();
         }
 
         public override void Update()
         {
+            music.Update();
+
             if (Input.GetKeyDown(KeyCode.Up))
             {
                 currentGameRow -= 1;

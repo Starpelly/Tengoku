@@ -93,8 +93,7 @@ namespace Tengoku
             // Raylib_CsLo.Raylib.EndShaderMode();
             */
 
-#if RELEASE
-#else
+#if DEBUG
             GuiLayer();
 #endif
         }

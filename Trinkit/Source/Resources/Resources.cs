@@ -21,8 +21,8 @@ namespace Trinkit
 
             if (assemblyPath == null) throw new Exception("AssemblyPath not found.");
 
-            var resourcesPath = Path.Combine(assemblyPath, "Resources");
-            var resourceLocation = Path.GetFullPath(Path.Combine(resourcesPath, location));
+            // var resourcesPath = Path.Combine(assemblyPath, "Resources");
+            var resourceLocation = $"resources/{location}";
 
             if (!File.Exists(resourceLocation)) 
                 throw new Exception("File not found.");
