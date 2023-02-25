@@ -29,6 +29,10 @@
 	  <None Remove="Resources\localization\eng.json" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Resources\animations\ui\" />
+	</ItemGroup>
+
 	<ProjectExtensions><VisualStudio><UserProperties resources_4animations_4spaceballplayer_1json__JsonSchema="https://cdn.jsdelivr.net/gh/tarampampam/error-pages@latest/schemas/config/1.0.schema.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

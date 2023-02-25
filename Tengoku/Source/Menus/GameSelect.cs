@@ -11,10 +11,13 @@ namespace Tengoku.Menus
         private Color color1;
         private Color color2;
 
+        private int currentGameColumn;
+        private int currentGameRow;
 
         private Texture _gameIcons;
         private Texture _extraIcons;
         private Texture _square;
+        private Texture _selection;
 
         private RenderTexture _bgTexture;
 
@@ -28,9 +31,10 @@ namespace Tengoku.Menus
 
         public GameSelect()
         {
-            _bgTexture = new RenderTexture(1, 32);
+            _bgTexture = new RenderTexture(1, Game.ViewHeight / 5);
             _gameIcons = new Texture("resources/sprites/gameselect/gameicons.png");
             _extraIcons = new Texture("resources/sprites/gameselect/extras.png");
+            _selection = new Texture("resources/sprites/gameselect/selection.png");
             _square = new Texture("resources/sprites/square.png");
 
             _cam = new Raylib_CsLo.Camera3D();
@@ -41,8 +45,27 @@ namespace Tengoku.Menus
 
         public override void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Up))
+            {
+                currentGameRow -= 1;
+            }
+            if (Input.GetKeyDown(KeyCode.Down))
+            {
+                currentGameRow += 1;
+            }
+            if (Input.GetKeyDown(KeyCode.Left))
+            {
+                currentGameColumn -= 1;
+            }
+            if (Input.GetKeyDown(KeyCode.Right))
+            {
+                currentGameColumn += 1;
+            }
+            currentGameColumn = Mathf.Clamp(currentGameColumn, 0, 7);
+            currentGameRow = Mathf.Clamp(currentGameRow, -5, 0);
+
             _cam.fovy = 10.125f;
-            _cam.position = new System.Numerics.Vector3(0.0f, 0.0f, -10.0f);
+            _cam.position = new System.Numerics.Vector3(Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f), Time.deltaTime * 20f), Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.deltaTime * 20f), -10.0f);
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
@@ -60,7 +83,7 @@ namespace Tengoku.Menus
                 _squares.Add(
                     new Vector3(
                         8f,
-                        Trinkit.Random.Range(-2f, 2f),
+                        Trinkit.Random.Range(-4f, 2f),
                         Trinkit.Random.Range(15f, -6f)
                         ));
                 if (_squares.Count > _maxSquares)
@@ -75,8 +98,8 @@ namespace Tengoku.Menus
             
             _bgTexture.Begin();
 
-            Raylib_CsLo.Raylib.DrawRectangleGradientV(0, 0, Game.ViewWidth, 32, color2, color1);
-            Raylib_CsLo.Raylib.DrawRectangle(0, 0, Game.ViewWidth, 32, Color.Lerp(Color.white, Color.transparentWhite, SceneClock / 1.25f));
+            Raylib_CsLo.Raylib.DrawRectangleGradientV(0, 0, Game.ViewWidth, Game.ViewHeight / 5, color2, color1);
+            Raylib_CsLo.Raylib.DrawRectangle(0, 0, Game.ViewWidth, Game.ViewHeight / 5, Color.Lerp(Color.white, Color.transparentWhite, SceneClock / 1.25f));
 
             _bgTexture.End();
         }
@@ -102,29 +125,25 @@ namespace Tengoku.Menus
                 Sprite.DrawSprite(_square, _squares[i], _squaresClock * -660f, new Color(1, 1, 1, 0.35f), new Raylib_CsLo.Rectangle(), 90.0f);
             }
 
-            for (int i = 0; i < 6; i++)
-                DrawGame(i);
+            for (int column = 0; column < 8; column++)
+            {
+                for (int row = 0; row < 6; row++)
+                    DrawGame(column, row);
+            }
+
+            Sprite.DrawSprite(_selection, new Vector3(currentGameColumn * (0.24f + 0.2f), currentGameRow * -0.26f), 0, Color.white, new Raylib_CsLo.Rectangle(0, 26*3, 26, 26), 90.0f);
 
             Raylib_CsLo.Raylib.EndMode3D();
 
-            var descriptionPanelY = 29;
-            Raylib_CsLo.Raylib.DrawRectangleLines(180, descriptionPanelY, 96, 97, Color.black);
-            Raylib_CsLo.Raylib.DrawRectangle(181, descriptionPanelY+1, 94, 15, "2030a8".Hex2RGB());
-            Raylib_CsLo.Raylib.DrawRectangle(181, descriptionPanelY+16, 94, 80, Color.white);
+            var descriptionPanelY = (int)(29 * Game.AspectRatio);
+            Raylib_CsLo.Raylib.DrawRectangle((int)(180 * Game.AspectRatio), descriptionPanelY, (int)(96 * Game.AspectRatio), (int)(97 * Game.AspectRatio), Color.black);
+            Raylib_CsLo.Raylib.DrawRectangle((int)(181 * Game.AspectRatio), descriptionPanelY+ (int)(1 * Game.AspectRatio), (int)(94 * Game.AspectRatio), (int)(15 * Game.AspectRatio), "2030a8".Hex2RGB());
+            Raylib_CsLo.Raylib.DrawRectangle((int)(181 * Game.AspectRatio), descriptionPanelY+ (int)(16 * Game.AspectRatio), (int)(94 * Game.AspectRatio), (int)(80 * Game.AspectRatio), Color.white);
         }
 
-        private void DrawGame(int i)
+        private void DrawGame(int column, int row)
         {
-            var xPos = -0.4f;
-            var yPos = 0.1f;
-            if (i == 0)
-            {
-                Sprite.DrawSprite(_gameIcons, new Vector3(xPos, (0.24f * i) - yPos, 0), 0, Color.white, new Raylib_CsLo.Rectangle(24*i, 0, 24, 24), 90.0f);
-            }
-            else
-            {
-                Sprite.DrawSprite(_extraIcons, new Vector3(xPos, (0.24f * i) - yPos, 0), 0, Color.white, new Raylib_CsLo.Rectangle(24*2, 24*2, 24, 24), 90.0f);
-            }
+            Sprite.DrawSprite(_gameIcons, new Vector3(((0.24f + 0.2f) * column), (0.26f * row), 0), 0, Color.white, new Raylib_CsLo.Rectangle(24 * row, 24 * column, 24, 24), 90.0f);
         }
 
 

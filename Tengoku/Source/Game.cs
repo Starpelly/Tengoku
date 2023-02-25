@@ -1,4 +1,6 @@
-﻿using Trinkit;
+﻿#define HD
+
+using Trinkit;
 
 using Tengoku.Games.Spaceball;
 using Tengoku.UI;
@@ -10,6 +12,7 @@ using Trinkit.Graphics;
 using Trinkit.Localization;
 using Newtonsoft.Json;
 
+
 namespace Tengoku
 {
     public class Game : TrinkitApp
@@ -20,8 +23,17 @@ namespace Tengoku
 
         private RenderTexture _renderTexture;
         public static RenderTexture RenderTexture => Instance!._renderTexture;
+
+#if HD
+        private int _screenWidth => GameWindow.Width;
+        private int _screenHeight => GameWindow.Height - 19;
+#else
+
         private int _screenWidth = 280;
         private int _screenHeight = 160;
+#endif
+
+        public static float AspectRatio => (Instance._screenWidth / 280.0f);
 
         public static int ViewWidth => Instance._screenWidth;
         public static int ViewHeight => Instance._screenHeight;

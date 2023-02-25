@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "GameSelect_NoPlayCircle",
+        "Loop": true,
+        "Frames": [
+            {
+                "Length": 1
+            }
+        ]
+    }
+]
