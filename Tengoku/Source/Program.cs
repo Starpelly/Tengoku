@@ -2,19 +2,19 @@
 {
     internal class Program
     {
-        private static string TITLE =
-#if DEBUG
-"Rhythm Tengoku (DEBUG)";
-#else
-"Rhythm Tengoku";
-#endif
-
         static void Main(string[] args)
         {
-            using (var rhythmTengoku = new Game(TITLE, 1280, 720, false))
+#if DEBUG
+            using (var rhythmTengoku = new Game("Rhythm Tengoku (DEBUG)", 1280, 720, false))
             {
                 rhythmTengoku.Run();
             }
+#else
+            using (var rhythmTengoku = new Game("Rhythm Tengoku", 1280, 720))
+            {
+                rhythmTengoku.Run();
+            }
+#endif
         }
     }
 }

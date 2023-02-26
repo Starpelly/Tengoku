@@ -44,7 +44,7 @@ namespace Tengoku
         {
             Instance = this;
 
-            LoadScene<GameScene>();
+            LoadScene<GameSelect>();
 
             _debugRenderTexture = new RenderTexture(_screenWidth, _screenHeight);
 
@@ -93,7 +93,8 @@ namespace Tengoku
             // Raylib_CsLo.Raylib.EndShaderMode();
             */
 
-#if DEBUG
+#if RELEASE
+#else
             GuiLayer();
 #endif
         }

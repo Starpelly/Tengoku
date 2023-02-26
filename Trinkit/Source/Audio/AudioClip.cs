@@ -23,7 +23,7 @@ namespace Trinkit.Audio
 
     public class AudioClip : Object, IDisposable
     {
-        public Music _stream { get; set; }
+        private Music _stream { get; set; }
 
         private bool _loadedStream;
 

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Trinkit.Audio
+﻿namespace Trinkit.Audio
 {
     public class Conductor : AudioSource
     {

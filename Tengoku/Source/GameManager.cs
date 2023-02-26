@@ -1,4 +1,7 @@
-﻿using Tengoku.Scenes;
+﻿using System;
+using Tengoku.Games;
+using Tengoku.Games.Spaceball;
+using Tengoku.Scenes;
 using Tickscript;
 using Trinkit;
 using Trinkit.Audio;
@@ -7,8 +10,6 @@ namespace Tengoku
 {
     public class GameManager : Component
     {
-        public static GameManager Instance { get; private set; }
-
         public TickscriptLox TickscriptLox = new TickscriptLox();
 
         private Commands commands = new Commands();
@@ -27,8 +28,6 @@ namespace Tengoku
 
         public GameManager()
         {
-            Instance = this;
-
             commands.gameManager = this;
             LoadScript("Resources/levels/spaceball.tks");
         }
@@ -41,7 +40,7 @@ namespace Tengoku
             // This is just bad, make a proper way of doing this in the future.
             Conductor.Instance.Dispose();
             Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
-            Conductor.Instance.Clip = new AudioClip($"resources/audio/music/{TickscriptLox.tokens[4].Literal}");
+            Conductor.Instance.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[4].Literal}");
             Conductor.Instance.Play();
         }
 
@@ -67,7 +66,6 @@ namespace Tengoku
         public override void Update()
         {
             Conductor.Instance.Update();
-
             if (TickscriptLox == null || TickscriptLox.tokens == null) return;
 
             IsResting = !(Conductor.Instance.SongPositionInBeats >= StartRestingBeat + RestingTime);
@@ -110,7 +108,7 @@ namespace Tengoku
                                 commands.Rest((double)TickscriptLox.tokens[TokenIndex].Literal);
                                 break;
                             case Tickscript.Tokens.TokenType.GOTO:
-                                // Conductor.Instance.SetBeat((float)(double)TickscriptLox.tokens[TokenIndex].Literal);
+                                // Conductor.SetBeat((float)(double)TickscriptLox.tokens[TokenIndex].Literal);
                                 // goingToBeat = true;
                                 break;
                             case Tickscript.Tokens.TokenType.LOG:

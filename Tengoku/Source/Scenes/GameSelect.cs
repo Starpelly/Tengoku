@@ -1,5 +1,4 @@
 ﻿using Trinkit;
-using Trinkit.Audio;
 using Trinkit.Graphics;
 
 namespace Tengoku.Scenes
@@ -24,11 +23,9 @@ namespace Tengoku.Scenes
         private float _squaresClock = 0.0f;
         private float _nextSquareTime = 0.0f;
         private float _nextSquarePeriod = 0.03f;
-        private int _maxSquares = 400;
+        private int _maxSquares = 300;
 
         private Raylib_CsLo.Camera3D _cam;
-
-        private AudioSource music;
 
         public GameSelect()
         {
@@ -40,15 +37,11 @@ namespace Tengoku.Scenes
             _cam = new Raylib_CsLo.Camera3D();
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
 
-            music = new AudioSource();
-            music.Clip = Resources.Load<AudioClip>("audio/music/remix1.ogg");
-            music.Play();
+            color1 = Color.white;
         }
 
         public override void Update()
         {
-            music.Update();
-
             if (Input.GetKeyDown(KeyCode.Up))
             {
                 currentGameRow -= 1;
@@ -87,7 +80,7 @@ namespace Tengoku.Scenes
                 _squares.Add(
                     new Vector3(
                         8f,
-                        Trinkit.Random.Range(-4f, 4f),
+                        Trinkit.Random.Range(-4f, 2f),
                         Trinkit.Random.Range(15f, -6f)
                         ));
                 if (_squares.Count > _maxSquares)
