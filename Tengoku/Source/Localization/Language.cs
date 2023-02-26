@@ -13,7 +13,7 @@ namespace Trinkit.Localization
             APPNAME = "Rhythm Tengoku";
             GAMES = new()
             {
-                { "GAME_SPACEBALL", new("Spaceball", "Don't worry about the camera's zooms! Hit the ball with your heart! Don't blink! Don't wipe your tears!") }
+                { "GAME_SPACEBALL", new("Spaceball", "Don't worry about the\ncamera's zooms! Hit the\nball with your heart!\nDon't blink!\nDon't wipe your tears!") }
             };
             // Console.WriteLine(JsonConvert.SerializeObject(this, Formatting.Indented));
         }

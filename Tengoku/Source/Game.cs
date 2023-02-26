@@ -10,6 +10,7 @@ using Trinkit.Localization;
 using Tengoku.Scenes;
 
 using ImGuiNET;
+using Trinkit.Audio;
 
 namespace Tengoku
 {
@@ -37,8 +38,14 @@ namespace Tengoku
 
         private DiscordRichPresence? _richPresence;
 
+        public Dictionary<string, Language> Languages { get; set; }
+        
         public Game(string title, int width, int height, bool resizable = false) : base(title, width, height, resizable)
         {
+            Languages = new Dictionary<string, Language>()
+            {
+                { "eng", new Language() }
+            };
         }
 
         public override void OnStart()
@@ -152,7 +159,8 @@ namespace Tengoku
 
                 for (int i = 0; i < Instance.Components.Count; i++)
                 {
-                    Instance.Components[i].Dispose();
+                    if (Instance.Components[i].GetType() != typeof(Conductor))
+                        Instance.Components[i].Dispose();
                 }
             }
 

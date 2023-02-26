@@ -28,6 +28,8 @@ namespace Tengoku.Scenes
 
         private Raylib_CsLo.Camera3D _cam;
 
+        private Vector3 _selectionPos;
+
         public GameSelect()
         {
             _gameIcons = new Texture("resources/sprites/gameselect/gameicons.png");
@@ -110,8 +112,8 @@ namespace Tengoku.Scenes
 
             for (int i = 0; i < _squares.Count; i++)
             {
-                _squares[i] += new Vector3(-2.25f * Time.deltaTime, 0, 0);
-                Sprite.DrawSprite(_square, _squares[i], _squaresClock * -660f, new Color(1, 1, 1, 0.35f), new Raylib_CsLo.Rectangle(), 90.0f);
+                _squares[i] += new Vector3(-1.25f * Time.deltaTime, 0, 0);
+                Sprite.DrawSprite(_square, _squares[i], _squaresClock * (-660f), new Color(1, 1, 1, 0.35f), new Raylib_CsLo.Rectangle(), 90.0f);
             }
 
             for (int column = 0; column < 8; column++)
@@ -120,14 +122,34 @@ namespace Tengoku.Scenes
                     DrawGame(column, row);
             }
 
-            Sprite.DrawSprite(_selection, new Vector3(currentGameColumn * (0.24f + 0.2f), currentGameRow * -0.26f), 0, Color.white, new Raylib_CsLo.Rectangle(0, 26*3, 26, 26), 90.0f);
+            var newSelectionPos = new Vector3(currentGameColumn * (0.24f + 0.2f), currentGameRow * -0.26f);
+            _selectionPos = Vector3.Lerp(_selectionPos, newSelectionPos, Time.deltaTime * 24f);
+            Sprite.DrawSprite(_selection, newSelectionPos, 0, Color.white, new Raylib_CsLo.Rectangle(0, 26*3, 26, 26), 90.0f);
 
+            // Selection Hand
+            var handLerp = Mathf.Repeat(SceneClock, 0.7f);
+            var handOffset = Vector3.Lerp(new Vector3(0.12f, 0.16f), new Vector3(0.16f, 0.20f), handLerp * 4f);
+            Sprite.DrawSprite(_extraIcons, _selectionPos - handOffset, 0, Color.white, new Raylib_CsLo.Rectangle(24*2, 24*3, 24, 24), 90.0f);
+            
+
+            // End
             Raylib_CsLo.Raylib.EndMode3D();
 
             var descriptionPanelY = (int)(29 * Game.AspectRatio);
             Raylib_CsLo.Raylib.DrawRectangle((int)(180 * Game.AspectRatio), descriptionPanelY, (int)(96 * Game.AspectRatio), (int)(97 * Game.AspectRatio), Color.black);
             Raylib_CsLo.Raylib.DrawRectangle((int)(181 * Game.AspectRatio), descriptionPanelY+ (int)(1 * Game.AspectRatio), (int)(94 * Game.AspectRatio), (int)(15 * Game.AspectRatio), "2030a8".Hex2RGB());
             Raylib_CsLo.Raylib.DrawRectangle((int)(181 * Game.AspectRatio), descriptionPanelY+ (int)(16 * Game.AspectRatio), (int)(94 * Game.AspectRatio), (int)(80 * Game.AspectRatio), Color.white);
+
+            var gameTitle = Game.Instance.Languages["eng"].GAMES["GAME_SPACEBALL"].NAME;
+            Raylib_CsLo.Raylib.DrawText(gameTitle, 
+                ((int)(180 * Game.AspectRatio) + ((int)(94 * Game.AspectRatio) / 2)) - (Raylib_CsLo.Raylib.MeasureText(gameTitle, 40) / 2), 
+                descriptionPanelY + ((int)(15 * Game.AspectRatio) / 4), 
+                40, Color.white);
+
+            Raylib_CsLo.Raylib.DrawText(Game.Instance.Languages["eng"].GAMES["GAME_SPACEBALL"].GAME_DESC,
+                ((int)(180 * Game.AspectRatio) + (int)(4 * Game.AspectRatio)),
+                descriptionPanelY + (int)(20 * Game.AspectRatio),
+                30, "2030a8".Hex2RGB());
         }
 
         private void DrawGame(int column, int row)
