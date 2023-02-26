@@ -70,7 +70,9 @@ namespace Tengoku.Scenes
             currentGameRow = Mathf.Clamp(currentGameRow, -5, 0);
 
             _cam.fovy = 10.125f;
-            _cam.position = new System.Numerics.Vector3(Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f) - 0.2f, Time.deltaTime * 20f), Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.deltaTime * 20f), -10.0f);
+            _cam.position = new System.Numerics.Vector3(
+                Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f) - 0.2f, Time.deltaTime * 20f), 
+                Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.deltaTime * 20f), -10.0f);
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
@@ -100,7 +102,7 @@ namespace Tengoku.Scenes
 
         public override void DrawBefore()
         {
-            Window.Clear(Color.black);
+            Window.Clear(Color.white);
 
             Raylib_CsLo.Raylib.DrawRectangleGradientV(0, 0, Game.ViewWidth, Game.ViewHeight, color2, color1);
             Raylib_CsLo.Raylib.DrawRectangle(0, 0, Game.ViewWidth, Game.ViewHeight, Color.Lerp(Color.white, Color.transparentWhite, SceneClock / 1.25f));
@@ -129,7 +131,7 @@ namespace Tengoku.Scenes
             // Selection Hand
             var handLerp = Mathf.Repeat(SceneClock, 0.7f);
             var handOffset = Vector3.Lerp(new Vector3(0.12f, 0.16f), new Vector3(0.16f, 0.20f), handLerp * 4f);
-            Sprite.DrawSprite(_extraIcons, _selectionPos - handOffset, 0, Color.white, new Raylib_CsLo.Rectangle(24*2, 24*3, 24, 24), 90.0f);
+            Sprite.DrawSprite(_extraIcons, newSelectionPos - handOffset, 0, Color.white, new Raylib_CsLo.Rectangle(24*2, 24*3, 24, 24), 90.0f);
             
 
             // End

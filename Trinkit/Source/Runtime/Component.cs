@@ -4,7 +4,8 @@
     {
         public Component()
         {
-            TrinkitApp.Instance.Components.Add(this);
+            if (TrinkitApp.Instance.CurrentScene != null)
+                TrinkitApp.Instance.CurrentScene?.AddComponent(this);
         }
 
         /// <summary>

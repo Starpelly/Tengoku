@@ -864,6 +864,11 @@ namespace Trinkit
         /// </summary>
         public static Color yellowGreen { get { return new Color(0.6039216f, 0.8039216f, 0.19607843f, 1f); } }
 
+        /// <summary>
+        /// Trinkit Blue.
+        /// </summary>
+        public static Color trinkit { get { return "407e8d".Hex2RGB(); } }
+
         //// | -- Was used to get all these colors, I wasn't about to write all that by hand --
         //// |
         //// |  var bindingFlags = BindingFlags.Instance |

@@ -14,7 +14,10 @@ namespace Trinkit
         /// </summary>
         public string Name = "";
 
-        public List<Component> Components = new List<Component>();
+        /// <summary>
+        /// The current scene the application is running.
+        /// </summary>
+        public Scene? CurrentScene;
 
         private Image _icon;
 
@@ -34,12 +37,12 @@ namespace Trinkit
             Raylib.SetWindowIcon(_icon);
 
             Raylib_CsLo.Raylib.InitAudioDevice();
-
-            OnStart();
         }
 
         public void Run()
         {
+            OnStart();
+
             while (!Raylib.WindowShouldClose())
             {
                 Counters.Reset();

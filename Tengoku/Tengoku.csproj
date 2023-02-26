@@ -7,6 +7,7 @@
       <Nullable>enable</Nullable>
       <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
       <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+      <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -31,6 +32,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\animations\ui\" />
+	  <Folder Include="Resources\fonts\" />
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>

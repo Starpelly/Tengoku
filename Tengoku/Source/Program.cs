@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
 #if DEBUG
-            using (var rhythmTengoku = new Game("Rhythm Tengoku (DEBUG)", 1280, 720, false))
+            using (var rhythmTengoku = new Game("Rhythm Tengoku (DEBUG)", 1280, 720, true))
             {
                 rhythmTengoku.Run();
             }

@@ -8,14 +8,15 @@ namespace Tengoku.Debugging
         public static void Gui()
         {
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
-            if (ImGui.Begin("Game (Paused)###GameView", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
+            if (ImGui.Begin($"{FontIcon.Gamepad}Game###GameView", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
             {
                 var windowSize = GetLargestSizeForViewport();
                 var windowPos = GetCenteredPositionForViewport(windowSize);
 
                 ImGui.SetCursorPos(new Vector2(windowPos.X + 8, windowPos.Y + 8));
-
-                // ImGui.Image(new IntPtr(Game.RenderTexture.texture.id), windowSize - new Vector2(16, 16), new Vector2(0, 1), new Vector2(1, 0));
+                Trinkit.GameWindow.Width = (int)windowSize.X;
+                Trinkit.GameWindow.Height = (int)windowSize.Y;
+                ImGui.Image(new IntPtr(Game.RenderTexture.texture.id), windowSize - new Vector2(16, 16), new Vector2(0, 1), new Vector2(1, 0));
                 ImGui.End();
             }
             ImGui.PopStyleVar();
