@@ -17,10 +17,14 @@ namespace Tengoku
     {
         public static new Game Instance { get; private set; } = null!;
 
-        public Scene scene;
+        public Scene? CurrentScene;
 
-        private RenderTexture _debugRenderTexture;
-        public static RenderTexture RenderTexture => Instance!._debugRenderTexture;
+        public static float AspectRatio => (Instance._screenWidth / 280.0f);
+
+        public static int ViewWidth => Instance._screenWidth;
+        public static int ViewHeight => Instance._screenHeight;
+
+        public static Vector2 ViewMousePosition => Input.mousePosition / new Vector2(GameWindow.Width / 280.0f, GameWindow.Height / 160.0f);
 
 #if HD
         private int _screenWidth => GameWindow.Width;
@@ -31,24 +35,15 @@ namespace Tengoku
         private int _screenHeight = 160;
 #endif
 
-        public static float AspectRatio => (Instance._screenWidth / 280.0f);
-
-        public static int ViewWidth => Instance._screenWidth;
-        public static int ViewHeight => Instance._screenHeight;
-
-        public static Vector2 ViewMousePosition => Input.mousePosition / new Vector2(GameWindow.Width / 280.0f, GameWindow.Height / 160.0f);
-
-        private DiscordRichPresence richPresence;
+        private DiscordRichPresence? _richPresence;
 
         public Game(string title, int width, int height, bool resizable = false) : base(title, width, height, resizable)
         {
+        }
+
+        public override void OnStart()
+        {
             Instance = this;
-
-            LoadScene<GameSelect>();
-
-            _debugRenderTexture = new RenderTexture(_screenWidth, _screenHeight);
-
-            Raylib_CsLo.Raylib.InitAudioDevice();
 
             TrinkitImGui.Setup(true);
 
@@ -59,13 +54,14 @@ namespace Tengoku
 
             ImGui.GetStyle().WindowRounding = 8f;
 
-            richPresence = new DiscordRichPresence();
+            _richPresence = new DiscordRichPresence();
 
+            LoadScene<GameSelect>();
         }
 
         public override void OnUpdate()
         {
-            scene.Update();
+            CurrentScene?.Update();
         }
 
         public override void OnDraw()
@@ -74,9 +70,9 @@ namespace Tengoku
 
             // _debugRenderTexture.Begin();
 
-            scene.DrawBefore();
-            scene.Draw();
-            scene.DrawGUI();
+            CurrentScene?.DrawBefore();
+            CurrentScene?.Draw();
+            CurrentScene?.DrawGUI();
 
             // _debugRenderTexture.End();
 
@@ -139,7 +135,7 @@ namespace Tengoku
                 Components[i].Dispose();
             }
 
-            richPresence.Dispose();
+            _richPresence?.Dispose();
 
             TrinkitImGui.Shutdown();
             Raylib_CsLo.Raylib.CloseAudioDevice();
@@ -147,13 +143,12 @@ namespace Tengoku
 
         public static void LoadScene<T>() where T : Scene
         {
-
-            if (Instance.scene != null)
+            if (Instance.CurrentScene != null)
             {
-                if (Instance.scene.GetType() == typeof(T))
+                if (Instance.CurrentScene.GetType() == typeof(T))
                     return;
 
-                Instance.scene.OnExit();
+                Instance.CurrentScene.OnExit();
 
                 for (int i = 0; i < Instance.Components.Count; i++)
                 {
@@ -164,7 +159,7 @@ namespace Tengoku
             var sceneObj = Activator.CreateInstance(typeof(T)) as T;
             if (sceneObj == null) throw new Exception("Scene not found!");
 
-            Instance.scene = sceneObj;
+            Instance.CurrentScene = sceneObj;
         }
     }
 }

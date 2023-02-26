@@ -1,4 +1,5 @@
 ﻿using Trinkit;
+using Trinkit.Audio;
 using Trinkit.Graphics;
 
 namespace Tengoku.Scenes
@@ -38,10 +39,15 @@ namespace Tengoku.Scenes
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
 
             color1 = Color.white;
+
+            Conductor.Instance.Dispose();
+            Conductor.Instance.Clip = Resources.Load<AudioClip>("audio/music/gameselect.ogg");
+            Conductor.Instance.Play();
         }
 
         public override void Update()
         {
+            Conductor.Instance.Update();
             if (Input.GetKeyDown(KeyCode.Up))
             {
                 currentGameRow -= 1;

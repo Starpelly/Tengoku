@@ -32,6 +32,10 @@ namespace Trinkit
 
             _icon = Raylib.LoadImage("Resources/icon.png");
             Raylib.SetWindowIcon(_icon);
+
+            Raylib_CsLo.Raylib.InitAudioDevice();
+
+            OnStart();
         }
 
         public void Run()
@@ -47,6 +51,7 @@ namespace Trinkit
             }
         }
 
+        public abstract void OnStart();
         public abstract void OnUpdate();
         public abstract void OnDraw();
         public abstract void OnQuit();

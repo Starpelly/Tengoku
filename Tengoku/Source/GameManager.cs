@@ -46,7 +46,9 @@ namespace Tengoku
 
         public void OnCommand(string engine, string function, List<object> parameters)
         {
-            var game = (GameScene)Game.Instance.scene;
+            if (Game.Instance.CurrentScene == null) return;
+
+            var game = (GameScene)Game.Instance.CurrentScene;
             if (function == "ball")
                 game.Spaceball.Ball(CommandBeat, (bool)parameters[0]);
             else if (function == "riceball")
