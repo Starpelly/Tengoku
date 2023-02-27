@@ -1,4 +1,4 @@
-﻿using Tengoku.Games.Spaceball;
+﻿using Tengoku.Games;
 using Trinkit;
 
 namespace Tengoku.Scenes
@@ -7,18 +7,18 @@ namespace Tengoku.Scenes
     {
         public GameManager GameManager { get; private set; }
 
-        public Spaceball Spaceball { get; set; }
+        public Minigame CurrentMinigame { get; set; }
 
         public GameScene()
         {
             GameManager = new GameManager();
-            Spaceball = new Spaceball();
+            CurrentMinigame = new RhythmTweezers();
         }
 
         public override void Update()
         {
             GameManager.Update();
-            Spaceball.Update();
+            CurrentMinigame.Update();
         }
 
         public override void DrawBefore()
@@ -27,17 +27,17 @@ namespace Tengoku.Scenes
 
         public override void Draw()
         {
-            Spaceball.Draw();
+            CurrentMinigame.Draw();
         }
 
         public override void DrawGUI()
         {
-            Spaceball.DrawGUI();
+            // CurrentMinigame.DrawGUI();
         }
 
         public override void OnExit()
         {
-            Spaceball.Dispose();
+            CurrentMinigame.Dispose();
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Tengoku
 
             _richPresence = new DiscordRichPresence();
 
-            LoadScene<MenuScene>();
+            LoadScene<GameScene>();
         }
 
         public static unsafe ImFontPtr LoadIconFont(string name, int size, (ushort, ushort) range)

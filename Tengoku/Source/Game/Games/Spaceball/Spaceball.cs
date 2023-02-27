@@ -6,7 +6,7 @@ using Trinkit.Graphics;
 namespace Tengoku.Games.Spaceball
 {
     [GameEngine("spaceball")]
-    public class Spaceball : IDisposable
+    public class Spaceball : Minigame
     {
         public Texture SpaceballPlayerSheet0;
         public Texture SpaceballPlayerSheet1;
@@ -78,7 +78,7 @@ namespace Tengoku.Games.Spaceball
             _umpireAnim = new Animator("resources/animations/games/spaceball/spaceballumpire.json");
         }
 
-        public void Update()
+        public override void Update()
         {
             // _cam.fovy = 10.125f;
             _cam.fovy = 10f;
@@ -118,7 +118,7 @@ namespace Tengoku.Games.Spaceball
             _starsClock += Time.deltaTime;
         }
 
-        public void Draw()
+        public override void Draw()
         {
             Window.Clear(new Color("#000073"));
             Raylib_CsLo.Raylib.BeginMode3D(_cam);
@@ -188,7 +188,7 @@ namespace Tengoku.Games.Spaceball
             Raylib_CsLo.Raylib.EndMode3D();
         }
 
-        public void DrawGUI()
+        public override void DrawGUI()
         {
             for (int i = 0; i < Balls.Count; i++)
             {
@@ -267,7 +267,7 @@ namespace Tengoku.Games.Spaceball
             };
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Raylib_CsLo.Raylib.UnloadSound(HitSnd);
             Raylib_CsLo.Raylib.UnloadSound(ShootSnd);

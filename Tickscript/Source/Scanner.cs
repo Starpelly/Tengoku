@@ -29,6 +29,7 @@ namespace Tickscript
             ["void"]    = TokenType.VOID,
             ["for"]     = TokenType.FOR,
             ["log"]     = TokenType.LOG,
+            ["loop"]     = TokenType.LOOP,
         };
 
         public Scanner(string _source, TickscriptLox TickscriptLox)
@@ -57,7 +58,7 @@ namespace Tickscript
                 case '(': AddToken(TokenType.LEFT_PAREN); break;
                 case ')': AddToken(TokenType.RIGHT_PAREN); break;
                 case '{': AddToken(TokenType.LEFT_BRACKET); break;
-                case '}': AddToken(TokenType.LEFT_BRACKET); break;
+                case '}': AddToken(TokenType.RIGHT_BRACKET); break;
                 case ',': AddToken(TokenType.COMMA); break;
                 case '.': AddToken(TokenType.DOT); break;
                 case ';': AddToken(TokenType.SEMICOLON); break;

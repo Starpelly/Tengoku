@@ -47,6 +47,7 @@
         VOID,
         FOR,
         LOG,
+        LOOP,
 
         EOF
     }

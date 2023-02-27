@@ -28,6 +28,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\animations\spaceballplayer.json" />
+	  <None Remove="Resources\levels\tweezers.tks" />
 	  <None Remove="Resources\localization\eng.json" />
 	</ItemGroup>
 

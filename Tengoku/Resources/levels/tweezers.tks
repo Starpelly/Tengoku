@@ -1,0 +1,11 @@
+tempo 95;
+song "tweezers.ogg";
+
+start
+{
+	rest 1;
+
+	loop 8 {
+		call tweezers.hair(), rest 1;
+	}
+}
