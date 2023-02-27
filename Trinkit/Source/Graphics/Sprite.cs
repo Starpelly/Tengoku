@@ -13,13 +13,13 @@ namespace Trinkit.Graphics
             SourceRect = sourceRect;
         }
 
-        public static void DrawSprite(Texture texture, Vector3 position, float rotation, Color tint, Rectangle region = default, float pixelsPerUnit = 100.0f)
+        public static void DrawSprite(Texture texture, Vector3 position, float rotation, Color tint, Vector2 scale, Rectangle region = default, float pixelsPerUnit = 100.0f)
         {
             if (region.width == 0) region.width = texture.Width;
             if (region.height == 0) region.height = texture.Height;
 
-            var widthUnit = region.width / pixelsPerUnit;
-            var heightUnit = region.height / pixelsPerUnit;
+            var widthUnit = (region.width / pixelsPerUnit);
+            var heightUnit = (region.height / pixelsPerUnit);
 
             DrawTexturePro3D(
                 texture,
@@ -46,47 +46,52 @@ namespace Trinkit.Graphics
                 if (sourceRec.width < 0) { flipX = true; sourceRec.width *= -1; }
                 if (sourceRec.height < 0) sourceRec.y -= sourceRec.height;
 
-                RlGl.rlSetTexture(texture.ID);
                 RlGl.rlDisableDepthTest();
-                RlGl.rlEnableDepthMask();
-                RlGl.rlPushMatrix();
+                RlGl.rlEnableDepthMask(); // Bug concerning window resize
                 {
-                    RlGl.rlTranslatef(destRec.x, destRec.y, 0.0f);
-                    RlGl.rlRotatef(rotation, 0.0f, 0.0f, 1.0f);
-                    RlGl.rlTranslatef(-origin.x, -origin.y, -origin.z);
+                    RlGl.rlSetTexture(texture.ID);
 
-                    RlGl.rlBegin(RlGl.RL_QUADS);
+                    RlGl.rlPushMatrix();
                     {
-                        RlGl.rlColor4f(tint.r, tint.g, tint.b, tint.a);
-                        // Normal vector pointing towards viewer
-                        RlGl.rlNormal3f(0.0f, 0.0f, 1.0f);
+                        RlGl.rlTranslatef(destRec.x, destRec.y, 0.0f);
+                        RlGl.rlRotatef(rotation, 0.0f, 0.0f, 1.0f);
+                        RlGl.rlTranslatef(-origin.x, -origin.y, -origin.z);
 
-                        // Bottom-left corner for texture and quad
-                        if (flipX) RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, sourceRec.y / height);
-                        else RlGl.rlTexCoord2f(sourceRec.x / width, sourceRec.y / height);
-                        RlGl.rlVertex3f(0.0f, 0.0f, posZ);
+                        RlGl.rlBegin(RlGl.RL_QUADS);
+                        {
+                            RlGl.rlColor4f(tint.r, tint.g, tint.b, tint.a);
+                            // Normal vector pointing towards viewer
+                            RlGl.rlNormal3f(0.0f, 0.0f, 1.0f);
 
-                        // Bottom-right corner for texture and quad
-                        if (flipX) RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, (sourceRec.y + sourceRec.height) / height);
-                        else RlGl.rlTexCoord2f(sourceRec.x / width, (sourceRec.y + sourceRec.height) / height);
-                        RlGl.rlVertex3f(0.0f, destRec.height, posZ);
+                            // Bottom-left corner for texture and quad
+                            if (flipX) RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, sourceRec.y / height);
+                            else RlGl.rlTexCoord2f(sourceRec.x / width, sourceRec.y / height);
+                            RlGl.rlVertex3f(0.0f, 0.0f, posZ);
 
-                        // Top-right corner for texture and quad
-                        if (flipX) RlGl.rlTexCoord2f(sourceRec.x / width, (sourceRec.y + sourceRec.height) / height);
-                        else RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, (sourceRec.y + sourceRec.height) / height);
-                        RlGl.rlVertex3f(destRec.width, destRec.height, posZ);
+                            // Bottom-right corner for texture and quad
+                            if (flipX) RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, (sourceRec.y + sourceRec.height) / height);
+                            else RlGl.rlTexCoord2f(sourceRec.x / width, (sourceRec.y + sourceRec.height) / height);
+                            RlGl.rlVertex3f(0.0f, destRec.height, posZ);
 
-                        // Top-left corner for texture and quad
-                        if (flipX) RlGl.rlTexCoord2f(sourceRec.x / width, sourceRec.y / height);
-                        else RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, sourceRec.y / height);
-                        RlGl.rlVertex3f(destRec.width, 0.0f, posZ);
+                            // Top-right corner for texture and quad
+                            if (flipX) RlGl.rlTexCoord2f(sourceRec.x / width, (sourceRec.y + sourceRec.height) / height);
+                            else RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, (sourceRec.y + sourceRec.height) / height);
+                            RlGl.rlVertex3f(destRec.width, destRec.height, posZ);
+
+                            // Top-left corner for texture and quad
+                            if (flipX) RlGl.rlTexCoord2f(sourceRec.x / width, sourceRec.y / height);
+                            else RlGl.rlTexCoord2f((sourceRec.x + sourceRec.width) / width, sourceRec.y / height);
+                            RlGl.rlVertex3f(destRec.width, 0.0f, posZ);
+                        }
+                        RlGl.rlEnd();
                     }
-                    RlGl.rlEnd();
+                    RlGl.rlPopMatrix();
+
+                    RlGl.rlSetTexture(0);
                 }
-                RlGl.rlPopMatrix();
-                RlGl.rlEnableDepthTest();
                 RlGl.rlDisableDepthMask();
-                RlGl.rlSetTexture(0);
+                RlGl.rlEnableDepthTest();
+
             }
         }
     }

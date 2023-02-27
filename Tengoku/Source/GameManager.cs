@@ -1,34 +1,27 @@
-﻿using System;
-using Tengoku.Games;
-using Tengoku.Games.Spaceball;
+﻿using System.Reflection;
+
 using Tengoku.Scenes;
-using Tickscript;
 using Trinkit;
 using Trinkit.Audio;
 
+using Tickscript;
+using System.Collections.ObjectModel;
+using Tengoku.Games.Spaceball;
+
 namespace Tengoku
 {
+
     public class GameManager : Component
     {
         public TickscriptLox TickscriptLox = new TickscriptLox();
 
         private Commands commands = new Commands();
 
-        public bool Started = false;
-        public bool Ended = false;
-        public float CommandBeat;
-        public int TokenIndex;
-
-        public bool IsResting = false;
-        public float RestingTime;
-        public float StartRestingBeat;
-        public int SkipCommands;
-        public bool GoingToBeat = false;
-        public bool InParams;
+        public TickscriptManager TickManager => commands.Manager!;
 
         public GameManager()
         {
-            commands.gameManager = this;
+            commands.Manager = new TickscriptManager();
             LoadScript("Resources/levels/spaceball.tks");
         }
 
@@ -49,12 +42,50 @@ namespace Tengoku
             if (Game.Instance.CurrentScene == null) return;
 
             var game = (GameScene)Game.Instance.CurrentScene;
+
+            var functionList = typeof(Spaceball).GetMethods().Where(c => c.GetCustomAttributes(typeof(GameFunction), false).Length > 0).ToList();
+            var funcIndex = functionList.FindIndex(c => c.GetAttributeValues<GameFunction>()[0].ToString() == function);
+
+            if (funcIndex < 0) return;
+
+            var callFunction = functionList[funcIndex];
+            var callParameters = new List<object>();
+
+            var attributeValues = callFunction.GetAttributeValues<GameFunction>();
+
+            for (int i = 1; i < attributeValues.Length; i++)
+            {
+                switch (attributeValues[i])
+                {
+                    case (int)GameFunction.ParamType.COMMAND_BEAT:
+                        callParameters.Add(TickManager.CommandBeat);
+                        break;
+                }
+            }
+
+            var startCallParam = callParameters.Count;
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                var t = callFunction.GetParameters()[startCallParam + i].ParameterType;
+                var nw = Convert.ChangeType(parameters[i], t);
+                callParameters.Add(nw);
+            }
+
+            if (callParameters.Count < callFunction.GetParameters().Length)
+            {
+                for (int i = 0; i < callFunction.GetParameters().Length - callParameters.Count; i++)
+                callParameters.Add(Type.Missing);
+            }
+
+            callFunction.Invoke(game.Spaceball, callParameters.ToArray());
+
+            /*
             if (function == "ball")
-                game.Spaceball.Ball(CommandBeat, (bool)parameters[0]);
+                game.Spaceball.Ball(TickManager.CommandBeat, (bool)parameters[0]);
             else if (function == "riceball")
-                game.Spaceball.Ball(CommandBeat, (bool)parameters[0], true);
+                game.Spaceball.Ball(TickManager.CommandBeat, (bool)parameters[0], true);
             else if (function == "zoom")
-                game.Spaceball.Zoom(CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
+                game.Spaceball.Zoom(TickManager.CommandBeat, (float)(double)parameters[0], (float)(double)parameters[1]);
             else if (function == "prepare")
                 game.Spaceball.DispenserPrepare();
             else if (function == "umpireShow")
@@ -62,7 +93,18 @@ namespace Tengoku
             else if (function == "umpireIdle")
                 game.Spaceball.Umpire(false);
             else if (function == "costume")
-                game.Spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);
+                game.Spaceball.Costume((int)(double)parameters[0], (string)parameters[1], (string)parameters[2], (string)parameters[3]);*/
+        }
+
+        static IEnumerable<Type> GetTypesWithAttribute(Assembly assembly)
+        {
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.GetCustomAttributes(typeof(GameEngine), true).Length > 0)
+                {
+                    yield return type;
+                }
+            }
         }
 
         public override void Update()
@@ -70,31 +112,31 @@ namespace Tengoku
             Conductor.Instance.Update();
             if (TickscriptLox == null || TickscriptLox.tokens == null) return;
 
-            IsResting = !(Conductor.Instance.SongPositionInBeats >= StartRestingBeat + RestingTime);
-            if (!Started)
+            TickManager.IsResting = !(Conductor.Instance.SongPositionInBeats >= TickManager.StartRestingBeat + TickManager.RestingTime);
+            if (!TickManager.Started)
             {
                 for (int i = 0; i < TickscriptLox.tokens.Count; i++)
                 {
                     if (TickscriptLox.tokens[i].Type == Tickscript.Tokens.TokenType.START)
                     {
-                        Started = true;
+                        TickManager.Started = true;
                         break;
                     }
                 }
             }
             else
             {
-                if (!Ended && !IsResting)
+                if (!TickManager.Ended && !TickManager.IsResting)
                 {
                     bool inCommandList = true;
-                    while (inCommandList || GoingToBeat)
+                    while (inCommandList || TickManager.GoingToBeat)
                     {
-                        var token = TickscriptLox.tokens[TokenIndex];
-                        TokenIndex++;
+                        var token = TickscriptLox.tokens[TickManager.TokenIndex];
+                        TickManager.IncreaseTokenIndex();
 
-                        if (GoingToBeat && CommandBeat >= Conductor.Instance.SongPositionInBeats)
+                        if (TickManager.GoingToBeat && TickManager.CommandBeat >= Conductor.Instance.SongPositionInBeats)
                         {
-                            GoingToBeat = false;
+                            TickManager.GoingToBeat = false;
                             return;
                         }
 
@@ -107,26 +149,26 @@ namespace Tengoku
                                 // commands.Native(TickscriptLox.tokens[tokenIndex + 1].Lexeme, TickscriptLox.tokens[tokenIndex + 3].Lexeme);
                                 break;
                             case Tickscript.Tokens.TokenType.REST:
-                                commands.Rest((double)TickscriptLox.tokens[TokenIndex].Literal);
+                                commands.Rest((double)TickscriptLox.tokens[TickManager.TokenIndex].Literal);
                                 break;
                             case Tickscript.Tokens.TokenType.GOTO:
                                 // Conductor.SetBeat((float)(double)TickscriptLox.tokens[TokenIndex].Literal);
                                 // goingToBeat = true;
                                 break;
                             case Tickscript.Tokens.TokenType.LOG:
-                                commands.Log(TickscriptLox.tokens[TokenIndex].Literal);
+                                commands.Log(TickscriptLox.tokens[TickManager.TokenIndex].Literal);
                                 break;
                             case Tickscript.Tokens.TokenType.CALL:
                                 commands.Call(
-                                    (string)TickscriptLox.tokens[TokenIndex].Lexeme,
-                                    (string)TickscriptLox.tokens[TokenIndex + 2].Lexeme,
+                                    (string)TickscriptLox.tokens[TickManager.TokenIndex].Lexeme,
+                                    (string)TickscriptLox.tokens[TickManager.TokenIndex + 2].Lexeme,
                                     TickscriptLox.tokens);
                                 break;
                             case Tickscript.Tokens.TokenType.SKIP:
-                                SkipCommands = (int)(double)TickscriptLox.tokens[TokenIndex].Literal + 1; // Add one to compensate for the skip semicolon
+                                TickManager.SkipCommands = (int)(double)TickscriptLox.tokens[TickManager.TokenIndex].Literal + 1; // Add one to compensate for the skip semicolon
                                 break;
                             case Tickscript.Tokens.TokenType.SEMICOLON:
-                                SkipCommands -= 1;
+                                TickManager.SkipCommands -= 1;
                                 inCommandList = false;
                                 break;
                         }

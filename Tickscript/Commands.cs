@@ -1,5 +1,3 @@
-using Tengoku;
-
 namespace Tickscript
 {
     public class Commands
@@ -7,7 +5,7 @@ namespace Tickscript
         public delegate void CommandEvent(string engine, string function, List<object> parameters);
         public event CommandEvent? OnCommand;
 
-        public GameManager? gameManager { get; set; }
+        public TickscriptManager? Manager { get; set; }
 
         public void Log(object val)
         {
@@ -18,34 +16,34 @@ namespace Tickscript
 
         public void Rest(double time)
         {
+            if (Manager == null) return;
             // if (IsSkipping()) GameManager.commandBeat += GameManager.restingTime;
-            if (gameManager == null) return;
             if (IsSkipping()) return;
 
-            gameManager.RestingTime = (float)time;
-            gameManager.StartRestingBeat = gameManager.CommandBeat;
-            gameManager.CommandBeat += gameManager.RestingTime;
+            Manager.RestingTime = (float)time;
+            Manager.StartRestingBeat = Manager.CommandBeat;
+            Manager.CommandBeat += Manager.RestingTime;
         }
 
         public void Call(string engine, string function, List<Tickscript.Tokens.Token> tokens)
         {
-            if (gameManager == null) return;
+            if (Manager == null) return;
             if (IsSkipping()) return;
 
             List<object> parameters = new List<object>();
             int parametersIndex = 0;
 
-            if (tokens[gameManager.TokenIndex + 3].Type == Tickscript.Tokens.TokenType.LEFT_PAREN)
+            if (tokens[Manager.TokenIndex + 3].Type == Tickscript.Tokens.TokenType.LEFT_PAREN)
             {
-                gameManager.InParams = true;
+                Manager.InParams = true;
             }
 
-            while (gameManager.InParams)
+            while (Manager.InParams)
             {
-                var newToken = tokens[gameManager.TokenIndex + 4 + parametersIndex];
+                var newToken = tokens[Manager.TokenIndex + 4 + parametersIndex];
                 if (newToken.Type == Tickscript.Tokens.TokenType.RIGHT_PAREN)
                 {
-                    gameManager.InParams = false;
+                    Manager.InParams = false;
                     continue;
                 }
                 else if (newToken.Type == Tickscript.Tokens.TokenType.COMMA)
@@ -64,21 +62,18 @@ namespace Tickscript
             }
 
             OnCommand!.Invoke(engine, function, parameters);
-
-            // Debug.Log(engine + "  :  " + function);
-            /**/
         }
 
         public void EOF(ref bool inCommandList)
         {
-            if (gameManager == null) return;
-            gameManager.Ended = true;
+            if (Manager == null) return;
+
+            Manager.Ended = true;
             inCommandList = false;
         }
 
         public void Native(string fullInvokeName)
         {
-            if (gameManager == null) return;
             if (IsSkipping()) return;
 
             var className = fullInvokeName;
@@ -91,9 +86,8 @@ namespace Tickscript
 
         public bool IsSkipping()
         {
-            if (gameManager == null) return true;
-
-            return gameManager.SkipCommands > 0 || gameManager.GoingToBeat;
+            if (Manager == null) return false;
+            return Manager.SkipCommands > 0 || Manager.GoingToBeat;
         }
     }
 }

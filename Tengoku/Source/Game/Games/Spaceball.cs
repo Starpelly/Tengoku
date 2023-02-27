@@ -1,9 +1,11 @@
-﻿using Trinkit;
+﻿using Tickscript;
+using Trinkit;
 using Trinkit.Audio;
 using Trinkit.Graphics;
 
 namespace Tengoku.Games.Spaceball
 {
+    [GameEngine("spaceball")]
     public class Spaceball : IDisposable
     {
         public Texture SpaceballPlayerSheet0;
@@ -126,11 +128,11 @@ namespace Tengoku.Games.Spaceball
                 Vector3 star = _stars[i];
                 _stars[i] -= new Vector3(0, 0, Time.deltaTime * 30f);
                 _stars[i] += new Vector3(_stars[i].x * 0.2f * Time.deltaTime, _stars[i].y * 0.2f * Time.deltaTime, 0f);
-                Sprite.DrawSprite(TexSpaceballProps, star, 0.0f, Color.white, new Raylib_CsLo.Rectangle(32, 160, 32, 32), 40);
+                Sprite.DrawSprite(TexSpaceballProps, star, 0.0f, Color.white, Vector2.one, new Raylib_CsLo.Rectangle(32, 160, 32, 32), 40);
             }
 
             // Room
-            Sprite.DrawSprite(SpaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Color.white, new Raylib_CsLo.Rectangle(), 90f);
+            Sprite.DrawSprite(SpaceballRoom, new Vector3(0.0f, 0.535f), 0.0f, Color.white, Vector2.one, new Raylib_CsLo.Rectangle(), 90f);
 
             var dispenserFrame = 0;
             switch (_dispenserAnim.CurrentAnimation.Name)
@@ -144,7 +146,7 @@ namespace Tengoku.Games.Spaceball
             }
 
             // Dispenser
-            Sprite.DrawSprite(TexSpaceballProps, new Vector3(-0.55f, -0.53f), 0.0f, Color.white,
+            Sprite.DrawSprite(TexSpaceballProps, new Vector3(-0.55f, -0.53f), 0.0f, Color.white, Vector2.one,
                 new Raylib_CsLo.Rectangle(32 * dispenserFrame, 64, 32, 32), 90f);
 
             int umpireY = 0;
@@ -152,11 +154,11 @@ namespace Tengoku.Games.Spaceball
                 umpireY = 32;
 
             // Umpire
-            Sprite.DrawSprite(TexSpaceballProps, new Vector3(0.0f, -0.11f), 0.0f, Color.white,
+            Sprite.DrawSprite(TexSpaceballProps, new Vector3(0.0f, -0.11f), 0.0f, Color.white, Vector2.one,
                 new Raylib_CsLo.Rectangle(32 * _umpireAnim.CurrentFrame, umpireY, 32, 32), 90f);
 
             // Player Shadow
-            Sprite.DrawSprite(TexSpaceballProps, new Vector3(0.64f, -0.61f), 0.0f, Color.white,
+            Sprite.DrawSprite(TexSpaceballProps, new Vector3(0.64f, -0.61f), 0.0f, Color.white, Vector2.one,
                 new Raylib_CsLo.Rectangle(0, 160, 32, 32), 90f);
 
             // Player
@@ -164,18 +166,18 @@ namespace Tengoku.Games.Spaceball
 
             var playerFrame = (_playerAnim.CurrentAnimation.Name == "SpaceballPlayerSwing") ? _playerAnim.CurrentFrame + 1 : 0;
 
-            Sprite.DrawSprite(SpaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, playerColors[0], 
+            Sprite.DrawSprite(SpaceballPlayerSheet0, new Vector3(0.54f, playerYPos), 0.0f, playerColors[0], Vector2.one, 
                 new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(SpaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, playerColors[1],
+            Sprite.DrawSprite(SpaceballPlayerSheet1, new Vector3(0.54f, playerYPos), 0.0f, playerColors[1], Vector2.one,
                 new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(SpaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, playerColors[2],
+            Sprite.DrawSprite(SpaceballPlayerSheet2, new Vector3(0.54f, playerYPos), 0.0f, playerColors[2], Vector2.one,
                 new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
-            Sprite.DrawSprite(SpaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Color.white,
+            Sprite.DrawSprite(SpaceballPlayerSheet3, new Vector3(0.54f, playerYPos), 0.0f, Color.white, Vector2.one,
                 new Raylib_CsLo.Rectangle((SpaceballPlayerSheet0.Width / 5) * playerFrame, 0, SpaceballPlayerSheet0.Width / 5, 0.0f), 90f);
 
             var hatSprite = HatSprites[_currentCostume];
             if (_currentCostume > 0)
-            Sprite.DrawSprite(hatSprite, new Vector3(0.54f, playerYPos), 0.0f, Color.white,
+            Sprite.DrawSprite(hatSprite, new Vector3(0.54f, playerYPos), 0.0f, Color.white, Vector2.one,
                 new Raylib_CsLo.Rectangle((hatSprite.Width / 5) * playerFrame, 0, hatSprite.Width / 5, 0.0f), 90f);
 
             // Balls
@@ -194,6 +196,7 @@ namespace Tengoku.Games.Spaceball
             }
         }
 
+        [GameFunction("ball", new GameFunction.ParamType[] { GameFunction.ParamType.COMMAND_BEAT })]
         public void Ball(float beat, bool high, bool riceball = false)
         {
             var newBall = new Ball(this);
@@ -207,6 +210,7 @@ namespace Tengoku.Games.Spaceball
             _dispenserAnim.Play("SpaceballDispenserShoot");
         }
 
+        [GameFunction("zoom", new GameFunction.ParamType[] { GameFunction.ParamType.COMMAND_BEAT })]
         public void Zoom(float beat, float zoom, float length)
         {
             LastZoom = _camPosZ;
@@ -217,9 +221,22 @@ namespace Tengoku.Games.Spaceball
             CameraZoomZoom = zoom / 8.0f;
         }
 
+        [GameFunction("prepare")]
         public void DispenserPrepare()
         {
             _dispenserAnim.Play("SpaceballDispenserPrepare");
+        }
+
+        [GameFunction("umpireShow")]
+        public void UmpireShow()
+        {
+            Umpire(true);
+        }
+
+        [GameFunction("umpireIdle")]
+        public void UmpireIdle()
+        {
+            Umpire(false);
         }
 
         public void Umpire(bool show)
@@ -227,6 +244,7 @@ namespace Tengoku.Games.Spaceball
             _umpireAnim.Play((show) ? "SpaceballUmpireShow" : "SpaceballUmpireIdle");
         }
 
+        [GameFunction("costume")]
         public void Costume(int costume, string color1, string color2, string color3)
         {
             _currentCostume = costume;

@@ -14,8 +14,8 @@ namespace Tengoku.Debugging
                 var windowPos = GetCenteredPositionForViewport(windowSize);
 
                 ImGui.SetCursorPos(new Vector2(windowPos.X + 8, windowPos.Y + 8));
-                Trinkit.GameWindow.Width = (int)windowSize.X;
-                Trinkit.GameWindow.Height = (int)windowSize.Y;
+                // Trinkit.GameWindow.Width = (int)windowSize.X;
+                // Trinkit.GameWindow.Height = (int)windowSize.Y;
                 ImGui.Image(new IntPtr(Game.RenderTexture.texture.id), windowSize - new Vector2(16, 16), new Vector2(0, 1), new Vector2(1, 0));
                 ImGui.End();
             }

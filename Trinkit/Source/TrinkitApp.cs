@@ -1,4 +1,6 @@
-﻿using Raylib_CsLo;
+﻿#define Raudio
+
+using Raylib_CsLo;
 using Trinkit.Debug;
 
 namespace Trinkit
@@ -36,7 +38,9 @@ namespace Trinkit
             _icon = Raylib.LoadImage("Resources/icon.png");
             Raylib.SetWindowIcon(_icon);
 
+#if Raudio
             Raylib_CsLo.Raylib.InitAudioDevice();
+#endif
         }
 
         public void Run()
@@ -64,6 +68,11 @@ namespace Trinkit
             OnQuit();
 
             Raylib.UnloadImage(_icon);
+
+#if Raudio
+            Raylib_CsLo.Raylib.CloseAudioDevice();
+#endif
+
             Raylib.CloseWindow();
         }
     }

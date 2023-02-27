@@ -11,6 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Tickscript\Tickscript.csproj" />
       <ProjectReference Include="..\Trinkit\Trinkit.csproj" />
     </ItemGroup>
     

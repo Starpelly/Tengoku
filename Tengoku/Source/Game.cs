@@ -21,11 +21,11 @@ namespace Tengoku
 
         public static float AspectRatio => (ViewWidth / 280.0f);
 
-        public static Vector2 ViewMousePosition => Input.mousePosition / new Vector2(GameWindow.Width / 280.0f, GameWindow.Height / 160.0f);
+        public static Vector2 ViewMousePosition => Input.mousePosition / new Vector2(ViewWidth / 280.0f, ViewHeight / 160.0f);
 
 #if HD
-        public static int ViewWidth => 1280;
-        public static int ViewHeight => 720;
+        public static int ViewWidth => Window.Width;
+        public static int ViewHeight => Window.Height;
 #else
         public static int ViewWidth => 280;
         public static int ViewHeight => 160;
@@ -66,7 +66,7 @@ namespace Tengoku
 
             _richPresence = new DiscordRichPresence();
 
-            LoadScene<SplashscreenScene>();
+            LoadScene<MenuScene>();
         }
 
         public static unsafe ImFontPtr LoadIconFont(string name, int size, (ushort, ushort) range)
@@ -114,27 +114,31 @@ namespace Tengoku
         {
             Window.Clear(Color.black);
 
-            _gameRenderTexture?.Begin();
+            // _gameRenderTexture?.Begin();
 
             CurrentScene?.DrawBefore();
             CurrentScene?.Draw();
             CurrentScene?.DrawGUI();
 
-            _gameRenderTexture?.End();
+            // _gameRenderTexture?.End();
 
             /*
+            
+            float ratio = ((float)Window.Width / (float)Window.Height);
+            var resolutionWidth = Mathf.Round(160 * ratio);
+            
             // Raylib_CsLo.Raylib.BeginShaderMode(shader);
+            if (_gameRenderTexture != null)
             Raylib_CsLo.Raylib.DrawTexturePro(
-                _debugRenderTexture.texture,
-                    new Raylib_CsLo.Rectangle(0, 0, (float)_debugRenderTexture.texture.width, (float)-_debugRenderTexture.texture.height),
-                    new Raylib_CsLo.Rectangle(0, 19, GameWindow.Width, GameWindow.Height - 19),
+                _gameRenderTexture.texture,
+                    new Raylib_CsLo.Rectangle(0, 0, (float)_gameRenderTexture.texture.width, (float)-_gameRenderTexture.texture.height),
+                    new Raylib_CsLo.Rectangle(0, 0, Window.Width, Window.Height - 0),
                     new System.Numerics.Vector2(0.0f, 0.0f),
                     0.0f,
                     Color.white
                 );
             // Raylib_CsLo.Raylib.EndShaderMode();
             */
-
 #if RELEASE
 #else
             GuiLayer();
@@ -148,7 +152,7 @@ namespace Tengoku
             Dockspace();
             Menubar.Layout();
             DebugView.Gui();
-            GameView.Gui();
+            // GameView.Gui();
             // LocalizerView.Gui();
 
             TrinkitImGui.End();
@@ -263,7 +267,6 @@ namespace Tengoku
             _richPresence?.Dispose();
 
             TrinkitImGui.Shutdown();
-            Raylib_CsLo.Raylib.CloseAudioDevice();
         }
 
         public static void LoadScene<T>() where T : Scene

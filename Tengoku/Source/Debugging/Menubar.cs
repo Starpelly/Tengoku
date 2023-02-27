@@ -22,8 +22,10 @@ namespace Tengoku.Debugging
                 if (ImGui.BeginMenu("Scenes"))
                 {
                     if (ImGui.MenuItem("Splashscreen")) { Game.LoadScene<SplashscreenScene>(); }
+                    if (ImGui.MenuItem("Menu")) { Game.LoadScene<MenuScene>(); }
                     if (ImGui.MenuItem("GameSelect")) { Game.LoadScene<GameSelect>(); }
                     if (ImGui.MenuItem("Game")) { Game.LoadScene<GameScene>(); }
+                    if (ImGui.MenuItem("Editor")) { Game.LoadScene<EditorScene>(); }
                     ImGui.EndMenu();
                 }
                 if (ImGui.BeginMenu("Games"))

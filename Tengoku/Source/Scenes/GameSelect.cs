@@ -1,4 +1,5 @@
-﻿using Trinkit;
+﻿using System.Data.Common;
+using Trinkit;
 using Trinkit.Audio;
 using Trinkit.Graphics;
 
@@ -24,7 +25,7 @@ namespace Tengoku.Scenes
         private float _squaresClock = 0.0f;
         private float _nextSquareTime = 0.0f;
         private float _nextSquarePeriod = 0.03f;
-        private int _maxSquares = 300;
+        private int _maxSquares = 350;
 
         private Raylib_CsLo.Camera3D _cam;
 
@@ -45,6 +46,16 @@ namespace Tengoku.Scenes
             Conductor.Instance.Dispose();
             Conductor.Instance.Clip = Resources.Load<AudioClip>("audio/music/gameselect.ogg");
             Conductor.Instance.Play();
+
+            for (int i = 0; i < _maxSquares; i++)
+            {
+                _squares.Add(
+                    new Vector3(
+                        Trinkit.Random.Range(-8f, 8f),
+                        Trinkit.Random.Range(-4f, 2f),
+                        Trinkit.Random.Range(15f, -6f)
+                        ));
+            }
         }
 
         public override void Update()
@@ -71,8 +82,8 @@ namespace Tengoku.Scenes
 
             _cam.fovy = 10.125f;
             _cam.position = new System.Numerics.Vector3(
-                Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f) - 0.2f, Time.deltaTime * 20f), 
-                Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.deltaTime * 20f), -10.0f);
+                Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f) - 0.2f, Time.deltaTime * 10f), 
+                Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.deltaTime * 10f), -10.0f);
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
@@ -93,9 +104,8 @@ namespace Tengoku.Scenes
                         Trinkit.Random.Range(-4f, 2f),
                         Trinkit.Random.Range(15f, -6f)
                         ));
-                if (_squares.Count > _maxSquares)
+                if (_squares[0].x < -6f)
                     _squares.RemoveAt(0);
-
             }
             _squaresClock += Time.deltaTime;
         }
@@ -112,11 +122,13 @@ namespace Tengoku.Scenes
         {
             Raylib_CsLo.Raylib.BeginMode3D(_cam);
 
+            Raylib_CsLo.Raylib.BeginBlendMode(Raylib_CsLo.BlendMode.BLEND_ADDITIVE);
             for (int i = 0; i < _squares.Count; i++)
             {
                 _squares[i] += new Vector3(-1.25f * Time.deltaTime, 0, 0);
-                Sprite.DrawSprite(_square, _squares[i], _squaresClock * (-660f), new Color(1, 1, 1, 0.35f), new Raylib_CsLo.Rectangle(), 90.0f);
+                Sprite.DrawSprite(_square, _squares[i], _squaresClock * (-660f), new Color(1, 1, 1, 0.35f), Vector2.one, new Raylib_CsLo.Rectangle(), 90.0f);
             }
+            Raylib_CsLo.Raylib.EndBlendMode();
 
             for (int column = 0; column < 8; column++)
             {
@@ -124,19 +136,26 @@ namespace Tengoku.Scenes
                     DrawGame(column, row);
             }
 
-            var newSelectionPos = new Vector3(currentGameColumn * (0.24f + 0.2f), currentGameRow * -0.26f);
+            for (int i = 0; i < 6; i++)
+            {
+                Sprite.DrawSprite(_extraIcons, new Vector3((0.24f + 0.2f) * -1, (0.27f * i), 0), 0, Color.white, Vector2.one, new Raylib_CsLo.Rectangle(24 * i, 0, 24, 24), 90.0f);
+                Sprite.DrawSprite(_extraIcons, new Vector3((0.24f + 0.2f) * -1, (0.27f * i), 0), 0, Color.white, new Vector2(-1, 1), new Raylib_CsLo.Rectangle(0, 24*2, 24, 24), 90.0f);
+            }
+
+            var newSelectionPos = new Vector3(currentGameColumn * (0.24f + 0.2f), currentGameRow * -0.27f);
             _selectionPos = Vector3.Lerp(_selectionPos, newSelectionPos, Time.deltaTime * 24f);
-            Sprite.DrawSprite(_selection, newSelectionPos, 0, Color.white, new Raylib_CsLo.Rectangle(0, 26*3, 26, 26), 90.0f);
+            Sprite.DrawSprite(_selection, newSelectionPos, 0, Color.white, Vector2.one, new Raylib_CsLo.Rectangle(0, 26*3, 26, 26), 90.0f);
 
             // Selection Hand
             var handLerp = Mathf.Repeat(SceneClock, 0.7f);
-            var handOffset = Vector3.Lerp(new Vector3(0.12f, 0.16f), new Vector3(0.16f, 0.20f), handLerp * 4f);
-            Sprite.DrawSprite(_extraIcons, newSelectionPos - handOffset, 0, Color.white, new Raylib_CsLo.Rectangle(24*2, 24*3, 24, 24), 90.0f);
+            var handOffset = Vector3.Lerp(new Vector3(Mathf.Round2Nearest(0.12f, 0.01f), Mathf.Round2Nearest(0.16f, 0.01f)), new Vector3(Mathf.Round2Nearest(0.16f, 0.01f), Mathf.Round2Nearest(0.20f, 0.01f)), handLerp * 4f);
+            Sprite.DrawSprite(_extraIcons, newSelectionPos - handOffset, 0, Color.white, Vector2.one, new Raylib_CsLo.Rectangle(24*2, 24*2, 24, 24), 90.0f);
             
-
             // End
             Raylib_CsLo.Raylib.EndMode3D();
 
+
+            return;
             var descriptionPanelY = (int)(29 * Game.AspectRatio);
             Raylib_CsLo.Raylib.DrawRectangle((int)(180 * Game.AspectRatio), descriptionPanelY, (int)(96 * Game.AspectRatio), (int)(97 * Game.AspectRatio), Color.black);
             Raylib_CsLo.Raylib.DrawRectangle((int)(181 * Game.AspectRatio), descriptionPanelY+ (int)(1 * Game.AspectRatio), (int)(94 * Game.AspectRatio), (int)(15 * Game.AspectRatio), "2030a8".Hex2RGB());
@@ -156,7 +175,7 @@ namespace Tengoku.Scenes
 
         private void DrawGame(int column, int row)
         {
-            Sprite.DrawSprite(_gameIcons, new Vector3(((0.24f + 0.2f) * column), (0.26f * row), 0), 0, Color.white, new Raylib_CsLo.Rectangle(24 * row, 24 * column, 24, 24), 90.0f);
+            Sprite.DrawSprite(_gameIcons, new Vector3(((0.24f + 0.2f) * column), (0.27f * row), 0), 0, Color.white, Vector2.one, new Raylib_CsLo.Rectangle(24 * row, 24 * column, 24, 24), 90.0f);
         }
 
 
