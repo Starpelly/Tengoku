@@ -30,8 +30,8 @@ namespace Tengoku
 
             // This is just bad, make a proper way of doing this in the future.
             Conductor.Instance.Dispose();
-            Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
-            Conductor.Instance.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[4].Literal}");
+            Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[2].Literal;
+            Conductor.Instance.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[7].Literal}");
             Conductor.Instance.Play();
         }
 
@@ -97,42 +97,29 @@ namespace Tengoku
             if (TickscriptLox == null || TickscriptLox.tokens == null || commands.Manager == null) return;
 
             TickManager.IsResting = !(Conductor.Instance.SongPositionInBeats >= TickManager.StartRestingBeat + TickManager.RestingTime);
-            if (!TickManager.Started)
+            
+            if (!TickManager.Ended && !TickManager.IsResting)
             {
-                for (int i = 0; i < TickscriptLox.tokens.Count; i++)
+                bool inCommandList = true;
+                while (inCommandList || TickManager.GoingToBeat)
                 {
-                    if (TickscriptLox.tokens[i].Type == Tickscript.Tokens.TokenType.START)
-                    {
-                        TickManager.Started = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                if (!TickManager.Ended && !TickManager.IsResting)
-                {
-                    bool inCommandList = true;
-                    while (inCommandList || TickManager.GoingToBeat)
-                    {
-                        var token = TickscriptLox.tokens[TickManager.TokenIndex];
-                        TickManager.IncreaseTokenIndex();
+                    var token = TickscriptLox.tokens[TickManager.TokenIndex];
+                    TickManager.IncreaseTokenIndex();
 
-                        if (TickManager.LoopTimes > 0)
-                        if (TickManager.TokenIndex > TickManager.LoopEndIndex + 1)
+                    if (TickManager.LoopTimes > 0)
+                        if (TickManager.TokenIndex > TickManager.LoopEndIndex + 2)
                         {
                             TickManager.SetTokenIndex(TickManager.LoopStartIndex);
                             TickManager.LoopTimes--;
                         }
 
-                        if (TickManager.GoingToBeat && TickManager.CommandBeat >= Conductor.Instance.SongPositionInBeats)
-                        {
-                            TickManager.GoingToBeat = false;
-                            return;
-                        }
-
-                        SwitchToken(token, ref inCommandList);
+                    if (TickManager.GoingToBeat && TickManager.CommandBeat >= Conductor.Instance.SongPositionInBeats)
+                    {
+                        TickManager.GoingToBeat = false;
+                        return;
                     }
+
+                    SwitchToken(token, ref inCommandList);
                 }
             }
 
@@ -148,7 +135,7 @@ namespace Tengoku
                     commands.EOF(ref inCommandList);
                     break;
                 case Tickscript.Tokens.TokenType.REST:
-                    commands.Rest((double)TickscriptLox.tokens[TickManager.TokenIndex].Literal);
+                    commands.Rest((double)TickscriptLox.tokens[TickManager.TokenIndex + 1].Literal);
                     break;
                 case Tickscript.Tokens.TokenType.LOG:
                     commands.Log(TickscriptLox.tokens[TickManager.TokenIndex].Literal);
@@ -167,9 +154,9 @@ namespace Tengoku
                     inCommandList = false;
                     break;
                 case Tickscript.Tokens.TokenType.LOOP:
-                    commands.Manager.LoopTimes = (int)(double)TickscriptLox.tokens[TickManager.TokenIndex].Literal;
+                    commands.Manager.LoopTimes = (int)(double)TickscriptLox.tokens[TickManager.TokenIndex + 1].Literal;
                     commands.Manager.LoopStartIndex = TickManager.TokenIndex;
-                    var loopBracketStart = commands.Manager.LoopStartIndex + 2;
+                    var loopBracketStart = commands.Manager.LoopStartIndex + 3;
                     var tokensPoint = TickscriptLox.tokens.GetRange(loopBracketStart, TickscriptLox.tokens.Count - loopBracketStart);
                     
                     var loopTokenCount = tokensPoint.TakeWhile(c => c.Type != TokenType.RIGHT_BRACKET).Count();

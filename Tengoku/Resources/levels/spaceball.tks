@@ -15,16 +15,11 @@ call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 
-call spaceball.ball(false), rest 1;
-call spaceball.prepare(), rest 1;
-call spaceball.ball(false), rest 1;
-call spaceball.prepare(), rest 1;
-call spaceball.ball(false), rest 1;
-call spaceball.prepare(), rest 1;
-call spaceball.ball(false), rest 1;
-call spaceball.prepare(), rest 1;
-call spaceball.ball(false), rest 1;
-call spaceball.prepare(), rest 1;
+loop(4)
+{
+	call spaceball.ball(false), rest 1;
+	call spaceball.prepare(), rest 1;
+}
 call spaceball.zoom(180.0, 4.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;
@@ -35,12 +30,11 @@ call spaceball.prepare(), rest 1;
 
 // Pattern 1
 
-call spaceball.ball(false), rest 1;
-call spaceball.prepare(), rest 1;
-call spaceball.ball(false), rest 1;
-call spaceball.prepare(), rest 1;
-call spaceball.ball(false), rest 1;
-call spaceball.prepare(), rest 1;
+loop(2)
+{
+	call spaceball.ball(false), rest 1;
+	call spaceball.prepare(), rest 1;
+}
 call spaceball.zoom(200.0, 4.0), call spaceball.ball(false), rest 1;
 call spaceball.prepare(), rest 1;
 call spaceball.ball(false), rest 1;

@@ -1,11 +1,23 @@
-tempo 95;
-song "tweezers.ogg";
+tempo(95);
+song("tweezers.ogg");
 
-start
-{
-	rest 1;
+// void LoopTest(int loopTimes)
+// {
+// 		int loopTimes = 4;
+// 
+// 		loop(loopTimes) {
+// 			call tweezers.hair();
+// 			rest(1);
+// 		}
+// }
 
-	loop 8 {
-		call tweezers.hair(), rest 1;
-	}
+rest(1);
+
+// int loopTimes = 4;
+
+loop(4) {
+	call tweezers.hair();
+	rest(1);
 }
+
+LoopTest();

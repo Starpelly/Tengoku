@@ -1,4 +1,5 @@
 ﻿using Tengoku.Games;
+using Tengoku.Games.Spaceball;
 using Trinkit;
 
 namespace Tengoku.Scenes
