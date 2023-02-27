@@ -197,7 +197,18 @@ namespace Tengoku.Games.Spaceball
         }
 
         [GameFunction("ball", new GameFunction.ParamType[] { GameFunction.ParamType.COMMAND_BEAT })]
-        public void Ball(float beat, bool high, bool riceball = false)
+        public void Ball(float beat, bool high)
+        {
+            Pitch(beat, high);
+        }
+
+        [GameFunction("riceball", new GameFunction.ParamType[] { GameFunction.ParamType.COMMAND_BEAT })]
+        public void Riceball(float beat, bool high)
+        {
+            Pitch(beat, high, true);
+        }
+
+        public void Pitch(float beat, bool high, bool riceball = false)
         {
             var newBall = new Ball(this);
             newBall.StartBeat = beat;
