@@ -1,4 +1,4 @@
-﻿#define HD
+﻿// #define HD
 
 using Trinkit;
 
@@ -115,15 +115,15 @@ namespace Tengoku
         {
             Window.Clear(Color.black);
 
-            // _gameRenderTexture?.Begin();
+            _gameRenderTexture?.Begin();
 
             CurrentScene?.DrawBefore();
             CurrentScene?.Draw();
             CurrentScene?.DrawGUI();
 
-            // _gameRenderTexture?.End();
+            _gameRenderTexture?.End();
 
-            /*
+            
             
             float ratio = ((float)Window.Width / (float)Window.Height);
             var resolutionWidth = Mathf.Round(160 * ratio);
@@ -139,7 +139,7 @@ namespace Tengoku
                     Color.white
                 );
             // Raylib_CsLo.Raylib.EndShaderMode();
-            */
+            
 #if RELEASE
 #else
             GuiLayer();

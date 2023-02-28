@@ -5,7 +5,7 @@ fun LoopTest()
 {
 	loop(4)
 	{
-		call tweezers.hair();
+		call tweezers.longhair();
 		rest(1);
 	}
 }
@@ -13,5 +13,9 @@ fun LoopTest()
 rest(1);
 
 LoopTest();
-rest(1);
-LoopTest();
+
+loop(4)
+{
+	call tweezers.hair();
+	rest(1);
+}

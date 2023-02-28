@@ -31,6 +31,8 @@ namespace Trinkit
                 return new AudioClip(resourceLocation);
             if (type == typeof(Texture))
                 return new Texture(resourceLocation);
+            if (type == typeof(Sound))
+                return new Sound(resourceLocation);
 
             return null;
         }

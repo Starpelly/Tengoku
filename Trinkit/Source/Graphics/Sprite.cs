@@ -13,6 +13,26 @@ namespace Trinkit.Graphics
             SourceRect = sourceRect;
         }
 
+        public static void DrawSprite(Texture texture, Vector3 position, float rotation, Color tint, Vector2 scale, Vector2 origin, Rectangle region = default, float pixelsPerUnit = 100.0f)
+        {
+            if (region.width == 0) region.width = texture.Width;
+            if (region.height == 0) region.height = texture.Height;
+
+            var widthUnit = (region.width / pixelsPerUnit);
+            var heightUnit = (region.height / pixelsPerUnit);
+
+            DrawTexturePro3D(
+                texture,
+                new Rectangle(-region.x - region.width, -region.y - region.height, region.width, region.height),
+                new Rectangle(-position.x, position.y, widthUnit, heightUnit),
+                new Vector3(widthUnit * origin.x, heightUnit * origin.y),
+                rotation,
+                position.z,
+                tint);
+
+            Debug.Counters.SpritesRendered++;
+        }
+
         public static void DrawSprite(Texture texture, Vector3 position, float rotation, Color tint, Vector2 scale, Rectangle region = default, float pixelsPerUnit = 100.0f)
         {
             if (region.width == 0) region.width = texture.Width;
