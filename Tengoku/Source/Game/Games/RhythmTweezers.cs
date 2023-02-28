@@ -15,8 +15,11 @@ namespace Tengoku.Games
 
         private Sound _shortAppearSnd;
         private Sound _longAppearSnd;
+        private Sound _pluckSnd;
 
         private Raylib_CsLo.Camera3D _cam;
+
+        private List<float> _hairs = new();
 
         public RhythmTweezers()
         {
@@ -26,6 +29,7 @@ namespace Tengoku.Games
 
             _shortAppearSnd = Resources.Load<Sound>("audio/sfx/games/rhythmTweezers/shortAppear.ogg");
             _longAppearSnd = Resources.Load<Sound>("audio/sfx/games/rhythmTweezers/longAppear.ogg");
+            _pluckSnd = Resources.Load<Sound>("audio/sfx/games/rhythmTweezers/shortPluck1.ogg");
 
             _cam = new Raylib_CsLo.Camera3D();
             _cam.projection_ = Raylib_CsLo.CameraProjection.CAMERA_PERSPECTIVE;
@@ -53,23 +57,24 @@ namespace Tengoku.Games
                 new Raylib_CsLo.Rectangle(0, 0, 240, 160),
                 90.0f);
 
-            var tweezersRot = Mathf.Lerp(0, Mathf.PI * 2f, Conductor.Instance.GetLoopPositionFromBeat(0, 10f));
+            var normalizedTweezers = Conductor.Instance.GetLoopPositionFromBeat(-2.5f, 8f);
+            var tweezersRot = (Mathf.Lerp(0, 360f, normalizedTweezers) + 90f) * Mathf.Deg2Rad;
             var length = 132f;
             var x = Mathf.Cos(tweezersRot) * length;
             var y = Mathf.Sin(tweezersRot) * length;
 
             Sprite.DrawSprite(_tweezersTex,
                 new Vector3(x*0.01f, (y*0.01f) + 0.6f, 0),
-                Mathf.Lerp(360f, 0f, Conductor.Instance.GetLoopPositionFromBeat(0, 10f)) - 90f,
+                Mathf.Lerp(360f, 0f, normalizedTweezers) + 180f,
                 Color.white,
                 Vector2.one,
                 new Raylib_CsLo.Rectangle(0, 0, 48, 48),
                 90.0f);
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < _hairs.Count; i++)
             {
-                var beat = i/5f;
-                var rot = (Mathf.Lerp(0, 360f, Mathf.Normalize(beat, 0, 8f)) + 20f) * Mathf.Deg2Rad;
+                var beat = _hairs[i];
+                var rot = (Mathf.Lerp(0, 360f, Mathf.Normalize(beat, 0, 8f)) + -23f) * Mathf.Deg2Rad;
                 var hairRotX = -Mathf.Cos(rot) * 80f;
                 var hairRotY = -Mathf.Sin(rot) * 70f;
 
@@ -91,6 +96,7 @@ namespace Tengoku.Games
         {
             Console.WriteLine("hair");
             _shortAppearSnd.Play();
+            _hairs.Add(Conductor.Instance.SongPositionInBeats);
         }
 
         [GameFunction("longhair")]
@@ -98,6 +104,13 @@ namespace Tengoku.Games
         {
             Console.WriteLine("long hair");
             _longAppearSnd.Play();
+        }
+
+        [GameFunction("pluck")]
+        public void Pluck()
+        {
+            _hairs.RemoveAt(0);
+            _pluckSnd.Play();
         }
     }
 }

@@ -67,7 +67,7 @@
         /// </summary>
         public float GetLoopPositionFromBeat(float beatOffset, float length)
         {
-            return Mathf.Repeat((SongPositionInBeats / length) + beatOffset, 1);
+            return Mathf.Repeat(((SongPositionInBeats + beatOffset) / length), 1);
         }
 
         /// <summary>

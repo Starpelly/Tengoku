@@ -3,19 +3,25 @@ song("tweezers.ogg");
 
 fun LoopTest()
 {
-	loop(4)
+	loop(7)
 	{
-		call tweezers.longhair();
-		rest(1);
+		call tweezers.hair();
+		rest(0.5);
+	}
+}
+
+
+fun LoopTest2()
+{
+	loop(7)
+	{
+		call tweezers.pluck();
+		rest(0.5);
 	}
 }
 
 rest(1);
 
 LoopTest();
-
-loop(4)
-{
-	call tweezers.hair();
-	rest(1);
-}
+rest(0.5);
+LoopTest2();
