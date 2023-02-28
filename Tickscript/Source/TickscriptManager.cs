@@ -2,9 +2,14 @@
 {
     public class TickscriptManager
     {
+        public float CommandBeat { get; internal set; }
+
+        #region Resing
+
         public float RestingTime { get; internal set; }
         public float StartRestingBeat { get; internal set; }
-        public float CommandBeat { get; internal set; }
+
+        #endregion
 
         #region Looping
 
@@ -13,6 +18,27 @@
         public int LoopEndIndex { get; set; }
 
         #endregion
+
+        #region Functions
+
+        public string CurrentFunction { get; set; } = String.Empty;
+        public int FunctionOpenIndex { get; set; }
+        public Dictionary<string, Function> Functions = new();
+
+        public struct Function
+        {
+            public int StartToken { get; set; }
+            public int EndToken { get; set; }
+
+            public Function(int startToken, int endToken)
+            {
+                this.StartToken = startToken;
+                this.EndToken = endToken;
+            }
+        }
+
+        #endregion
+
         public int SkipCommands { get; set; }
         public bool GoingToBeat { get; set; } = false;
 

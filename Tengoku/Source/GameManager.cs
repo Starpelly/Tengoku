@@ -6,6 +6,7 @@ using Trinkit.Audio;
 
 using Tickscript;
 using Tickscript.Tokens;
+using System.Collections.Specialized;
 
 namespace Tengoku
 {
@@ -119,13 +120,13 @@ namespace Tengoku
                         return;
                     }
 
-                    SwitchToken(token, ref inCommandList);
+                    SwitchToken(token, TickManager.TokenIndex, ref inCommandList);
                 }
             }
 
         }
 
-        private void SwitchToken(Token token, ref bool inCommandList)
+        private void SwitchToken(Token token, int tokenIndex, ref bool inCommandList)
         {
             if (commands.Manager == null || TickscriptLox.tokens == null) return;
 
@@ -135,35 +136,82 @@ namespace Tengoku
                     commands.EOF(ref inCommandList);
                     break;
                 case Tickscript.Tokens.TokenType.REST:
-                    commands.Rest((double)TickscriptLox.tokens[TickManager.TokenIndex + 1].Literal);
-                    break;
-                case Tickscript.Tokens.TokenType.LOG:
-                    commands.Log(TickscriptLox.tokens[TickManager.TokenIndex].Literal);
+                    commands.Rest((double)TickscriptLox.tokens[tokenIndex + 1].Literal);
                     break;
                 case Tickscript.Tokens.TokenType.CALL:
                     commands.Call(
-                        (string)TickscriptLox.tokens[TickManager.TokenIndex].Lexeme,
-                        (string)TickscriptLox.tokens[TickManager.TokenIndex + 2].Lexeme,
+                        (string)TickscriptLox.tokens[tokenIndex].Lexeme,
+                        (string)TickscriptLox.tokens[tokenIndex + 2].Lexeme,
                         TickscriptLox.tokens);
                     break;
                 case Tickscript.Tokens.TokenType.SKIP:
-                    TickManager.SkipCommands = (int)(double)TickscriptLox.tokens[TickManager.TokenIndex].Literal + 1; // Add one to compensate for the skip semicolon
+                    TickManager.SkipCommands = (int)(double)TickscriptLox.tokens[tokenIndex].Literal + 1; // Add one to compensate for the skip semicolon
                     break;
                 case Tickscript.Tokens.TokenType.SEMICOLON:
                     TickManager.SkipCommands -= 1;
                     inCommandList = false;
                     break;
                 case Tickscript.Tokens.TokenType.LOOP:
-                    commands.Manager.LoopTimes = (int)(double)TickscriptLox.tokens[TickManager.TokenIndex + 1].Literal;
-                    commands.Manager.LoopStartIndex = TickManager.TokenIndex;
+                    commands.Manager.LoopTimes = (int)(double)TickscriptLox.tokens[tokenIndex + 1].Literal - 1;
+                    commands.Manager.LoopStartIndex = tokenIndex;
                     var loopBracketStart = commands.Manager.LoopStartIndex + 3;
                     var tokensPoint = TickscriptLox.tokens.GetRange(loopBracketStart, TickscriptLox.tokens.Count - loopBracketStart);
                     
                     var loopTokenCount = tokensPoint.TakeWhile(c => c.Type != TokenType.RIGHT_BRACKET).Count();
                     commands.Manager.LoopEndIndex = commands.Manager.LoopStartIndex + loopTokenCount;
+                    break;
+                case TokenType.FUNCTION:
+                    var function = new TickscriptManager.Function();
+                    function.StartToken =
+                        tokenIndex + GetRangeFromIndex(tokenIndex).TakeWhile(c => c.Type != TokenType.LEFT_BRACKET).Count();
 
+                    function.EndToken 
+                        = function.StartToken + GetRangeFromIndex(function.StartToken).TakeWhile(c => c.Type != TokenType.RIGHT_BRACKET).Count();
+
+                    commands.Manager.Functions.Add(SeekToken().Lexeme, function);
+
+                    TickManager.SetTokenIndex(function.EndToken);
+                    break;
+                case TokenType.RIGHT_BRACKET:
+                    if (TickManager.CurrentFunction != string.Empty)
+                    {
+                        if (tokenIndex - 1 == TickManager.Functions[TickManager.CurrentFunction].EndToken)
+                        {
+                            TickManager.CurrentFunction = string.Empty;
+                            TickManager.SetTokenIndex(TickManager.FunctionOpenIndex);
+                        }
+                    }
+                    break;
+                default:
+                    var lexeme = SeekToken(-1).Lexeme;
+                    if (TickManager.Functions.ContainsKey(lexeme))
+                    {
+                        var func = TickManager.Functions[lexeme];
+                        TickManager.CurrentFunction = lexeme;
+                        TickManager.FunctionOpenIndex = tokenIndex;
+                        TickManager.SetTokenIndex(func.StartToken);
+                    }
                     break;
             }
+        }
+
+        public List<Token> GetRangeFromIndex(int startIndex)
+        {
+            return TickscriptLox.tokens.GetRange(startIndex, TickscriptLox.tokens.Count - startIndex);
+        }
+
+        public Token SeekToken(int seek = 0)
+        {
+            return TickscriptLox.tokens[TickManager.TokenIndex + seek];
+        }
+
+        public int IndexOf(OrderedDictionary dictionary, object value)
+        {
+            for (int i = 0; i < dictionary.Count; ++i)
+            {
+                if (dictionary[i] == value) return i;
+            }
+            return -1;
         }
 
         public override void Dispose()

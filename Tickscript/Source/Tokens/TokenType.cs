@@ -44,9 +44,7 @@
         ELSE,
         TRUE,
         FALSE,
-        VOID,
-        FOR,
-        LOG,
+        FUNCTION,
         LOOP,
 
         EOF

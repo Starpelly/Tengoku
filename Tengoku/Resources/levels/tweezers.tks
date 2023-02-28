@@ -1,23 +1,16 @@
 tempo(95);
 song("tweezers.ogg");
 
-// void LoopTest(int loopTimes)
-// {
-// 		int loopTimes = 4;
-// 
-// 		loop(loopTimes) {
-// 			call tweezers.hair();
-// 			rest(1);
-// 		}
-// }
+fun LoopTest(int loopTimes)
+{
+	loop(4)
+	{
+		call tweezers.hair();
+		rest(1);
+	}
+}
 
 rest(1);
 
-// int loopTimes = 4;
-
-loop(4) {
-	call tweezers.hair();
-	rest(1);
-}
-
+LoopTest();
 LoopTest();

@@ -26,10 +26,8 @@ namespace Tickscript
             ["else"]    = TokenType.ELSE,
             ["true"]    = TokenType.TRUE,
             ["false"]   = TokenType.FALSE,
-            ["void"]    = TokenType.VOID,
-            ["for"]     = TokenType.FOR,
-            ["log"]     = TokenType.LOG,
             ["loop"]     = TokenType.LOOP,
+            ["fun"]    = TokenType.FUNCTION,
         };
 
         public Scanner(string _source, TickscriptLox TickscriptLox)
