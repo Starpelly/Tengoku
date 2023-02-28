@@ -7,8 +7,9 @@ Discord: https://discord.gg/eD4bNDtJNV
 
 ## NOTE: THIS IS A MAJOR W.I.P
 
+![image](https://user-images.githubusercontent.com/24588691/221947144-8161f5ea-7c11-40ec-9431-4be07fc868e8.png)
+
 ![image](https://user-images.githubusercontent.com/24588691/221178361-8e3d4123-6d28-4b6a-afbc-be5feadd5e52.png)
-![image](https://user-images.githubusercontent.com/24588691/221367829-706367ef-68e0-4b8c-b9f2-5506216b2fb9.png)
 
 
 ## Other Information
