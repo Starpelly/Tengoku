@@ -63,6 +63,14 @@
         }
 
         /// <summary>
+        /// Get the normalized position of a loop from beats.
+        /// </summary>
+        public float GetLoopPositionFromBeat(float beatOffset, float length)
+        {
+            return Mathf.Repeat((SongPositionInBeats / length) + beatOffset, 1);
+        }
+
+        /// <summary>
         /// Uses the tempo changes to accurately get what the song position would be at this beat.
         /// </summary>
         public float GetSongPosFromBeat(float beat)

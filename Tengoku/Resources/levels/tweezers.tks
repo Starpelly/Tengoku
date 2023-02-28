@@ -1,7 +1,7 @@
 tempo(95);
 song("tweezers.ogg");
 
-fun LoopTest(int loopTimes)
+fun LoopTest()
 {
 	loop(4)
 	{
@@ -13,4 +13,5 @@ fun LoopTest(int loopTimes)
 rest(1);
 
 LoopTest();
+rest(1);
 LoopTest();

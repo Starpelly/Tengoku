@@ -107,6 +107,7 @@ namespace Tengoku
 
         public override void OnUpdate()
         {
+            Time.Clock += Time.deltaTime;
             CurrentScene?.Update();
         }
 
@@ -285,6 +286,7 @@ namespace Tengoku
             if (sceneObj == null) throw new Exception("Scene not found!");
 
             Instance.CurrentScene = sceneObj;
+            Time.Clock = 0.0f;
         }
     }
 }

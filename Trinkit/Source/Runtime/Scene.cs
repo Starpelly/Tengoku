@@ -18,11 +18,8 @@
             SceneComponents.Clear();
         }
 
-        public float Clock { get; private set; }
-
         public virtual void Update()
         {
-            Clock += Time.deltaTime;
         }
         public virtual void DrawBefore() { }
         public virtual void Draw() { }
