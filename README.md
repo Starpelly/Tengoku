@@ -1,8 +1,6 @@
 # Tengoku
 Fan made Rhythm Tengoku remaster written in C# 
 
-Discord: https://discord.gg/eD4bNDtJNV
-
 *Mostly just an excuse for me to work on my engine.*
 
 ## NOTE: THIS IS A MAJOR W.I.P
