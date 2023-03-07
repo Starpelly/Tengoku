@@ -6,11 +6,13 @@ namespace Trinkit.Graphics
     {
         private float _clock = 0.0f;
         private int _frame = 0;
+        private int _index = -1;
         private bool _finishedAnim = false;
         private Animation? _currentAnimation;
 
         public List<Animation> Animations = new();
         public Animation CurrentAnimation => _currentAnimation!;
+        public int CurrentIndex => _index;
         public int CurrentFrame => (_currentAnimation == null) ? 0 : _frame % _currentAnimation.MaxFrames;
 
         public Animator(string fileLoc)
@@ -23,8 +25,10 @@ namespace Trinkit.Graphics
             // && _clock <= _currentAnimation.MaxFrames / (float)_currentAnimation.FPS && !_finishedAnim
             if (_currentAnimation != null && !_finishedAnim)
             {
-                _clock += Time.deltaTime;
+                _clock += Time.DeltaTime;
                 float secondsPerFrame = (float)_currentAnimation.Frames[CurrentFrame].Length / _currentAnimation.FPS;
+                if (_frame < _currentAnimation.Frames.Count)
+                _index = _currentAnimation.Frames[_frame].Index;
                 while (_clock >= secondsPerFrame)
                 {
                     _clock -= secondsPerFrame;
@@ -63,6 +67,7 @@ namespace Trinkit.Graphics
                 _currentAnimation = anim;
                 _frame = 0; // Use normalized time in the future.
                 _clock = 0.0f;
+                _index = -1;
                 _finishedAnim = false;
             }
             else
@@ -84,6 +89,7 @@ namespace Trinkit.Graphics
         {
             _frame = 0;
             _clock = 0.0f;
+            _index = -1;
         }
 
         public override void Dispose()

@@ -37,6 +37,9 @@ namespace Tengoku
         public static RenderTexture? RenderTexture => Instance._gameRenderTexture;
 
         public Dictionary<string, Language> Languages { get; set; }
+
+        private bool _isPlaying { get; set; } = false;
+        public static bool IsPlaying { get { return Instance._isPlaying; } set { Instance._isPlaying = value; } }
         
         public Game(string title, int width, int height, bool resizable = false) : base(title, width, height, resizable)
         {
@@ -107,24 +110,30 @@ namespace Tengoku
 
         public override void OnUpdate()
         {
-            Time.Clock += Time.deltaTime;
-            CurrentScene?.Update();
+            if (_isPlaying)
+            {
+                Time.Clock += Time.DeltaTime;
+                CurrentScene?.Update();
+            }
         }
 
         public override void OnDraw()
         {
             Window.Clear(Color.black);
 
-            _gameRenderTexture?.Begin();
+            if (_isPlaying)
+            {
+                _gameRenderTexture?.Begin();
 
-            CurrentScene?.DrawBefore();
-            CurrentScene?.Draw();
-            CurrentScene?.DrawGUI();
+                CurrentScene?.DrawBefore();
+                CurrentScene?.Draw();
+                CurrentScene?.DrawGUI();
 
-            _gameRenderTexture?.End();
+                _gameRenderTexture?.End();
+            }
 
             
-            
+            /*
             float ratio = ((float)Window.Width / (float)Window.Height);
             var resolutionWidth = Mathf.Round(160 * ratio);
             
@@ -139,7 +148,7 @@ namespace Tengoku
                     Color.white
                 );
             // Raylib_CsLo.Raylib.EndShaderMode();
-            
+            */
 #if RELEASE
 #else
             GuiLayer();
@@ -153,7 +162,9 @@ namespace Tengoku
             Dockspace();
             Menubar.Layout();
             DebugView.Gui();
-            // GameView.Gui();
+            GameView.Gui();
+            Toolbar.Gui();
+            Hierarchy.Gui();
             // LocalizerView.Gui();
 
             TrinkitImGui.End();
@@ -163,8 +174,8 @@ namespace Tengoku
         {
             ImGui.PushStyleColor(ImGuiCol.WindowBg, (uint)Trinkit.Color.transparent);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new System.Numerics.Vector2(0, 0));
-            ImGui.SetNextWindowPos(new System.Numerics.Vector2(0f, 0), ImGuiCond.Always);
-            ImGui.SetNextWindowSize(new System.Numerics.Vector2(Window.Width, Window.Height));
+            ImGui.SetNextWindowPos(new System.Numerics.Vector2(0, 47), ImGuiCond.Always);
+            ImGui.SetNextWindowSize(new System.Numerics.Vector2(Window.Width, Window.Height - (47)));
             ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0f);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0f);
             ImGuiWindowFlags dockSpaceFlags = ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse |
@@ -263,8 +274,6 @@ namespace Tengoku
 
         public override void OnQuit()
         {
-            CurrentScene?.ClearComponents();
-
             _richPresence?.Dispose();
 
             TrinkitImGui.Shutdown();

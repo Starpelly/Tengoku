@@ -23,6 +23,11 @@ namespace Trinkit
 
         private Image _icon;
 
+        /// <summary>
+        /// All components in the application, destroyed once the game is exited.
+        /// </summary>
+        public List<Component> AllComponents = new List<Component>();
+
         public TrinkitApp(string title, int width, int height, bool resizable = false)
         {
             Instance = this;
@@ -69,9 +74,16 @@ namespace Trinkit
 
             Raylib.UnloadImage(_icon);
 
+            for (int i = 0; i < AllComponents.Count; i++)
+            {
+                AllComponents[i].Dispose();
+            }
+            AllComponents.Clear();
+
 #if Raudio
             Raylib_CsLo.Raylib.CloseAudioDevice();
 #endif
+
 
             Raylib.CloseWindow();
         }

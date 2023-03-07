@@ -15,6 +15,7 @@ namespace Trinkit.Graphics
 
         public struct Frame
         {
+            public int Index { get; set; } = -1;
             public int Length { get; set; }
 
             public Frame(int length)

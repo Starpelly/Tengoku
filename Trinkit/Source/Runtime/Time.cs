@@ -8,7 +8,7 @@ namespace Trinkit
         /// The time in seconds since the last frame.
         /// The time in seconds it took to complete the last frame.
         /// </summary>
-        public static float deltaTime => GetDeltaTime();
+        public static float DeltaTime => GetDeltaTime();
 
         /// <summary>
         /// The time in seconds since the current scene started.

@@ -1,6 +1,7 @@
 ﻿using Tengoku.Games;
 using Tengoku.Games.Spaceball;
 using Trinkit;
+using Trinkit.Audio;
 
 namespace Tengoku.Scenes
 {
@@ -13,7 +14,7 @@ namespace Tengoku.Scenes
         public GameScene()
         {
             GameManager = new GameManager();
-            CurrentMinigame = new RhythmTweezers();
+            CurrentMinigame = new Spaceball();
         }
 
         public override void Update()

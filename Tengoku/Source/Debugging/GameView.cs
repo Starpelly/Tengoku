@@ -11,12 +11,16 @@ namespace Tengoku.Debugging
             if (ImGui.Begin($"{FontIcon.Gamepad}Game###GameView", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse))
             {
                 var windowSize = GetLargestSizeForViewport();
+                windowSize = new Vector2(
+                    Trinkit.Mathf.Round2Nearest(windowSize.X, 280),
+                    Trinkit.Mathf.Round2Nearest(windowSize.Y, 160));
+
                 var windowPos = GetCenteredPositionForViewport(windowSize);
 
-                ImGui.SetCursorPos(new Vector2(windowPos.X + 8, windowPos.Y + 8));
+                ImGui.SetCursorPos(new Vector2(windowPos.X, windowPos.Y));
                 // Trinkit.GameWindow.Width = (int)windowSize.X;
                 // Trinkit.GameWindow.Height = (int)windowSize.Y;
-                ImGui.Image(new IntPtr(Game.RenderTexture.texture.id), windowSize - new Vector2(16, 16), new Vector2(0, 1), new Vector2(1, 0));
+                ImGui.Image(new IntPtr(Game.RenderTexture.texture.id), windowSize, new Vector2(0, 1), new Vector2(1, 0));
                 ImGui.End();
             }
             ImGui.PopStyleVar();

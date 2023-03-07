@@ -82,17 +82,17 @@ namespace Tengoku.Scenes
 
             _cam.fovy = 10.125f;
             _cam.position = new System.Numerics.Vector3(
-                Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f) - 0.2f, Time.deltaTime * 10f), 
-                Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.deltaTime * 10f), -10.0f);
+                Mathf.Lerp(_cam.position.X, -currentGameColumn * (0.24f + 0.2f) - 0.2f, Time.DeltaTime * 10f), 
+                Mathf.Lerp(_cam.position.Y, -currentGameRow * 0.26f, Time.DeltaTime * 10f), -10.0f);
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
-            SceneClock += Time.deltaTime;
+            SceneClock += Time.DeltaTime;
 
 
-            color1 = ShiftHueBy(color1, ((SceneClock > 0.4f) ? 0.195f : 0.8f) * Time.deltaTime);
+            color1 = ShiftHueBy(color1, ((SceneClock > 0.4f) ? 0.195f : 0.8f) * Time.DeltaTime);
             if (SceneClock < 0.02f) return;
-            color2 = ShiftHueBy(color2, 0.195f * Time.deltaTime);
+            color2 = ShiftHueBy(color2, 0.195f * Time.DeltaTime);
 
             if (_squaresClock > _nextSquareTime)
             {
@@ -107,7 +107,7 @@ namespace Tengoku.Scenes
                 if (_squares[0].x < -6f)
                     _squares.RemoveAt(0);
             }
-            _squaresClock += Time.deltaTime;
+            _squaresClock += Time.DeltaTime;
         }
 
         public override void DrawBefore()
@@ -125,7 +125,7 @@ namespace Tengoku.Scenes
             Raylib_CsLo.Raylib.BeginBlendMode(Raylib_CsLo.BlendMode.BLEND_ADDITIVE);
             for (int i = 0; i < _squares.Count; i++)
             {
-                _squares[i] += new Vector3(-1.25f * Time.deltaTime, 0, 0);
+                _squares[i] += new Vector3(-1.25f * Time.DeltaTime, 0, 0);
                 Sprite.DrawSprite(_square, _squares[i], _squaresClock * (-660f), new Color(1, 1, 1, 0.35f), Vector2.one, new Raylib_CsLo.Rectangle(), 90.0f);
             }
             Raylib_CsLo.Raylib.EndBlendMode();
@@ -143,7 +143,7 @@ namespace Tengoku.Scenes
             }
 
             var newSelectionPos = new Vector3(currentGameColumn * (0.24f + 0.2f), currentGameRow * -0.27f);
-            _selectionPos = Vector3.Lerp(_selectionPos, newSelectionPos, Time.deltaTime * 24f);
+            _selectionPos = Vector3.Lerp(_selectionPos, newSelectionPos, Time.DeltaTime * 24f);
             Sprite.DrawSprite(_selection, newSelectionPos, 0, Color.white, Vector2.one, new Raylib_CsLo.Rectangle(0, 26*3, 26, 26), 90.0f);
 
             // Selection Hand

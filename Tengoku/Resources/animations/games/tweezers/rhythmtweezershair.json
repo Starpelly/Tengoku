@@ -1,0 +1,36 @@
+﻿[
+    {
+        "Name": "RhythmTweezersHairAppear",
+        "FPS": 60,
+        "Frames": [
+            {
+                "Index": 0,
+                "Length": 1
+            },
+            {
+                "Index": 1,
+                "Length": 2
+            },
+            {
+                "Index": 2,
+                "Length": 1
+            },
+            {
+                "Index": 3,
+                "Length": 1
+            },
+            {
+                "Index": 4,
+                "Length": 2
+            },
+            {
+                "Index": 5,
+                "Length": 3
+            },
+            {
+                "Index": 4,
+                "Length": 1
+            }
+        ]
+    }
+]

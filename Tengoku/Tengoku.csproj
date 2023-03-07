@@ -25,14 +25,21 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Resources_Debug\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\animations\games\tweezers\spaceballplayer.json" />
 	  <None Remove="Resources\animations\spaceballplayer.json" />
 	  <None Remove="Resources\levels\tweezers.tks" />
 	  <None Remove="Resources\localization\eng.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Resources_Debug\" />
 	  <Folder Include="Resources\animations\ui\" />
 	  <Folder Include="Resources\audio\sfx\games\rhythmTweezers\" />
 	  <Folder Include="Resources\fonts\" />

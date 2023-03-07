@@ -47,7 +47,7 @@
             SecPerBeat = (60.0f / InitialTempo);
 
             {
-                var dt = Trinkit.Time.deltaTime;
+                var dt = Trinkit.Time.DeltaTime;
 
                 SongPosition = Time;
                 SongPositionInBeats = Time / SecPerBeat;

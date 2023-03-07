@@ -115,7 +115,7 @@ namespace Tengoku.Games.Spaceball
                     _stars.RemoveAt(0);
 
             }
-            _starsClock += Time.deltaTime;
+            _starsClock += Time.DeltaTime;
         }
 
         public override void Draw()
@@ -126,8 +126,8 @@ namespace Tengoku.Games.Spaceball
             for (int i = 0; i < _stars.Count; i++)
             {
                 Vector3 star = _stars[i];
-                _stars[i] -= new Vector3(0, 0, Time.deltaTime * 30f);
-                _stars[i] += new Vector3(_stars[i].x * 0.2f * Time.deltaTime, _stars[i].y * 0.2f * Time.deltaTime, 0f);
+                _stars[i] -= new Vector3(0, 0, Time.DeltaTime * 30f);
+                _stars[i] += new Vector3(_stars[i].x * 0.2f * Time.DeltaTime, _stars[i].y * 0.2f * Time.DeltaTime, 0f);
                 Sprite.DrawSprite(TexSpaceballProps, star, 0.0f, Color.white, Vector2.one, new Raylib_CsLo.Rectangle(32, 160, 32, 32), 40);
             }
 

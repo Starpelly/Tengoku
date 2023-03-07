@@ -21,7 +21,7 @@ namespace Tengoku
         public GameManager()
         {
             commands.Manager = new TickscriptManager();
-            LoadScript("Resources/levels/tweezers.tks");
+            LoadScript("Resources/levels/spaceball.tks");
         }
 
         public void LoadScript(string location)
@@ -31,8 +31,8 @@ namespace Tengoku
 
             // This is just bad, make a proper way of doing this in the future.
             Conductor.Instance.Dispose();
-            Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[2].Literal;
-            Conductor.Instance.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[7].Literal}");
+            Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
+            Conductor.Instance.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[4].Literal}");
             Conductor.Instance.Play();
         }
 
@@ -136,7 +136,7 @@ namespace Tengoku
                     commands.EOF(ref inCommandList);
                     break;
                 case Tickscript.Tokens.TokenType.REST:
-                    commands.Rest((double)TickscriptLox.tokens[tokenIndex + 1].Literal);
+                    commands.Rest((double)TickscriptLox.tokens[tokenIndex].Literal);
                     break;
                 case Tickscript.Tokens.TokenType.CALL:
                     commands.Call(

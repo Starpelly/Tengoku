@@ -2,10 +2,13 @@
 {
     public abstract class Component : Object
     {
+        public bool DontDestroyOnLoad = false;
+
         public Component()
         {
             if (TrinkitApp.Instance.CurrentScene != null)
                 TrinkitApp.Instance.CurrentScene?.AddComponent(this);
+            TrinkitApp.Instance.AllComponents.Add(this);
         }
 
         /// <summary>

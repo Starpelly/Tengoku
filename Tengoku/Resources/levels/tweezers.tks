@@ -1,27 +1,42 @@
 tempo(95);
 song("tweezers.ogg");
 
-fun LoopTest()
+rest(9);
+
+fun TestFunction()
 {
-	loop(7)
+	loop(4)
 	{
 		call tweezers.hair();
-		rest(0.5);
+		rest(1);
 	}
 }
 
+// --------------------------------------------------------------------------------------------- \\
 
-fun LoopTest2()
+call tweezers.start_interval(), call tweezers.hair(), rest(1);
+call tweezers.long_hair(), rest(1);
+call tweezers.long_hair(), rest(1);
+call tweezers.hair(), rest(4.5);
+call tweezers.next(), rest (0.5);
+
+// --------------------------------------------------------------------------------------------- \\
+
+call tweezers.start_interval(), call tweezers.hair();
+rest (1);
+loop(4)
 {
-	loop(7)
-	{
-		call tweezers.pluck();
-		rest(0.5);
-	}
+	call tweezers.hair(), rest(0.25);
 }
+call tweezers.long_hair(), rest(1);
+call tweezers.hair(), rest(4.5);
+call tweezers.next(), rest (0.5);
 
-rest(1);
+// --------------------------------------------------------------------------------------------- \\
 
-LoopTest();
-rest(0.5);
-LoopTest2();
+call tweezers.start_interval(), call tweezers.long_hair(), rest(1);
+call tweezers.hair(), rest(0.5);
+call tweezers.hair(), rest(0.5);
+call tweezers.long_hair(), rest(1);
+call tweezers.hair(), rest(4.5);
+call tweezers.next(), rest (0.5);

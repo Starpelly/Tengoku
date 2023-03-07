@@ -9,11 +9,17 @@
             SceneComponents.Add(component);
         }
 
-        public void ClearComponents()
+        public void ClearComponents(bool destroyOnLoadCheck = true)
         {
             for (int i = 0; i < SceneComponents.Count; i++)
             {
-                SceneComponents[i].Dispose();
+                var component = SceneComponents[i];
+
+                if (destroyOnLoadCheck)
+                if (component.DontDestroyOnLoad)
+                    continue;
+
+                component.Dispose();
             }
             SceneComponents.Clear();
         }
