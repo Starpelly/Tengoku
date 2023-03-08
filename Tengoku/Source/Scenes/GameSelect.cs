@@ -31,8 +31,9 @@ namespace Tengoku.Scenes
 
         private Vector3 _selectionPos;
 
-        public GameSelect()
+        public override void Start()
         {
+            Console.WriteLine(Game.Instance.CurrentScene);
             _gameIcons = new Texture("resources/sprites/gameselect/gameicons.png");
             _extraIcons = new Texture("resources/sprites/gameselect/extras.png");
             _selection = new Texture("resources/sprites/gameselect/selection.png");

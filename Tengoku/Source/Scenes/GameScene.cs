@@ -11,7 +11,7 @@ namespace Tengoku.Scenes
 
         public Minigame CurrentMinigame { get; set; }
 
-        public GameScene()
+        public override void Start()
         {
             GameManager = new GameManager();
             CurrentMinigame = new Spaceball();

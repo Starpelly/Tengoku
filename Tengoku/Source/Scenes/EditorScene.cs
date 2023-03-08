@@ -4,7 +4,7 @@ namespace Tengoku.Scenes
 {
     public class EditorScene : Scene
     {
-        public EditorScene()
+        public override void Start()
         {
 
         }

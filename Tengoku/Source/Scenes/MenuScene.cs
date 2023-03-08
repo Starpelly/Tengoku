@@ -7,7 +7,7 @@ namespace Tengoku.Scenes
     {
         private Texture _buttons;
 
-        public MenuScene()
+        public override void Start()
         {
             _buttons = Resources.Load<Texture>("sprites/mainmenu/buttons.png");
         }

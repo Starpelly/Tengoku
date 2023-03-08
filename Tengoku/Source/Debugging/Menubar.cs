@@ -9,6 +9,14 @@ namespace Tengoku.Debugging
         {
             if (ImGui.BeginMainMenuBar())
             {
+                if (ImGui.BeginMenu("File"))
+                {
+                    ImGui.EndMenu();
+                }
+                if (ImGui.BeginMenu("Edit"))
+                {
+                    ImGui.EndMenu();
+                }
                 if (ImGui.BeginMenu("Window"))
                 {
                     if (ImGui.MenuItem("Resolution")) { }

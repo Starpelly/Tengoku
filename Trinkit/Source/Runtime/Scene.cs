@@ -1,6 +1,6 @@
 ﻿namespace Trinkit
 {
-    public class Scene
+    public abstract class Scene
     {
         public readonly List<Component> SceneComponents = new List<Component>();
 
@@ -24,6 +24,7 @@
             SceneComponents.Clear();
         }
 
+        public abstract void Start();
         public virtual void Update()
         {
         }

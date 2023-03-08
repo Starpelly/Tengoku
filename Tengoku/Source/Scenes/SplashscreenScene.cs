@@ -7,7 +7,7 @@ namespace Tengoku.Scenes
     {
         private Texture _trinkitLogo;
 
-        public SplashscreenScene()
+        public override void Start()
         {
             _trinkitLogo = Resources.Load<Texture>("sprites/trinkitbanner.png");
         }

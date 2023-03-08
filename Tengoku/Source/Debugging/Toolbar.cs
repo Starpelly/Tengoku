@@ -55,11 +55,15 @@ namespace Tengoku.Debugging
 
             ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(4, 0));
 
-            // Button(RunGameBTN, RunGameBTN_Disabled, "Run Game", Game.IsPlaying);
+            Button(RunGameBTN, RunGameBTN_Disabled, "Run Game", !Game.IsPlaying);
             if (Button(RunSceneBTN, RunSceneBTN_Disabled, "Run Scene", !Game.IsPlaying))
             {
                 Game.IsPlaying = !Game.IsPlaying;
             }
+            VerticalSeparator();
+            Button(BuildBTN, BuildBTN_Disabled, "Build", !Game.IsPlaying);
+            VerticalSeparator();
+            Button(InfoBTN, InfoBTN_Disabled, "Game Info", true);
 
             ImGui.PopStyleVar(2);
             ImGui.PopStyleColor();

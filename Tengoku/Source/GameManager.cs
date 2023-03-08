@@ -152,7 +152,7 @@ namespace Tengoku
                     inCommandList = false;
                     break;
                 case Tickscript.Tokens.TokenType.LOOP:
-                    commands.Manager.LoopTimes = (int)(double)TickscriptLox.tokens[tokenIndex + 1].Literal - 1;
+                    commands.Manager.LoopTimes = (int)(double)TickscriptLox.tokens[tokenIndex + 1].Literal;
                     commands.Manager.LoopStartIndex = tokenIndex;
                     var loopBracketStart = commands.Manager.LoopStartIndex + 3;
                     var tokensPoint = TickscriptLox.tokens.GetRange(loopBracketStart, TickscriptLox.tokens.Count - loopBracketStart);
