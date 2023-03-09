@@ -5,9 +5,7 @@ Fan made Rhythm Tengoku remaster written in C#
 
 ## NOTE: THIS IS A MAJOR W.I.P
 
-![image](https://user-images.githubusercontent.com/24588691/221947144-8161f5ea-7c11-40ec-9431-4be07fc868e8.png)
-
-![image](https://user-images.githubusercontent.com/24588691/221178361-8e3d4123-6d28-4b6a-afbc-be5feadd5e52.png)
+![image](https://user-images.githubusercontent.com/24588691/223887952-165bf44f-33c2-4f69-9511-73488f665b85.png)
 
 
 ## Other Information
