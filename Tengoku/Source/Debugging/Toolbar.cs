@@ -7,6 +7,9 @@ namespace Tengoku.Debugging
     {
         private static Trinkit.Graphics.Texture RunGameBTN = GetIcon("playfromstart");
         private static Trinkit.Graphics.Texture RunGameBTN_Paused = GetIcon("playfromstart_stop");
+        private static Trinkit.Graphics.Texture PauseBTN = GetIcon("pause");
+        private static Trinkit.Graphics.Texture PauseBTN_Disabled = GetIcon("pausedisabled");
+        private static Trinkit.Graphics.Texture NextFrameBTN = GetIcon("nextframe");
         private static Trinkit.Graphics.Texture RunGameBTN_Disabled = GetIcon("playfromstartdisabled");
         private static Trinkit.Graphics.Texture RunSceneBTN = GetIcon("playscene");
         private static Trinkit.Graphics.Texture RunSceneBTN_Disabled = GetIcon("playscenedisabled");
@@ -55,11 +58,22 @@ namespace Tengoku.Debugging
 
             ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(4, 0));
 
-            Button(RunGameBTN, RunGameBTN_Disabled, "Run Game", !Game.IsPlaying);
-            if (Button(RunSceneBTN, RunSceneBTN_Disabled, "Run Scene", !Game.IsPlaying))
+            if (Button(RunGameBTN, RunGameBTN_Paused, "Play", !Game.IsPlaying))
             {
-                Game.IsPlaying = !Game.IsPlaying;
+                if (Game.IsPlaying)
+                    Game.Instance.StopGame();
+                else
+                    Game.Instance.PlayGame();
             }
+            var activePauseBtn = (Game.IsPlaying) ? RunGameBTN : PauseBTN;
+            if (Button(PauseBTN, (Game.IsPlaying) ? RunGameBTN : PauseBTN, (Game.IsPaused) ? "Unpause" : "Pause", Game.IsPlaying && !Game.IsPaused))
+            {
+                if (Game.IsPaused)
+                    Game.Instance.PlayGame();
+                else
+                    Game.Instance.PauseGame();
+            }
+
             VerticalSeparator();
             Button(BuildBTN, BuildBTN_Disabled, "Build", !Game.IsPlaying);
             VerticalSeparator();

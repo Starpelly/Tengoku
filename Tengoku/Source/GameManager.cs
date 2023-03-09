@@ -30,10 +30,10 @@ namespace Tengoku
             commands.OnCommand += OnCommand;
 
             // This is just bad, make a proper way of doing this in the future.
-            Conductor.Instance.Dispose();
-            Conductor.Instance.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
-            Conductor.Instance.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[4].Literal}");
-            Conductor.Instance.Play();
+            GameScene.Conductor.Dispose();
+            GameScene.Conductor.InitialTempo = (float)(double)TickscriptLox.tokens[1].Literal;
+            GameScene.Conductor.Clip = Resources.Load<AudioClip>($"audio/music/{TickscriptLox.tokens[4].Literal}");
+            GameScene.Conductor.Play();
         }
 
         public void OnCommand(string engine, string function, List<object> parameters)
@@ -93,11 +93,11 @@ namespace Tengoku
 
         public override void Update()
         {
-            Conductor.Instance.Update();
+            GameScene.Conductor.Update();
 
             if (TickscriptLox == null || TickscriptLox.tokens == null || commands.Manager == null) return;
 
-            TickManager.IsResting = !(Conductor.Instance.SongPositionInBeats >= TickManager.StartRestingBeat + TickManager.RestingTime);
+            TickManager.IsResting = !(GameScene.Conductor.SongPositionInBeats >= TickManager.StartRestingBeat + TickManager.RestingTime);
             
             if (!TickManager.Ended && !TickManager.IsResting)
             {
@@ -114,7 +114,7 @@ namespace Tengoku
                             TickManager.LoopTimes--;
                         }
 
-                    if (TickManager.GoingToBeat && TickManager.CommandBeat >= Conductor.Instance.SongPositionInBeats)
+                    if (TickManager.GoingToBeat && TickManager.CommandBeat >= GameScene.Conductor.SongPositionInBeats)
                     {
                         TickManager.GoingToBeat = false;
                         return;

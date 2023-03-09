@@ -31,6 +31,8 @@ namespace Tengoku.Scenes
 
         private Vector3 _selectionPos;
 
+        private AudioSource _bgMusic;
+
         public override void Start()
         {
             Console.WriteLine(Game.Instance.CurrentScene);
@@ -44,9 +46,9 @@ namespace Tengoku.Scenes
 
             color1 = Color.white;
 
-            Conductor.Instance.Dispose();
-            Conductor.Instance.Clip = Resources.Load<AudioClip>("audio/music/gameselect.ogg");
-            Conductor.Instance.Play();
+            _bgMusic = new AudioSource();
+            _bgMusic.Clip = Resources.Load<AudioClip>("audio/music/gameselect.ogg");
+            _bgMusic.Play();
 
             for (int i = 0; i < _maxSquares; i++)
             {
@@ -61,7 +63,7 @@ namespace Tengoku.Scenes
 
         public override void Update()
         {
-            Conductor.Instance.Update();
+            _bgMusic.Update();
             if (Input.GetKeyDown(KeyCode.Up))
             {
                 currentGameRow -= 1;

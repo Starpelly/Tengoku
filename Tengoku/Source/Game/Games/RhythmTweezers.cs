@@ -3,6 +3,7 @@ using Trinkit.Graphics;
 
 using Tickscript;
 using Trinkit.Audio;
+using Tengoku.Scenes;
 
 namespace Tengoku.Games
 {
@@ -67,7 +68,7 @@ namespace Tengoku.Games
         public override void Update()
         {
             _cam.fovy = 10f;
-            _cam.position = new System.Numerics.Vector3(0.0f, Mathf.Lerp(-0.03f, 0.0f, Mathf.Normalize(Conductor.Instance.SongPosition, _pluckTime, _pluckTime + 0.05f)), -10.0f);
+            _cam.position = new System.Numerics.Vector3(0.0f, Mathf.Lerp(-0.03f, 0.0f, Mathf.Normalize(GameScene.Conductor.SongPosition, _pluckTime, _pluckTime + 0.05f)), -10.0f);
             _cam.target = new System.Numerics.Vector3(_cam.position.X, _cam.position.Y, 0.0f);
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
@@ -76,10 +77,10 @@ namespace Tengoku.Games
                 _pluckSnd.Play();
 
                 _hairs[_hairIndex].IsPlucked = true;
-                _hairs[_hairIndex].PluckedTime = Conductor.Instance.SongPosition;
+                _hairs[_hairIndex].PluckedTime = GameScene.Conductor.SongPosition;
                 _hairIndex++;
 
-                _pluckTime = Conductor.Instance.SongPosition;
+                _pluckTime = GameScene.Conductor.SongPosition;
             }
         }
 
@@ -97,11 +98,11 @@ namespace Tengoku.Games
                 new Raylib_CsLo.Rectangle(240*0, 160*0, 240, 160),
                 90.0f);
 
-            bool _isPlucking = (Conductor.Instance.SongPosition < _pluckTime + 0.2f);
+            bool _isPlucking = (GameScene.Conductor.SongPosition < _pluckTime + 0.2f);
 
-            var normalizedTweezers = Conductor.Instance.GetLoopPositionFromBeat(-2.5f, 8f);
+            var normalizedTweezers = GameScene.Conductor.GetLoopPositionFromBeat(-2.5f, 8f);
             var tweezersRot = (Mathf.Lerp(0, 360f, normalizedTweezers) + 90f) * Mathf.Deg2Rad;
-            var tweezersNormalized = Mathf.Normalize(Conductor.Instance.SongPosition, _pluckTime, _pluckTime + 0.2f);
+            var tweezersNormalized = Mathf.Normalize(GameScene.Conductor.SongPosition, _pluckTime, _pluckTime + 0.2f);
             var length = Mathf.Lerp(122f, 132f, tweezersNormalized);
             var x = Mathf.Cos(tweezersRot) * length;
             var y = Mathf.Sin(tweezersRot) * length;
@@ -128,9 +129,9 @@ namespace Tengoku.Games
                     var hairY = ((Mathf.Sin(tweezersRot) * (hairLength)) * 0.01f) + 0.6f;
 
                     var originY = 1.0f;
-                    if (Conductor.Instance.SongPosition > hair.PluckedTime + 0.2f)
+                    if (GameScene.Conductor.SongPosition > hair.PluckedTime + 0.2f)
                     {
-                        hair.Position -= new Vector2(0, 1.26f * Time.DeltaTime * (Conductor.Instance.SongPosition - hair.PluckedTime) * 2f);
+                        hair.Position -= new Vector2(0, 1.26f * Time.DeltaTime * (GameScene.Conductor.SongPosition - hair.PluckedTime) * 2f);
                         hair.HairRot += 355f * Time.DeltaTime;
                         originY = 0.5f;
                     }

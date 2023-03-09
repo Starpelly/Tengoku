@@ -39,8 +39,31 @@ namespace Tengoku
         public Dictionary<string, Language> Languages { get; set; }
 
         private bool _isPlaying { get; set; } = false;
+        private bool _isPaused { get; set; } = false;
         public static bool IsPlaying { get { return Instance._isPlaying; } set { Instance._isPlaying = value; } }
-        
+        public static bool IsPaused { get { return Instance._isPaused; } set { Instance._isPaused = value; } }
+
+        public void PlayGame()
+        {
+            IsPlaying = true;
+            IsPaused = false;
+
+            LoadScene<GameSelect>();
+        }
+
+        public void PauseGame()
+        {
+            IsPaused = true;
+        }
+
+        public void StopGame()
+        {
+            IsPlaying = false;
+            IsPaused = false;
+
+            CloseScene();
+        }
+
         public Game(string title, int width, int height, bool resizable = false) : base(title, width, height, resizable)
         {
             Instance = this;
@@ -55,8 +78,6 @@ namespace Tengoku
             _gameRenderTexture = new RenderTexture(ViewWidth, ViewHeight);
 
             _richPresence = new DiscordRichPresence();
-
-            LoadScene<GameScene>();
         }
 
         public override void OnStart()
@@ -65,7 +86,7 @@ namespace Tengoku
 
         public override void OnUpdate()
         {
-            if (_isPlaying)
+            if (_isPlaying && !_isPaused)
             {
                 Time.Clock += Time.DeltaTime;
                 CurrentScene?.Update();
@@ -76,7 +97,7 @@ namespace Tengoku
         {
             Window.Clear(Color.black);
 
-            if (_isPlaying)
+            if (_isPlaying && !_isPaused)
             {
                 _gameRenderTexture?.Begin();
 
@@ -136,6 +157,17 @@ namespace Tengoku
             Instance.CurrentScene.Start();
 
             Time.Clock = 0.0f;
+        }
+
+        public static void CloseScene()
+        {
+            if (Instance.CurrentScene != null)
+            {
+                Instance.CurrentScene.OnExit();
+
+                Instance.CurrentScene?.ClearComponents();
+            }
+            Instance.CurrentScene = null;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Raylib_CsLo;
+using Tengoku.Scenes;
 using Trinkit;
 using Trinkit.Audio;
 using Trinkit.Graphics;
@@ -39,7 +40,7 @@ namespace Tengoku.Games.Spaceball
             if (!_hit)
             {
                 var length = High ? 2 : 1;
-                normalizedPitchAnim = Conductor.Instance.GetPositionFromBeat(StartBeat, length + 0.175f);
+                normalizedPitchAnim = GameScene.Conductor.GetPositionFromBeat(StartBeat, length + 0.175f);
 
                 if (normalizedPitchAnim < 1.0f)
                 {
@@ -52,7 +53,7 @@ namespace Tengoku.Games.Spaceball
 
                     if (down)
                     {
-                        var signedDelta = JudgementManager.GetDelta(High ? StartBeat + 2 : StartBeat + 1, Conductor.Instance.SongPosition);
+                        var signedDelta = JudgementManager.GetDelta(High ? StartBeat + 2 : StartBeat + 1, GameScene.Conductor.SongPosition);
                         Console.WriteLine(signedDelta * 1);
 
                         var missRange = 0.13f;
@@ -79,7 +80,7 @@ namespace Tengoku.Games.Spaceball
                         if (State == Judgement.Perfect || State == Judgement.Hit)
                         {
                             Raylib.PlaySound(Spaceball.HitSnd);
-                            _hitBeat = Conductor.Instance.SongPositionInBeats;
+                            _hitBeat = GameScene.Conductor.SongPositionInBeats;
                             _hit = true;
                             _hitPos = _lastPos;
                             _lastRot = ballRot;
@@ -106,13 +107,13 @@ namespace Tengoku.Games.Spaceball
             }
             else
             {
-                var nba = Conductor.Instance.GetPositionFromBeat(_hitBeat, 14);
+                var nba = GameScene.Conductor.GetPositionFromBeat(_hitBeat, 14);
                 Sprite.DrawSprite(Spaceball.TexSpaceballProps,
                     Vector3.Lerp(_hitPos, new Vector3(_randomHitX, 0, -1300f), nba),
                     _lastRot * nba * 12f, Trinkit.Color.white, Vector2.one,
                     new Rectangle(Riceball ? 32 : 0, 96, 32, 32), 90f);
 
-                if (Conductor.Instance.SongPositionInBeats > _hitBeat + 14)
+                if (GameScene.Conductor.SongPositionInBeats > _hitBeat + 14)
                     Destroy();
             }
         }

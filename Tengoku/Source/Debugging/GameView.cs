@@ -20,7 +20,13 @@ namespace Tengoku.Debugging
                 ImGui.SetCursorPos(new Vector2(windowPos.X, windowPos.Y));
                 // Trinkit.GameWindow.Width = (int)windowSize.X;
                 // Trinkit.GameWindow.Height = (int)windowSize.Y;
-                ImGui.Image(new IntPtr(Game.RenderTexture.texture.id), windowSize, new Vector2(0, 1), new Vector2(1, 0));
+
+                
+                if (Game.RenderTexture != null && Game.IsPlaying)
+                    ImGui.Image(new IntPtr(Game.RenderTexture.texture.id), windowSize, new Vector2(0, 1), new Vector2(1, 0));
+                else
+                    ImGui.GetWindowDrawList().AddRectFilled(ImGui.GetWindowPos() + windowPos, ImGui.GetWindowPos() + windowPos + windowSize, (uint)Trinkit.Color.black);
+                
                 ImGui.End();
             }
             ImGui.PopStyleVar();

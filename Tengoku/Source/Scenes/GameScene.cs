@@ -8,11 +8,21 @@ namespace Tengoku.Scenes
     public class GameScene : Scene
     {
         public GameManager GameManager { get; private set; }
+        public Conductor PConductor { get; private set; }
 
         public Minigame CurrentMinigame { get; set; }
 
+        public static GameScene Instance { get; private set; }
+        public static Conductor Conductor => Instance.PConductor;
+
+        public GameScene()
+        {
+            Instance = this;
+        }
+
         public override void Start()
         {
+            PConductor = new Conductor();
             GameManager = new GameManager();
             CurrentMinigame = new Spaceball();
         }
@@ -20,6 +30,7 @@ namespace Tengoku.Scenes
         public override void Update()
         {
             GameManager.Update();
+            PConductor.Update();
             CurrentMinigame.Update();
         }
 

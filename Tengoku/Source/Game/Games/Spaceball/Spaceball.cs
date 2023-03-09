@@ -1,4 +1,5 @@
-﻿using Tickscript;
+﻿using Tengoku.Scenes;
+using Tickscript;
 using Trinkit;
 using Trinkit.Audio;
 using Trinkit.Graphics;
@@ -87,7 +88,7 @@ namespace Tengoku.Games.Spaceball
             _cam.up = new System.Numerics.Vector3(0.0f, 1.0f, 0.0f);
 
             if (ZoomingEnabled)
-                _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, Conductor.Instance.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
+                _camPosZ = Mathf.Lerp(LastZoom, CameraZoomZoom, GameScene.Conductor.GetPositionFromBeat(CameraZoomBeat, CameraZoomLength));
 
             if (PlayerInput.GetPlayerDown())
             {
